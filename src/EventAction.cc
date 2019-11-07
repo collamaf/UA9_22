@@ -46,8 +46,11 @@
 #include "RunAction.hh"
 
 
-EventAction::EventAction(RunAction* runAction):
-fSDHT_ID(-1), fRunAction(runAction){}
+EventAction::EventAction(RunAction* runAction, const std::map<G4String,G4double> & ParameterMap):
+fSDHT_ID(-1), fRunAction(runAction), fParameterMap(ParameterMap){
+	G4cout<<"PROVA MAPPA EveAct: "<<fParameterMap["Ene"]<<G4endl;
+
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
@@ -65,12 +68,6 @@ void EventAction::BeginOfEventAction(const G4Event*){
 	fRunAction->GetPlaneEne().clear();
 	fRunAction->GetPlanePart().clear();
 	fRunAction->GetPlanePlaneId().clear();
-	
-	
-	
-	
-	
-	
 	
 	;}
 

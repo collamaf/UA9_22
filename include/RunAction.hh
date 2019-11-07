@@ -36,7 +36,7 @@ class G4Run;
 class RunAction : public G4UserRunAction
 {
 public:
-	RunAction();
+	RunAction(const std::map<G4String,G4double> &);
 	virtual ~RunAction();
 	
 	virtual void BeginOfRunAction(const G4Run*);
@@ -64,6 +64,7 @@ private:
 	std::vector<G4double> fPlanePart;
 	std::vector<G4double> fPlanePlaneId;
 	
+	std::map<G4String,G4double>  fParameterMap;
 	
 };
 

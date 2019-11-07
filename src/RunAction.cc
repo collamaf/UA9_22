@@ -35,7 +35,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-RunAction::RunAction(): G4UserRunAction(){
+RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap): G4UserRunAction(), fParameterMap(ParameterMap){
 	G4RunManager::GetRunManager()->SetPrintProgress(1);
 	
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
@@ -77,6 +77,8 @@ RunAction::RunAction(): G4UserRunAction(){
 	analysisManager->CreateNtupleDColumn(2, "Part", fPlanePart);
 	analysisManager->CreateNtupleDColumn(2, "PlaneId", fPlanePlaneId);
 	analysisManager->FinishNtuple();
+
+	G4cout<<"PROVA MAPPA RunAct: "<<fParameterMap["Ene"]<<G4endl;
 
 	
 }

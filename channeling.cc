@@ -70,6 +70,11 @@ int main(int argc,char** argv)
 		ui = new G4UIExecutive(argc, argv);
 	}
 	
+	std::map<G4String,G4double> ParameterMap;
+	ParameterMap["BR"]=0.17;
+	ParameterMap["Div"]=0.0017;
+	ParameterMap["Ene"]=17;
+
 	// Construct the default run manager
 #ifdef G4MULTITHREADED
 	G4MTRunManager* runManager = new G4MTRunManager;
@@ -105,7 +110,8 @@ int main(int argc,char** argv)
 	runManager->SetUserAction(eventAction);
 runManager->SetUserAction(new B1SteppingAction(eventAction, runAction));
 #else
-	runManager->SetUserInitialization(new UserActionInitialization());
+	runManager->SetUserInitialization(new UserActionInitialization(ParameterMap));
+//runManager->SetUserInitialization(new UserActionInitialization());
 #endif
 	
 	runManager->SetUserInitialization(new DetectorConstruction());

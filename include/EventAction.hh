@@ -40,7 +40,7 @@ class RunAction;
 class EventAction : public G4UserEventAction
 {
   public:
-    EventAction(RunAction* );
+    EventAction(RunAction* , const std::map<G4String,G4double> &);
     virtual ~EventAction();
 
     virtual void BeginOfEventAction(const G4Event*);
@@ -49,7 +49,7 @@ class EventAction : public G4UserEventAction
   private:
     G4int fSDHT_ID;
 	RunAction* fRunAction;
-
+	std::map<G4String,G4double>  fParameterMap;
 };
 
 #endif

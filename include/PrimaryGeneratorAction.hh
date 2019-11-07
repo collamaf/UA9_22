@@ -40,13 +40,15 @@ class G4Event;
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
 public:
-    PrimaryGeneratorAction();
+    PrimaryGeneratorAction(const std::map<G4String,G4double> &);
+//    PrimaryGeneratorAction(G4double);
     virtual ~PrimaryGeneratorAction();
     
     void GeneratePrimaries(G4Event*);
 
 private:
     G4GeneralParticleSource* fGPS;
+	std::map<G4String,G4double>  fParameterMap;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

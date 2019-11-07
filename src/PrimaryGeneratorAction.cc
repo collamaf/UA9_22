@@ -32,8 +32,10 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-PrimaryGeneratorAction::PrimaryGeneratorAction(){
+PrimaryGeneratorAction::PrimaryGeneratorAction(const std::map<G4String,G4double> & ParameterMap):G4VUserPrimaryGeneratorAction() , fParameterMap(ParameterMap) {
     fGPS = new G4GeneralParticleSource();
+	G4cout<<"PROVA MAPPA PrimGen: "<<fParameterMap["Ene"]<<G4endl;
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

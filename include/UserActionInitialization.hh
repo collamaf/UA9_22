@@ -26,6 +26,7 @@
 //
 
 #include "G4Types.hh"
+#include <map>
 
 #ifdef G4MULTITHREADED
 
@@ -34,13 +35,20 @@
 #endif
 
 #include "G4VUserActionInitialization.hh"
+#include <map>
+#include "globals.hh"
+
+
 class G4GeneralParticleSource;
 
 class UserActionInitialization : public G4VUserActionInitialization{
 public:
-  UserActionInitialization();
+  UserActionInitialization(std::map<G4String,G4double> &);
   ~UserActionInitialization();
     void Build() const;
+
+private:
+	std::map<G4String,G4double> fParameterMap;
 };
 
 #endif

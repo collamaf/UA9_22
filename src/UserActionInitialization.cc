@@ -25,7 +25,7 @@
 //
 
 #include "G4Types.hh"
-
+#include <map>
 #ifdef G4MULTITHREADED
 #include "UserActionInitialization.hh"
 
@@ -34,10 +34,16 @@
 #include "EventAction.hh"
 #include "RunAction.hh"
 #include "B1SteppingAction.hh"
+#include <map>
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-UserActionInitialization::UserActionInitialization(){;}
+UserActionInitialization::UserActionInitialization(std::map<G4String,G4double> & ParameterMap):G4VUserActionInitialization(), fParameterMap(ParameterMap)
+//UserActionInitialization::UserActionInitialization():G4VUserActionInitialization()
+{
+	G4cout<<"PROVA MAPPA UserInit: "<<fParameterMap["Ene"]<<G4endl;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -46,12 +52,17 @@ UserActionInitialization::~UserActionInitialization(){;}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void UserActionInitialization::Build() const {
-	SetUserAction(new PrimaryGeneratorAction());
+	PrimaryGeneratorAction* primGenAction=new PrimaryGeneratorAction(fParameterMap);
+	SetUserAction(primGenAction);
+	
 	SetUserAction(new StackingAction());
-	RunAction* runAction = new RunAction();
+	
+	RunAction* runAction = new RunAction(fParameterMap);
 	SetUserAction(runAction);
-	EventAction* eventAction=new EventAction(runAction);
+	
+	EventAction* eventAction=new EventAction(runAction, fParameterMap);
 	SetUserAction(eventAction);
+	
 	SetUserAction(new B1SteppingAction(eventAction, runAction));
 
 }
