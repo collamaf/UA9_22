@@ -33,3 +33,4 @@ CMakeFiles
 build/
 *.root
 *.dat
+.DS_Store
