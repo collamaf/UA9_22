@@ -104,8 +104,15 @@
 /vis/geometry/set/colour Envelope 0 0 0 1 .3
 /vis/viewer/set/style surface
 /vis/viewer/set/hiddenMarker true
-/vis/viewer/set/viewpointThetaPhi 120 150
+
+/vis/viewer/set/background 1 1 1 1
+/vis/viewer/set/viewpointThetaPhi 12.3021  161.587  deg
+
+/vis/viewer/set/targetPoint -0.17253 0.36292 1.64364 m
+/vis/viewer/zoomTo 7
 #
+
+
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true
 /vis/verbose warnings

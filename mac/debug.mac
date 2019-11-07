@@ -21,6 +21,6 @@
 /gps/ang/rot2 0 -1  0
 /gps/ang/sigma_x 13.36E-6 rad
 /gps/ang/sigma_y 11.25E-6 rad
-
 #beam on
-/run/beamOn 1000
+/tracking/verbose 2
+/run/beamOn 10
