@@ -34,10 +34,13 @@
 #include <fstream>
 #include "G4PhysicsFreeVector.hh"
 
+class RunAction;
+
+
 class EventAction : public G4UserEventAction
 {
   public:
-    EventAction();
+    EventAction(RunAction* );
     virtual ~EventAction();
 
     virtual void BeginOfEventAction(const G4Event*);
@@ -45,6 +48,8 @@ class EventAction : public G4UserEventAction
 
   private:
     G4int fSDHT_ID;
+	RunAction* fRunAction;
+
 };
 
 #endif

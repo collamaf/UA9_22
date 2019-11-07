@@ -29,17 +29,42 @@
 
 #include "G4UserRunAction.hh"
 #include "globals.hh"
+#include <vector>
 
 class G4Run;
 
 class RunAction : public G4UserRunAction
 {
 public:
-    RunAction();
-    virtual ~RunAction();
-    
-    virtual void BeginOfRunAction(const G4Run*);
-    virtual void   EndOfRunAction(const G4Run*);
+	RunAction();
+	virtual ~RunAction();
+	
+	virtual void BeginOfRunAction(const G4Run*);
+	virtual void   EndOfRunAction(const G4Run*);
+	
+	std::vector<G4double>& GetPlaneX() {return fPlaneX; }
+	std::vector<G4double>& GetPlaneY() {return fPlaneY; }
+	std::vector<G4double>& GetPlaneZ() {return fPlaneZ; }
+	std::vector<G4double>& GetPlanePX() {return fPlanePX; }
+	std::vector<G4double>& GetPlanePY() {return fPlanePY; }
+	std::vector<G4double>& GetPlanePZ() {return fPlanePZ; }
+	std::vector<G4double>& GetPlaneEne() {return fPlaneEne; }
+	std::vector<G4double>& GetPlanePart() {return fPlanePart; }
+	std::vector<G4double>& GetPlanePlaneId() {return fPlanePlaneId; }
+
+	
+private:
+	std::vector<G4double> fPlaneX;
+	std::vector<G4double> fPlaneY;
+	std::vector<G4double> fPlaneZ;
+	std::vector<G4double> fPlanePX;
+	std::vector<G4double> fPlanePY;
+	std::vector<G4double> fPlanePZ;
+	std::vector<G4double> fPlaneEne;
+	std::vector<G4double> fPlanePart;
+	std::vector<G4double> fPlanePlaneId;
+	
+	
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -5,7 +5,7 @@
 /xtal/setSize 1.0 70. 1.94 mm
 /xtal/setBR 38.416 0. 0. m
 /xtal/setEC data/Si220pl
-/run/numberOfThreads 1
+# /run/numberOfThreads 1
 #initialize run before stacking and primary generator actions
 /run/initialize
 

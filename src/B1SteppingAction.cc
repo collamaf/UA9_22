@@ -23,38 +23,56 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
+//
+/// \file B1SteppingAction.cc
+/// \brief Implementation of the B1SteppingAction class
 
-#include "G4Types.hh"
-
-#ifdef G4MULTITHREADED
-#include "UserActionInitialization.hh"
-
-#include "PrimaryGeneratorAction.hh"
-#include "StackingAction.hh"
-#include "EventAction.hh"
-#include "RunAction.hh"
 #include "B1SteppingAction.hh"
+#include "EventAction.hh"
+#include "DetectorConstruction.hh"
+
+#include "G4Step.hh"
+#include "G4Event.hh"
+#include "G4RunManager.hh"
+#include "G4LogicalVolume.hh"
+#include "G4SystemOfUnits.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-UserActionInitialization::UserActionInitialization(){;}
+B1SteppingAction::B1SteppingAction(EventAction* eventAction, RunAction* runAction)
+: G4UserSteppingAction(),
+fEventAction(eventAction),
+fRunAction(runAction),
+fScoringVolume(0)
+{}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-UserActionInitialization::~UserActionInitialization(){;}
+B1SteppingAction::~B1SteppingAction()
+{}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void UserActionInitialization::Build() const {
-	SetUserAction(new PrimaryGeneratorAction());
-	SetUserAction(new StackingAction());
-	RunAction* runAction = new RunAction();
-	SetUserAction(runAction);
-	EventAction* eventAction=new EventAction(runAction);
-	SetUserAction(eventAction);
-	SetUserAction(new B1SteppingAction(eventAction, runAction));
-
+void B1SteppingAction::UserSteppingAction(const G4Step* step)
+{
+	
+	G4VPhysicalVolume* ThisVol = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
+	G4VPhysicalVolume* NextVol = step->GetPostStepPoint()->GetTouchableHandle()->GetVolume();
+	
+	if (NextVol && NextVol->GetName()=="physDummyPlane") {
+		//		G4cout<<"ENTRO NEL PIANO "<<NextVol->GetCopyNo()<<G4endl;
+		fRunAction->GetPlaneX().push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
+		fRunAction->GetPlaneY().push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
+		fRunAction->GetPlaneZ().push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
+		fRunAction->GetPlanePX().push_back(step->GetPostStepPoint()->GetMomentumDirection().x());
+		fRunAction->GetPlanePY().push_back(step->GetPostStepPoint()->GetMomentumDirection().y());
+		fRunAction->GetPlanePZ().push_back(step->GetPostStepPoint()->GetMomentumDirection().z());
+		fRunAction->GetPlaneEne().push_back(step->GetPostStepPoint()->GetKineticEnergy()/GeV);
+		fRunAction->GetPlanePart().push_back(step->GetTrack()->GetDynamicParticle()->GetDefinition()->GetPDGEncoding());
+		fRunAction->GetPlanePlaneId().push_back(NextVol->GetCopyNo());
+	}
+	
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
-#endif
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+

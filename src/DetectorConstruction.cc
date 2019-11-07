@@ -192,7 +192,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
         rot->rotateZ(fAngles.z());
     }
     
-    new G4PVPlacement(rot,
+   G4VPhysicalVolume* physCrystal= new G4PVPlacement(rot,
                       G4ThreeVector(),
                       crystalLogic,
                       "crystal.physic",
@@ -215,6 +215,34 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     }
 #endif
 
+	
+	//-- Dummy planes to score particles
+	G4double dummyPlane_X=1*m;
+	G4double dummyPlane_Y=1*m;
+	G4double dummyPlane_Z=.1*mm;
+	G4double delta=0.00*mm;
+	G4bool checkOverlaps=true;
+
+	G4ThreeVector posDummyPlane0= G4ThreeVector(0, 0, -10.4999*m);
+	G4ThreeVector posDummyPlane1= G4ThreeVector(0, 0, 0-fSizes.z()/2.-delta-dummyPlane_Z/2.);
+	G4ThreeVector posDummyPlane2= G4ThreeVector(0, 0, 0+fSizes.z()/2.+delta+dummyPlane_Z/2.);
+
+	G4cout<<"CIAO " <<posDummyPlane1.z() <<G4endl;
+	G4cout<<"CIAO " <<posDummyPlane2.z() <<G4endl;
+
+	G4Box* geoDummyPlane = new G4Box("geoDummyPlane", dummyPlane_X/2, dummyPlane_Y/2, dummyPlane_Z/2);
+	G4LogicalVolume* logicDummyPlane = new G4LogicalVolume(geoDummyPlane, worldMaterial, "logicDummyPlane");
+	
+	new G4PVPlacement(0,posDummyPlane0,logicDummyPlane,"physDummyPlane",worldLogic,false,0,checkOverlaps);
+	new G4PVPlacement(0,posDummyPlane1,logicDummyPlane,"physDummyPlane",worldLogic,false,1,checkOverlaps);
+	new G4PVPlacement(0,posDummyPlane2,logicDummyPlane,"physDummyPlane",worldLogic,false,2,checkOverlaps);
+
+	
+	
+	
+	
+	
+	
     return worldPhysical;
 }
 

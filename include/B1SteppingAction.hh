@@ -23,38 +23,40 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
+//
+/// \file B1SteppingAction.hh
+/// \brief Definition of the B1SteppingAction class
 
-#include "G4Types.hh"
+#ifndef B1SteppingAction_h
+#define B1SteppingAction_h 1
 
-#ifdef G4MULTITHREADED
-#include "UserActionInitialization.hh"
-
-#include "PrimaryGeneratorAction.hh"
-#include "StackingAction.hh"
-#include "EventAction.hh"
+#include "G4UserSteppingAction.hh"
+#include "globals.hh"
 #include "RunAction.hh"
-#include "B1SteppingAction.hh"
+
+class EventAction;
+class RunAction;
+
+class G4LogicalVolume;
+
+/// Stepping action class
+/// 
+
+class B1SteppingAction : public G4UserSteppingAction
+{
+public:
+	B1SteppingAction(EventAction* eventAction, RunAction* runAction);
+	virtual ~B1SteppingAction();
+	
+	// method from the base class
+	virtual void UserSteppingAction(const G4Step*);
+	
+private:
+	EventAction*  fEventAction;
+	RunAction*  fRunAction;
+	G4LogicalVolume* fScoringVolume;
+};
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-UserActionInitialization::UserActionInitialization(){;}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-UserActionInitialization::~UserActionInitialization(){;}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void UserActionInitialization::Build() const {
-	SetUserAction(new PrimaryGeneratorAction());
-	SetUserAction(new StackingAction());
-	RunAction* runAction = new RunAction();
-	SetUserAction(runAction);
-	EventAction* eventAction=new EventAction(runAction);
-	SetUserAction(eventAction);
-	SetUserAction(new B1SteppingAction(eventAction, runAction));
-
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 #endif

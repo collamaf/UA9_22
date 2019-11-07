@@ -43,9 +43,11 @@
 #include "SensitiveDetectorHit.hh"
 
 #include "Analysis.hh"
+#include "RunAction.hh"
 
-EventAction::EventAction():
-fSDHT_ID(-1){}
+
+EventAction::EventAction(RunAction* runAction):
+fSDHT_ID(-1), fRunAction(runAction){}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
@@ -53,7 +55,25 @@ EventAction::~EventAction(){;}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
-void EventAction::BeginOfEventAction(const G4Event*){;}
+void EventAction::BeginOfEventAction(const G4Event*){
+	fRunAction->GetPlaneX().clear();
+	fRunAction->GetPlaneY().clear();
+	fRunAction->GetPlaneZ().clear();
+	fRunAction->GetPlanePX().clear();
+	fRunAction->GetPlanePY().clear();
+	fRunAction->GetPlanePZ().clear();
+	fRunAction->GetPlaneEne().clear();
+	fRunAction->GetPlanePart().clear();
+	fRunAction->GetPlanePlaneId().clear();
+	
+	
+	
+	
+	
+	
+	
+	;}
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
@@ -93,32 +113,35 @@ void EventAction::EndOfEventAction(const G4Event* evt){
                 if(aHit->GetLayerID()==i2) {
                     ssd[i2] = aHit->GetWorldPos();
                     bTotalHits++;
-                }
-            }
-        }
-    }
-
-    if(bTotalHits > 2){
-        G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-        G4double angXin  = (ssd[1].x() - ssd[0].x()) / (ssd[1].z() - ssd[0].z());
-        G4double angYin  = (ssd[1].y() - ssd[0].y()) / (ssd[1].z() - ssd[0].z());
-
-        analysisManager->FillNtupleDColumn(0, angXin * 1.E6 * CLHEP::rad);
-        analysisManager->FillNtupleDColumn(1, angYin * 1.E6 * CLHEP::rad);
-
-        double posXin = ssd[1].x() - angXin * ssd[1].z();
-        double posYin = ssd[1].y() - angYin * ssd[1].z();
-
-        analysisManager->FillNtupleDColumn(2, posXin / CLHEP::mm);
-        analysisManager->FillNtupleDColumn(3, posYin / CLHEP::mm);
-
-        G4double angXout = (ssd[2].x() - posXin) / (ssd[2].z());
-        G4double angYout = (ssd[2].y() - posYin) / (ssd[2].z());
-        analysisManager->FillNtupleDColumn(4, angXout * 1.E6 * CLHEP::rad);
-        analysisManager->FillNtupleDColumn(5, angYout * 1.E6 * CLHEP::rad);
-        
-        analysisManager->AddNtupleRow();
-    }
+								}
+						}
+				}
+		}
+	
+	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+	if(bTotalHits > 2){
+		G4double angXin  = (ssd[1].x() - ssd[0].x()) / (ssd[1].z() - ssd[0].z());
+		G4double angYin  = (ssd[1].y() - ssd[0].y()) / (ssd[1].z() - ssd[0].z());
+		
+		analysisManager->FillNtupleDColumn(0, angXin * 1.E6 * CLHEP::rad);
+		analysisManager->FillNtupleDColumn(1, angYin * 1.E6 * CLHEP::rad);
+		
+		double posXin = ssd[1].x() - angXin * ssd[1].z();
+		double posYin = ssd[1].y() - angYin * ssd[1].z();
+		
+		analysisManager->FillNtupleDColumn(2, posXin / CLHEP::mm);
+		analysisManager->FillNtupleDColumn(3, posYin / CLHEP::mm);
+		
+		G4double angXout = (ssd[2].x() - posXin) / (ssd[2].z());
+		G4double angYout = (ssd[2].y() - posYin) / (ssd[2].z());
+		analysisManager->FillNtupleDColumn(4, angXout * 1.E6 * CLHEP::rad);
+		analysisManager->FillNtupleDColumn(5, angYout * 1.E6 * CLHEP::rad);
+		
+		analysisManager->AddNtupleRow();
+	}
+	analysisManager->AddNtupleRow(1);
+	analysisManager->AddNtupleRow(2);
+	
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....

@@ -25,6 +25,8 @@
 //
 
 #include "PrimaryGeneratorAction.hh"
+#include "G4SystemOfUnits.hh"
+#include "Analysis.hh"
 
 #include "G4Event.hh"
 
@@ -44,6 +46,18 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction(){
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent){
     fGPS->GeneratePrimaryVertex(anEvent);
+	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
+	G4cout<<"Genero primario con E= "<<fGPS->GetParticleEnergy()/GeV<<G4endl;
+	analysisManager->FillNtupleDColumn(1, 0, fGPS->GetParticlePosition().x()/mm);
+	analysisManager->FillNtupleDColumn(1, 1, fGPS->GetParticlePosition().y()/mm);
+	analysisManager->FillNtupleDColumn(1, 2, fGPS->GetParticlePosition().z()/mm);
+	analysisManager->FillNtupleDColumn(1, 3, fGPS->GetParticleMomentumDirection().x());
+	analysisManager->FillNtupleDColumn(1, 4, fGPS->GetParticleMomentumDirection().y());
+	analysisManager->FillNtupleDColumn(1, 5, fGPS->GetParticleMomentumDirection().z());
+	analysisManager->FillNtupleDColumn(1, 6, fGPS->GetParticleEnergy()/GeV);
+	analysisManager->FillNtupleDColumn(1, 7, fGPS->GetParticleDefinition()->GetPDGEncoding());
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
