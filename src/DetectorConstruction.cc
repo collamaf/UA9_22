@@ -226,6 +226,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	G4ThreeVector posDummyPlane0= G4ThreeVector(0, 0, -10.4999*m);
 	G4ThreeVector posDummyPlane1= G4ThreeVector(0, 0, 0-fSizes.z()/2.-delta-dummyPlane_Z/2.);
 	G4ThreeVector posDummyPlane2= G4ThreeVector(0, 0, 0+fSizes.z()/2.+delta+dummyPlane_Z/2.);
+	G4ThreeVector posDummyPlane3= G4ThreeVector(0, 0, -posDummyPlane0.z());
 
 	G4cout<<"CIAO " <<posDummyPlane1.z() <<G4endl;
 	G4cout<<"CIAO " <<posDummyPlane2.z() <<G4endl;
@@ -236,13 +237,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	new G4PVPlacement(0,posDummyPlane0,logicDummyPlane,"physDummyPlane",worldLogic,false,0,checkOverlaps);
 	new G4PVPlacement(0,posDummyPlane1,logicDummyPlane,"physDummyPlane",worldLogic,false,1,checkOverlaps);
 	new G4PVPlacement(0,posDummyPlane2,logicDummyPlane,"physDummyPlane",worldLogic,false,2,checkOverlaps);
+	new G4PVPlacement(0,posDummyPlane3,logicDummyPlane,"physDummyPlane",worldLogic,false,3,checkOverlaps);
 
-	
-	
-	
-	
-	
-	
     return worldPhysical;
 }
 

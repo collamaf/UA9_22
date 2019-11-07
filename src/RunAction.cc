@@ -62,8 +62,8 @@ RunAction::RunAction(): G4UserRunAction(){
 	analysisManager->CreateNtupleDColumn(1,"PX");
 	analysisManager->CreateNtupleDColumn(1,"PY");
 	analysisManager->CreateNtupleDColumn(1,"PZ");
-	analysisManager->CreateNtupleDColumn(1,"ENE");
-	analysisManager->CreateNtupleDColumn(1,"PID");
+	analysisManager->CreateNtupleDColumn(1,"Ene");
+	analysisManager->CreateNtupleDColumn(1,"Part");
 	analysisManager->FinishNtuple();
 
 	analysisManager->CreateNtuple("Planes", "Dummy planes scoring");
@@ -73,7 +73,7 @@ RunAction::RunAction(): G4UserRunAction(){
 	analysisManager->CreateNtupleDColumn(2, "PX", fPlanePX);
 	analysisManager->CreateNtupleDColumn(2, "PY", fPlanePY);
 	analysisManager->CreateNtupleDColumn(2, "PZ", fPlanePZ);
-	analysisManager->CreateNtupleDColumn(2, "ENE", fPlaneEne);
+	analysisManager->CreateNtupleDColumn(2, "Ene", fPlaneEne);
 	analysisManager->CreateNtupleDColumn(2, "Part", fPlanePart);
 	analysisManager->CreateNtupleDColumn(2, "PlaneId", fPlanePlaneId);
 	analysisManager->FinishNtuple();
