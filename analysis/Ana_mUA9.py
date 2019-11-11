@@ -10,7 +10,7 @@ gBenchmark.Start('myBench')
 
 
 parser = argparse.ArgumentParser(description="mUA9 parser")
-parser.add_argument('--fileName', action="store_true", dest="fileName", default="mUA9_N10000.root", help='input file name')
+parser.add_argument('--fileName', action="store", dest="fileName", default="mUA9_N10000.root", help='input file name')
 parser.add_argument('--tree', action="append", dest="trees", default=[], help='list of tree you want to process')
 args = parser.parse_args()
 
