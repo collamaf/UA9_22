@@ -58,14 +58,15 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-DetectorConstruction::DetectorConstruction():
+DetectorConstruction::DetectorConstruction(const std::map<G4String,G4double> & ParameterMap):
 fECfileName("Si220pl"),
 fMaterialName("G4_Si"),
 fSizes(G4ThreeVector(1.*CLHEP::mm,
                      70.*CLHEP::mm,
                      1.94 * CLHEP::mm)),
 fBR(G4ThreeVector(0.,0.,0.)),
-fAngles(G4ThreeVector(0.,0.,0.)){
+fAngles(G4ThreeVector(0.,0.,0.)),
+fParameterMap(ParameterMap){
     fMessenger = new DetectorConstructionMessenger(this);
 }
 
@@ -139,6 +140,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
         
     }
     
+	if (fParameterMap["CrystX"]) SetSizes(G4ThreeVector(fParameterMap["CrystX"],fParameterMap["CrystY"],fParameterMap["CrystZ"]));
     //** Crystal solid parameters **//
     G4Box* crystalSolid = new G4Box("crystal.solid",
                                     fSizes.x()/2.,
@@ -171,7 +173,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     crystalChannelingData->SetFilename(fECfileName);
 
     if(fBR!=G4ThreeVector()){
-        crystalChannelingData->SetBR(fBR.x());
+			if (fParameterMap["BR"]) {
+				G4cout<<"DetConst modifica BR "<< fParameterMap["BR"]<<G4endl;
+				crystalChannelingData->SetBR(fParameterMap["BR"]);
+			} else  crystalChannelingData->SetBR(fBR.x());
     }
     
     G4LogicalCrystalVolume* crystalLogic =

@@ -3,6 +3,11 @@
 Geant4 simulation for Channeling in view of UA9 mu experiments
 Last edit: 07-11-2019
 
+CAVEAT - For now the sim correctly works only if Geant is compiled with MT. Then you can use only 1 thread by using in the macro:
+```
+/run/numberOfThreads 1
+```
+
 ## How to checkout
 
 to clone the repository:
@@ -68,7 +73,11 @@ Planes: contains info at dummy planes crossing
 07-09-2019:
 - First Commit
 
+11-09-2019:
+- Deep reorganisation of main: now loads a default macro with some settings, that you can change via command line
+- Command line parameters arrive via map to all routines
 
 
 ## TODOs
-- Gestione piu intelligente dei parametri (bending, fascio..): linea di comando?
+- Output file name
+- Magnet

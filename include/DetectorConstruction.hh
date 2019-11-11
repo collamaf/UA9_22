@@ -45,7 +45,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
     
-    DetectorConstruction();
+    DetectorConstruction(const std::map<G4String,G4double> &);
     ~DetectorConstruction();
     
     void DefineMaterials();
@@ -80,4 +80,6 @@ private:
     G4ThreeVector fSizes;
     G4ThreeVector fBR;
     G4ThreeVector fAngles;
+	std::map<G4String,G4double>  fParameterMap;
+
 };

@@ -60,21 +60,76 @@
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+using namespace std;
 int main(int argc,char** argv)
 {
 	// Detect interactive mode (if no arguments) and define UI session
 	//
 	G4UIExecutive* ui = 0;
-	if ( argc == 1 ) {
-		ui = new G4UIExecutive(argc, argv);
-	}
 	
 	std::map<G4String,G4double> ParameterMap;
-	ParameterMap["BR"]=0.17;
-	ParameterMap["Div"]=0.0017;
-	ParameterMap["Ene"]=17;
+//	ParameterMap["BR"]=0.17;
+//	ParameterMap["Div"]=0.0017;
+//	ParameterMap["Ene"]=17;
+	ParameterMap["NPrim"]=100;
+	
+	G4bool VisFlag=false;
+	G4String MacroName="";
 
+	for(int i=1;i<argc;i++)
+		if(argv[i][0] =='-')
+		{
+			G4String option(argv[i]);
+			G4cout<<"option: "<<i<<" "<<option<<G4endl;
+			if(option.compare("-Ene")==0)
+			{
+				ParameterMap["Ene"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-Part")==0)
+			{
+				ParameterMap["Part"]=stoi (argv[++i], NULL);;
+			}
+			else if(option.compare("-NPrim")==0)
+			{
+				ParameterMap["NPrim"]=stoi (argv[++i], NULL);;
+			}
+			else if(option.compare("-SigmaX")==0)
+			{
+				ParameterMap["SigmaX"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-SigmaY")==0)
+			{
+				ParameterMap["SigmaY"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-BR")==0)
+			{
+				ParameterMap["BR"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-CrystX")==0)
+			{
+				ParameterMap["CrystX"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-CrystY")==0)
+			{
+				ParameterMap["CrystY"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-CrystZ")==0)
+			{
+				ParameterMap["CrystZ"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-Vis")==0)
+			{
+				VisFlag=stoi (argv[++i], NULL);;
+			}
+		}
+		else
+		{
+			MacroName = argv[i]; //If I found a macro (without trailing "-") it means that I do NOT want visualization
+			VisFlag=false;
+		}
+	
+	
+	
 	// Construct the default run manager
 #ifdef G4MULTITHREADED
 	G4MTRunManager* runManager = new G4MTRunManager;
@@ -111,45 +166,67 @@ int main(int argc,char** argv)
 runManager->SetUserAction(new B1SteppingAction(eventAction, runAction));
 #else
 	runManager->SetUserInitialization(new UserActionInitialization(ParameterMap));
-//runManager->SetUserInitialization(new UserActionInitialization());
 #endif
+	DetectorConstruction* detConst=new DetectorConstruction(ParameterMap);
+	runManager->SetUserInitialization(detConst);
 	
-	runManager->SetUserInitialization(new DetectorConstruction());
+	
+	
+	G4String OutputFilename = "mUA9";
+
+	if (ParameterMap["Part"]) OutputFilename.append("_Part" + to_string(ParameterMap["Part"]));
+	if (ParameterMap["Ene"]) OutputFilename.append("_Ene" + to_string((G4int)ParameterMap["Ene"]));
+	if (ParameterMap["CrystX"]) OutputFilename.append("_CrystX" + to_string((G4int)ParameterMap["CrystX"])+ "Y"+ to_string((G4int)ParameterMap["CrystY"])+ "Z" +to_string((G4int)ParameterMap["CrystZ"]));
+
+	if (ParameterMap["BR"]) OutputFilename.append("_BR" + to_string((G4int)(ParameterMap["BR"])));
+
+	OutputFilename.append("_N" + to_string((G4int)ParameterMap["NPrim"]));
+	
+	if (VisFlag) OutputFilename.append("_TEST");
+	
+	
 	
 	// Initialize visualization
 	//
 	G4VisManager* visManager = new G4VisExecutive;
-	// G4VisExecutive can take a verbosity argument - see /vis/verbose guidance.
-	// G4VisManager* visManager = new G4VisExecutive("Quiet");
 	visManager->Initialize();
 	
-	// Get the pointer to the User Interface manager
 	G4UImanager* UImanager = G4UImanager::GetUIpointer();
+
+	if ( VisFlag ) { //Prepare for vis
+		ui = new G4UIExecutive(argc, argv);
+	}
 	
 	// Process macro or start UI session
-	//
-	if ( ! ui ) {
-		// batch mode
-		G4String command = "/control/execute ";
-		G4String fileName = argv[1];
-		UImanager->ApplyCommand(command+fileName);
+	if (MacroName!="") { //se ho passato una macro
+		UImanager->ApplyCommand("/control/execute "+MacroName);
+	} else { //se non ho passato una macro carica quella di default
+		UImanager->ApplyCommand("/control/execute default.mac");
 	}
-	else {
-		// interactive mode
-		UImanager->ApplyCommand("/control/execute init_vis.mac");
+	// modifico i vari parametri secondo quanto passato da linea di comando
+	if (ParameterMap["Ene"]) UImanager->ApplyCommand("/gps/ene/mono "+std::to_string(ParameterMap["Ene"]) + " GeV");
+	if (ParameterMap["SigmaX"]) UImanager->ApplyCommand("/gps/ang/sigma_x "+std::to_string(ParameterMap["SigmaX"]) + " rad");
+	if (ParameterMap["SigmaY"]) UImanager->ApplyCommand("/gps/ang/sigma_y "+std::to_string(ParameterMap["SigmaY"]) + " rad");
+	if (ParameterMap["CrystX"]) UImanager->ApplyCommand("/xtal/setSize "+std::to_string(ParameterMap["CrystX"]) +" "+ std::to_string(ParameterMap["CrystY"]) + " " +std::to_string(ParameterMap["CrystZ"]) + " rad");
+	
+	// Ora che ho caricato tutti i parametri necessari, decido se lanciare in batch o in interattivo
+	if (!ui) { //se batch mode mando NPrim
+		if (ParameterMap["NPrim"]) UImanager->ApplyCommand("/run/beamOn "+std::to_string(G4int(ParameterMap["NPrim"])));
+	}
+	else { //altrimenti mando interattivo
+		UImanager->ApplyCommand("/control/execute vis.mac");
 		ui->SessionStart();
 		delete ui;
 	}
-	
-	
+		
 	// Job termination
 	// Free the store: user actions, physics_list and detector_description are
 	// owned and deleted by the run manager, so they should not be deleted
 	// in the main() program !
 	
-	delete visManager;
+	if (VisFlag) delete visManager;
 	delete runManager;
-	
+
 	return 0;
 }
 

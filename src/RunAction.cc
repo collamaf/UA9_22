@@ -34,7 +34,7 @@
 #include "Analysis.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+using namespace std;
 RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap): G4UserRunAction(), fParameterMap(ParameterMap){
 	G4RunManager::GetRunManager()->SetPrintProgress(1);
 	
@@ -93,8 +93,18 @@ RunAction::~RunAction(){
 
 void RunAction::BeginOfRunAction(const G4Run*){
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-	G4String fileName = "ExExCh";
-	analysisManager->OpenFile(fileName);
+//	G4String fileName = "ExExCh";
+	
+	G4String OutputFilename = "mUA9";
+	if (fParameterMap["Part"]) OutputFilename.append("_Part" + to_string(fParameterMap["Part"]));
+	if (fParameterMap["Ene"]) OutputFilename.append("_Ene" + to_string((G4int)fParameterMap["Ene"]));
+	if (fParameterMap["CrystX"]) OutputFilename.append("_CrystX" + to_string((G4int)fParameterMap["CrystX"])+ "Y"+ to_string((G4int)fParameterMap["CrystY"])+ "Z" +to_string((G4int)fParameterMap["CrystZ"]));
+
+	if (fParameterMap["BR"]) OutputFilename.append("_BR" + to_string((G4int)(fParameterMap["BR"])));
+
+	OutputFilename.append("_N" + to_string((G4int)fParameterMap["NPrim"]));
+	
+	analysisManager->OpenFile(OutputFilename);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
