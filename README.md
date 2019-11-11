@@ -23,11 +23,21 @@ and then insert your username and password
 cd build
 cmake -DGeant4_DIR=$G4INSTALL ../
 make -j4
-
+./channeling -{arg} VALUE etc etc
+./channeling -Vis 1 -CrystX 1000 -CrystY 1000 -CrystZ 2000 
 ```
 
 #### Available Command Line Arguments:
-- 
+- Ene: beam energy [GeV]
+- Part: beam particle [PDG code]
+- NPrim: number of primaries to simulate
+- SigmaX/Y: beam divergence [rad]
+- BR: crystal bending radius [m]
+- CrystX/Y/Z: crystal dimensions [mm]
+- CrystAng: crystal horizontal rotation angle [rad]
+- Mag: magnetic field [T]
+- Vis: 1 for visualization
+
 
 #### GEOMETRY (in increasing z coord.)
 - Channeling crystal placed at origin. Current size hardcoded in DetConst: 1x70x1.94 mm
@@ -76,8 +86,10 @@ Planes: contains info at dummy planes crossing
 11-09-2019:
 - Deep reorganisation of main: now loads a default macro with some settings, that you can change via command line
 - Command line parameters arrive via map to all routines
+- Add hadd command print at the end of (each) run to merge root files and delete temporary ones
+- Add magnetic field after target. Default is off.
 
 
 ## TODOs
-- Output file name
-- Magnet
+- Sistemare readme
+- elegantizzare particella primaria da linea di comando

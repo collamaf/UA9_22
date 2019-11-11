@@ -95,16 +95,16 @@ void RunAction::BeginOfRunAction(const G4Run*){
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 //	G4String fileName = "ExExCh";
 	
-	G4String OutputFilename = "mUA9";
-	if (fParameterMap["Part"]) OutputFilename.append("_Part" + to_string(fParameterMap["Part"]));
+	if (fParameterMap["Part"]) OutputFilename.append("_Part" + to_string((G4int)fParameterMap["Part"]));
 	if (fParameterMap["Ene"]) OutputFilename.append("_Ene" + to_string((G4int)fParameterMap["Ene"]));
 	if (fParameterMap["CrystX"]) OutputFilename.append("_CrystX" + to_string((G4int)fParameterMap["CrystX"])+ "Y"+ to_string((G4int)fParameterMap["CrystY"])+ "Z" +to_string((G4int)fParameterMap["CrystZ"]));
 
 	if (fParameterMap["BR"]) OutputFilename.append("_BR" + to_string((G4int)(fParameterMap["BR"])));
+	if (fParameterMap["Mag"]) OutputFilename.append("_Mag" + to_string((G4int)(fParameterMap["Mag"])));
 
 	OutputFilename.append("_N" + to_string((G4int)fParameterMap["NPrim"]));
 	
-	analysisManager->OpenFile(OutputFilename);
+	analysisManager->OpenFile(OutputFilename + ".root");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -114,6 +114,14 @@ void RunAction::EndOfRunAction(const G4Run*)
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	analysisManager->Write();
 	analysisManager->CloseFile();
+	
+	G4cout<<G4endl<<G4endl<<
+	"hadd -f "<< OutputFilename<<".root ";
+	for (int ii=0; ii<G4Threading::G4GetNumberOfCores() - 2; ii++) G4cout<<OutputFilename<<"_t"<<ii<<".root ";
+	G4cout<<"; rm ";
+	for (int ii=0; ii<G4Threading::G4GetNumberOfCores() - 2; ii++) G4cout<<OutputFilename<<"_t"<<ii<<".root ";
+	
+	G4cout<<G4endl<<G4endl<<G4endl;
 	
 }
 

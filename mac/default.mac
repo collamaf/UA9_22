@@ -6,6 +6,7 @@
 /xtal/setBR 38.416 0. 0. m
 # /xtal/setBR 76.832 0. 0. m
 /xtal/setEC data/Si220pl
+# /tracking/verbose 2
 # /run/numberOfThreads 1
 #initialize run before stacking and primary generator actions
 /run/initialize

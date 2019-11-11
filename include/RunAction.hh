@@ -66,6 +66,8 @@ private:
 	
 	std::map<G4String,G4double>  fParameterMap;
 	
+	G4String OutputFilename = "mUA9";
+
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

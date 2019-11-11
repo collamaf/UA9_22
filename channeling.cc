@@ -117,6 +117,14 @@ int main(int argc,char** argv)
 			{
 				ParameterMap["CrystZ"]=strtod (argv[++i], NULL);;
 			}
+			else if(option.compare("-CrystAng")==0)
+			{
+				ParameterMap["CrystAng"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-Mag")==0)
+			{
+				ParameterMap["Mag"]=strtod (argv[++i], NULL);;
+			}
 			else if(option.compare("-Vis")==0)
 			{
 				VisFlag=stoi (argv[++i], NULL);;
@@ -160,12 +168,14 @@ int main(int argc,char** argv)
 	RunAction* runAction = new RunAction();
 	runManager->SetUserAction(runAction);
 	
-	EventAction* eventAction = new RunAction(runAction);
+	EventAction* eventAction = new EventAction(runAction);
 
 	runManager->SetUserAction(eventAction);
 runManager->SetUserAction(new B1SteppingAction(eventAction, runAction));
 #else
-	runManager->SetUserInitialization(new UserActionInitialization(ParameterMap));
+//	runManager->SetUserInitialization(new UserActionInitialization(ParameterMap));
+	UserActionInitialization* actionInit = new UserActionInitialization(ParameterMap);
+	runManager->SetUserInitialization(actionInit);
 #endif
 	DetectorConstruction* detConst=new DetectorConstruction(ParameterMap);
 	runManager->SetUserInitialization(detConst);
@@ -184,7 +194,13 @@ runManager->SetUserAction(new B1SteppingAction(eventAction, runAction));
 	
 	if (VisFlag) OutputFilename.append("_TEST");
 	
+	std::map<G4int,G4String> ParticleName;
 	
+	ParticleName[11]="e-";
+	ParticleName[-11]="e+";
+	ParticleName[-13]="mu+";
+	ParticleName[13]="mu-";
+	ParticleName[22]="gamma";
 	
 	// Initialize visualization
 	//
@@ -204,6 +220,8 @@ runManager->SetUserAction(new B1SteppingAction(eventAction, runAction));
 		UImanager->ApplyCommand("/control/execute default.mac");
 	}
 	// modifico i vari parametri secondo quanto passato da linea di comando
+	G4cout<<"CIAONNN "<<"/gps/particle "+(ParticleName[ParameterMap["Part"]]) <<G4endl;
+	if (ParameterMap["Part"]) UImanager->ApplyCommand("/gps/particle "+(ParticleName[ParameterMap["Part"]]) );
 	if (ParameterMap["Ene"]) UImanager->ApplyCommand("/gps/ene/mono "+std::to_string(ParameterMap["Ene"]) + " GeV");
 	if (ParameterMap["SigmaX"]) UImanager->ApplyCommand("/gps/ang/sigma_x "+std::to_string(ParameterMap["SigmaX"]) + " rad");
 	if (ParameterMap["SigmaY"]) UImanager->ApplyCommand("/gps/ang/sigma_y "+std::to_string(ParameterMap["SigmaY"]) + " rad");
@@ -223,6 +241,7 @@ runManager->SetUserAction(new B1SteppingAction(eventAction, runAction));
 	// Free the store: user actions, physics_list and detector_description are
 	// owned and deleted by the run manager, so they should not be deleted
 	// in the main() program !
+//	runAction->PrintRunHadd(G4Threading::G4GetNumberOfCores() - 2);
 	
 	if (VisFlag) delete visManager;
 	delete runManager;
