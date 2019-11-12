@@ -66,30 +66,39 @@ ExExChTree:
 
 Beam: contains info on primary beam
 - X, Y, Z [mm]
-- PX, PY, PZ
+- CosX, CosY, CosZ
 - Ene [GeV]
 - Part
 
 Planes: contains info at dummy planes crossing
 - X, Y, Z [mm]
-- PX, PY, PZ
-- Ene [GeV]
+- CosX, CosY, CosZ
+- P, [GeV], Ene [GeV]
 - Part
 - PlaneId: 0, 1, 2, 3
 
-
+## How to analyze simulation results
+Once you ran the simulation and have an output file such as `mUA9_N1000.root` you can run the following command
+```
+python(3) Ana_mUA9.py --fileName mUA9_N1000.root --tree Planes
+```
+and as a result you'll get a canvas with plots for every plane (_vertical rows_) showing (from top to bottom): y vs. x, x, CosY vs. cosX, cosX.
 
 ### CHANGE LOG
 07-09-2019:
 - First Commit
 
-11-09-2019:
+11-11-2019:
 - Deep reorganisation of main: now loads a default macro with some settings, that you can change via command line
 - Command line parameters arrive via map to all routines
 - Add hadd command print at the end of (each) run to merge root files and delete temporary ones
 - Add magnetic field after target. Default is off.
 
+12-11-2019:
+- Added analysis and plotting macro
+- Changed naming convention (PX->CosX and added P)
+- 
 
 ## TODOs
-- Sistemare readme
-- elegantizzare particella primaria da linea di comando
+- [] Sistemare readme
+- [] elegantizzare particella primaria da linea di comando
