@@ -32,4 +32,4 @@ for key, t in myTrees.items():
     else:
         print("Nothing to do ATM. Bye.")
 
-hold('type something to quit: ')
+hold('type something to quit: ',args.noStop)
