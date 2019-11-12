@@ -36,12 +36,12 @@ def anaPlanes(t):
         h_x.append(ht_x)
         ##
         c1.cd((i+1)+(2*len(planes)))
-        drawT="PY:PX>>h_cxcy"
+        drawT="CosY:CosX>>h_cxcy"
         t.Draw(drawT,condT,"COLZ0")
         h_cxcy.append(ht_cxcy)
         ##
         c1.cd((i+1)+(3*len(planes)))
-        drawT="PX>>h_cx"
+        drawT="CosX>>h_cx"
         t.Draw(drawT,condT,"COLZ0")
         h_cx.append(ht_cx)
     c1.Update()
