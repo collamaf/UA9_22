@@ -62,9 +62,10 @@ void EventAction::BeginOfEventAction(const G4Event*){
 	fRunAction->GetPlaneX().clear();
 	fRunAction->GetPlaneY().clear();
 	fRunAction->GetPlaneZ().clear();
-	fRunAction->GetPlanePX().clear();
-	fRunAction->GetPlanePY().clear();
-	fRunAction->GetPlanePZ().clear();
+	fRunAction->GetPlaneCosX().clear();
+	fRunAction->GetPlaneCosY().clear();
+	fRunAction->GetPlaneCosZ().clear();
+	fRunAction->GetPlaneP().clear();
 	fRunAction->GetPlaneEne().clear();
 	fRunAction->GetPlanePart().clear();
 	fRunAction->GetPlanePlaneId().clear();

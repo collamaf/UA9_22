@@ -59,9 +59,10 @@ RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap): G4UserRu
 	analysisManager->CreateNtupleDColumn(1,"X");
 	analysisManager->CreateNtupleDColumn(1,"Y");
 	analysisManager->CreateNtupleDColumn(1,"Z");
-	analysisManager->CreateNtupleDColumn(1,"PX");
-	analysisManager->CreateNtupleDColumn(1,"PY");
-	analysisManager->CreateNtupleDColumn(1,"PZ");
+	analysisManager->CreateNtupleDColumn(1,"CosX");
+	analysisManager->CreateNtupleDColumn(1,"CosY");
+	analysisManager->CreateNtupleDColumn(1,"CosZ");
+	analysisManager->CreateNtupleDColumn(1,"P");
 	analysisManager->CreateNtupleDColumn(1,"Ene");
 	analysisManager->CreateNtupleDColumn(1,"Part");
 	analysisManager->FinishNtuple();
@@ -70,9 +71,10 @@ RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap): G4UserRu
 	analysisManager->CreateNtupleDColumn(2, "X", fPlaneX);
 	analysisManager->CreateNtupleDColumn(2, "Y", fPlaneY);
 	analysisManager->CreateNtupleDColumn(2, "Z", fPlaneZ);
-	analysisManager->CreateNtupleDColumn(2, "PX", fPlanePX);
-	analysisManager->CreateNtupleDColumn(2, "PY", fPlanePY);
-	analysisManager->CreateNtupleDColumn(2, "PZ", fPlanePZ);
+	analysisManager->CreateNtupleDColumn(2, "CosX", fPlaneCosX);
+	analysisManager->CreateNtupleDColumn(2, "CosY", fPlaneCosY);
+	analysisManager->CreateNtupleDColumn(2, "CosZ", fPlaneCosZ);
+	analysisManager->CreateNtupleDColumn(2, "P", fPlaneP);
 	analysisManager->CreateNtupleDColumn(2, "Ene", fPlaneEne);
 	analysisManager->CreateNtupleDColumn(2, "Part", fPlanePart);
 	analysisManager->CreateNtupleDColumn(2, "PlaneId", fPlanePlaneId);

@@ -45,9 +45,10 @@ public:
 	std::vector<G4double>& GetPlaneX() {return fPlaneX; }
 	std::vector<G4double>& GetPlaneY() {return fPlaneY; }
 	std::vector<G4double>& GetPlaneZ() {return fPlaneZ; }
-	std::vector<G4double>& GetPlanePX() {return fPlanePX; }
-	std::vector<G4double>& GetPlanePY() {return fPlanePY; }
-	std::vector<G4double>& GetPlanePZ() {return fPlanePZ; }
+	std::vector<G4double>& GetPlaneCosX() {return fPlaneCosX; }
+	std::vector<G4double>& GetPlaneCosY() {return fPlaneCosY; }
+	std::vector<G4double>& GetPlaneCosZ() {return fPlaneCosZ; }
+	std::vector<G4double>& GetPlaneP() {return fPlaneP; }
 	std::vector<G4double>& GetPlaneEne() {return fPlaneEne; }
 	std::vector<G4double>& GetPlanePart() {return fPlanePart; }
 	std::vector<G4double>& GetPlanePlaneId() {return fPlanePlaneId; }
@@ -57,9 +58,10 @@ private:
 	std::vector<G4double> fPlaneX;
 	std::vector<G4double> fPlaneY;
 	std::vector<G4double> fPlaneZ;
-	std::vector<G4double> fPlanePX;
-	std::vector<G4double> fPlanePY;
-	std::vector<G4double> fPlanePZ;
+	std::vector<G4double> fPlaneCosX;
+	std::vector<G4double> fPlaneCosY;
+	std::vector<G4double> fPlaneCosZ;
+	std::vector<G4double> fPlaneP;
 	std::vector<G4double> fPlaneEne;
 	std::vector<G4double> fPlanePart;
 	std::vector<G4double> fPlanePlaneId;

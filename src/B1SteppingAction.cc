@@ -64,9 +64,10 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		fRunAction->GetPlaneX().push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
 		fRunAction->GetPlaneY().push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
 		fRunAction->GetPlaneZ().push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
-		fRunAction->GetPlanePX().push_back(step->GetPostStepPoint()->GetMomentumDirection().x());
-		fRunAction->GetPlanePY().push_back(step->GetPostStepPoint()->GetMomentumDirection().y());
-		fRunAction->GetPlanePZ().push_back(step->GetPostStepPoint()->GetMomentumDirection().z());
+		fRunAction->GetPlaneCosX().push_back(step->GetPostStepPoint()->GetMomentumDirection().x());
+		fRunAction->GetPlaneCosY().push_back(step->GetPostStepPoint()->GetMomentumDirection().y());
+		fRunAction->GetPlaneCosZ().push_back(step->GetPostStepPoint()->GetMomentumDirection().z());
+		fRunAction->GetPlaneP().push_back(step->GetPostStepPoint()->GetMomentum().mag()/GeV);
 		fRunAction->GetPlaneEne().push_back(step->GetPostStepPoint()->GetKineticEnergy()/GeV);
 		fRunAction->GetPlanePart().push_back(step->GetTrack()->GetDynamicParticle()->GetDefinition()->GetPDGEncoding());
 		fRunAction->GetPlanePlaneId().push_back(NextVol->GetCopyNo());
