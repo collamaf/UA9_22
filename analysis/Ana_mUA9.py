@@ -1,9 +1,9 @@
 import argparse
-from ROOT import TCanvas, TFile
+from ROOT import TCanvas, TFile, TH1F, TH2F
 from ROOT import gBenchmark, gStyle, gROOT
 import myStyle
 from setup import *
-
+import PlaneAnalysis as pA
 
 gBenchmark.Start('myBench')
 
@@ -15,24 +15,6 @@ parser.add_argument('--noStop', action="store_true", dest="noStop", default=Fals
 args = parser.parse_args()
 inFile = TFile(args.fileName)
 
-### Define utility functions
-def hold(string):
-    if not args.noStop:
-        input(string)
-    return
-
-### Define the analysis functions you need
-def anaPlanes(t):
-    print("anaPlanes() reading from ",t.GetName())
-    c1 = TCanvas('cmain','Summary',1000,250)
-    c1.Divide(4,1)
-    for i in range(0,4):
-        c1.cd(i+1)
-        cond="PlaneId=="+str(planes[i])
-        t.Draw("X:Y",cond,"COLZ0")
-    c1.Update()
-    hold('done with anaPlanes(): should I proceed?')
-    return
 
 ### Retrieve from file the trees you need to analyze
 myTrees = {}
@@ -41,13 +23,12 @@ myTrees = {}
 for key in inFile.GetListOfKeys():
     if key.GetClassName() == "TTree":
         if str(key.GetName()) in args.trees:
-            t = inFile.Get(str(key.GetName()))
             myTrees[str(key.GetName())] = inFile.Get(str(key.GetName()))
 
 ### Process those trees and perform the analysis you need
 for key, t in myTrees.items():
     if t.GetName() == "Planes":
-        anaPlanes(t)
+        pA.anaPlanes(t)
     else:
         print("Nothing to do ATM. Bye.")
 
