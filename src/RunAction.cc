@@ -77,6 +77,7 @@ RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap): G4UserRu
 	analysisManager->CreateNtupleDColumn(2, "P", fPlaneP);
 	analysisManager->CreateNtupleDColumn(2, "Ene", fPlaneEne);
 	analysisManager->CreateNtupleDColumn(2, "Part", fPlanePart);
+	analysisManager->CreateNtupleDColumn(2, "Time", fPlaneTime);
 	analysisManager->CreateNtupleDColumn(2, "PlaneId", fPlanePlaneId);
 	analysisManager->FinishNtuple();
 
@@ -97,7 +98,14 @@ void RunAction::BeginOfRunAction(const G4Run*){
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 //	G4String fileName = "ExExCh";
 	
-	if (fParameterMap["Part"]) OutputFilename.append("_Part" + to_string((G4int)fParameterMap["Part"]));
+	std::map<G4int,G4String> ParticleName;
+	ParticleName[11]="Ele";
+	ParticleName[-11]="Pos";
+	ParticleName[-13]="Mup";
+	ParticleName[13]="Mum";
+	ParticleName[22]="Gamma";
+	
+	if (fParameterMap["Part"]) OutputFilename.append("_Part" + (ParticleName[(G4int)fParameterMap["Part"]]));
 	if (fParameterMap["Ene"]) OutputFilename.append("_Ene" + to_string((G4int)fParameterMap["Ene"]));
 	if (fParameterMap["CrystX"]) OutputFilename.append("_CrystX" + to_string((G4int)fParameterMap["CrystX"])+ "Y"+ to_string((G4int)fParameterMap["CrystY"])+ "Z" +to_string((G4int)fParameterMap["CrystZ"]));
 

@@ -69,6 +69,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		fRunAction->GetPlaneCosZ().push_back(step->GetPostStepPoint()->GetMomentumDirection().z());
 		fRunAction->GetPlaneP().push_back(step->GetPostStepPoint()->GetMomentum().mag()/GeV);
 		fRunAction->GetPlaneEne().push_back(step->GetPostStepPoint()->GetKineticEnergy()/GeV);
+		fRunAction->GetPlaneTime().push_back(step->GetTrack()->GetGlobalTime()/ns);
 		fRunAction->GetPlanePart().push_back(step->GetTrack()->GetDynamicParticle()->GetDefinition()->GetPDGEncoding());
 		fRunAction->GetPlanePlaneId().push_back(NextVol->GetCopyNo());
 	}
