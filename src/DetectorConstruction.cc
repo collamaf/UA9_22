@@ -125,6 +125,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	
 	G4Material* detectorMaterial =
 	G4NistManager::Instance()->FindOrBuildMaterial("G4_Si");
+	if (fParameterMap["NoDet"]) detectorMaterial=worldMaterial; //If requested remove detectors (make them void)
 	G4LogicalVolume* ssdLogic =
 	new G4LogicalVolume(ssdSolid,
 											detectorMaterial,

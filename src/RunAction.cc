@@ -111,6 +111,7 @@ void RunAction::BeginOfRunAction(const G4Run*){
 
 	if (fParameterMap["BR"]) OutputFilename.append("_BR" + to_string((G4int)(fParameterMap["BR"])));
 	if (fParameterMap["Mag"]) OutputFilename.append("_Mag" + to_string((G4int)(fParameterMap["Mag"])));
+	if (fParameterMap["NoDet"]) OutputFilename.append("_NoDet");
 
 	OutputFilename.append("_N" + to_string((G4int)fParameterMap["NPrim"]));
 	

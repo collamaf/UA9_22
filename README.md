@@ -36,6 +36,7 @@ make -j4
 - CrystX/Y/Z: crystal dimensions [mm]
 - CrystAng: crystal horizontal rotation angle [rad]
 - Mag: magnetic field [T]
+- NoDet: remove detector material
 - Vis: 1 for visualization
 
 
@@ -102,6 +103,7 @@ and as a result you'll get a canvas with plots for every plane (_vertical rows_)
 13-11-2019: by collamaf
 - Add timing information
 - Fix primary particle name in outputfile
+- Add flag to remove detector materials
 
 
 ## TODOs

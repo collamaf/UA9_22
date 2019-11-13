@@ -121,6 +121,10 @@ int main(int argc,char** argv)
 			{
 				ParameterMap["CrystAng"]=strtod (argv[++i], NULL);;
 			}
+			else if(option.compare("-NoDet")==0)
+			{
+				ParameterMap["NoDet"]=strtod (argv[++i], NULL);;
+			}
 			else if(option.compare("-Mag")==0)
 			{
 				ParameterMap["Mag"]=strtod (argv[++i], NULL);;
