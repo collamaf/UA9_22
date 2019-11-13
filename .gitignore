@@ -34,3 +34,6 @@ build/
 *.root
 *.dat
 .DS_Store
+
+#leftovers
+*~

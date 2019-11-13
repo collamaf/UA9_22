@@ -50,7 +50,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent){
     fGPS->GeneratePrimaryVertex(anEvent);
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-	G4cout<<"Genero primario con E= "<<fGPS->GetParticleEnergy()/GeV<<G4endl;
+	//G4cout<<"Genero primario con E= "<<fGPS->GetParticleEnergy()/GeV<<G4endl;
 	analysisManager->FillNtupleDColumn(1, 0, fGPS->GetParticlePosition().x()/mm);
 	analysisManager->FillNtupleDColumn(1, 1, fGPS->GetParticlePosition().y()/mm);
 	analysisManager->FillNtupleDColumn(1, 2, fGPS->GetParticlePosition().z()/mm);

@@ -30,7 +30,8 @@ for key in inFile.GetListOfKeys():
 ### Process those trees and perform the analysis you need
 for key, t in myTrees.items():
     if t.GetName() == "Planes":
-        pA.anaPlanes(t,args.label,args.savePdf)
+#        pA.anaPlanes(t,args.label,args.savePdf)
+        pA.treeLoop(t,args.label,args.savePdf)
     else:
         print("Nothing to do ATM. Bye.")
 

@@ -105,6 +105,10 @@ and as a result you'll get a canvas with plots for every plane (_vertical rows_)
 - Fix primary particle name in outputfile
 - Add flag to remove detector materials
 
+13-11-2019: by mbauce
+- Added plot for deflection vs. incident angle
+- Removed part of G4 log
+- macro modified (added event loop)
 
 ## TODOs
 - [] Sistemare readme

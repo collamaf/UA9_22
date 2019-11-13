@@ -14,8 +14,8 @@ cosR = {
 }
 
 eneR = {
-    "min" : 20.0,
-    "max" : 22.0
+    "min" : 21.6,
+    "max" : 22.6
 }
 
 pColor = {
