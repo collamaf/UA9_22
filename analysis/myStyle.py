@@ -65,7 +65,10 @@ class myStyle(ROOT.TStyle):
         self.SetLineStyleString( 2, "[12 12]" )
 
         # Do not display any of the standard histogram decorations:
-        self.SetOptTitle( 0 )
+        self.SetOptTitle( 1 )
+        self.SetTitleBorderSize( 0 )
+        self.SetTitleFillColor( 0 )
+        self.SetTitleAlign( 13 )
         self.SetOptStat( 0 )
         self.SetOptFit( 0 )
 

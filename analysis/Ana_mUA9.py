@@ -12,6 +12,8 @@ parser = argparse.ArgumentParser(description="mUA9 parser")
 parser.add_argument('--fileName', action="store", dest="fileName", default="mUA9_N10000.root", help='input file name')
 parser.add_argument('--tree', action="append", dest="trees", default=[], help='list of tree you want to process')
 parser.add_argument('--noStop', action="store_true", dest="noStop", default=False, help='set to True to ignore wait')
+parser.add_argument('--savePdf', action="store_true", dest="savePdf", default=False, help='set to True to save canvas')
+parser.add_argument('--label', action="store", dest="label", default="lastRun", help='label for outpu files')
 args = parser.parse_args()
 inFile = TFile(args.fileName)
 
@@ -28,7 +30,7 @@ for key in inFile.GetListOfKeys():
 ### Process those trees and perform the analysis you need
 for key, t in myTrees.items():
     if t.GetName() == "Planes":
-        pA.anaPlanes(t)
+        pA.anaPlanes(t,args.label,args.savePdf)
     else:
         print("Nothing to do ATM. Bye.")
 
