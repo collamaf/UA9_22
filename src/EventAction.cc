@@ -68,6 +68,7 @@ void EventAction::BeginOfEventAction(const G4Event*){
 	fRunAction->GetPlaneP().clear();
 	fRunAction->GetPlaneEne().clear();
 	fRunAction->GetPlanePart().clear();
+	fRunAction->GetPlaneTime().clear();
 	fRunAction->GetPlanePlaneId().clear();
 	
 	;}

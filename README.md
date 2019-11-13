@@ -74,6 +74,7 @@ Planes: contains info at dummy planes crossing
 - X, Y, Z [mm]
 - CosX, CosY, CosZ
 - P, [GeV], Ene [GeV]
+- Time [ns]
 - Part
 - PlaneId: 0, 1, 2, 3
 
@@ -88,16 +89,20 @@ and as a result you'll get a canvas with plots for every plane (_vertical rows_)
 07-09-2019:
 - First Commit
 
-11-11-2019:
+11-11-2019: by collamaf
 - Deep reorganisation of main: now loads a default macro with some settings, that you can change via command line
 - Command line parameters arrive via map to all routines
 - Add hadd command print at the end of (each) run to merge root files and delete temporary ones
 - Add magnetic field after target. Default is off.
 
-12-11-2019:
+12-11-2019: by mbauce
 - Added analysis and plotting macro
-- Changed naming convention (PX->CosX and added P)
-- 
+- Changed naming convention (PX->CosX and added P) 
+
+13-11-2019: by collamaf
+- Add timing information
+- Fix primary particle name in outputfile
+
 
 ## TODOs
 - [] Sistemare readme

@@ -51,6 +51,7 @@ public:
 	std::vector<G4double>& GetPlaneP() {return fPlaneP; }
 	std::vector<G4double>& GetPlaneEne() {return fPlaneEne; }
 	std::vector<G4double>& GetPlanePart() {return fPlanePart; }
+	std::vector<G4double>& GetPlaneTime() {return fPlaneTime; }
 	std::vector<G4double>& GetPlanePlaneId() {return fPlanePlaneId; }
 
 	
@@ -64,6 +65,7 @@ private:
 	std::vector<G4double> fPlaneP;
 	std::vector<G4double> fPlaneEne;
 	std::vector<G4double> fPlanePart;
+	std::vector<G4double> fPlaneTime;
 	std::vector<G4double> fPlanePlaneId;
 	
 	std::map<G4String,G4double>  fParameterMap;
