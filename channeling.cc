@@ -191,7 +191,6 @@ runManager->SetUserAction(new B1SteppingAction(eventAction, runAction));
 	if (ParameterMap["Part"]) OutputFilename.append("_Part" + to_string(ParameterMap["Part"]));
 	if (ParameterMap["Ene"]) OutputFilename.append("_Ene" + to_string((G4int)ParameterMap["Ene"]));
 	if (ParameterMap["CrystX"]) OutputFilename.append("_CrystX" + to_string((G4int)ParameterMap["CrystX"])+ "Y"+ to_string((G4int)ParameterMap["CrystY"])+ "Z" +to_string((G4int)ParameterMap["CrystZ"]));
-	if (ParameterMap["SigmaX"]) OutputFilename.append("_SigmaX" + to_string((G4int)ParameterMap["SigmaX"])+ "Y"+ to_string((G4int)ParameterMap["SigmaY"])+ "Z" +to_string((G4int)ParameterMap["SigmaZ"]));
 
 	if (ParameterMap["BR"]) OutputFilename.append("_BR" + to_string((G4int)(ParameterMap["BR"])));
 
