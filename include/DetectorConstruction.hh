@@ -66,6 +66,15 @@ public:
     
     G4ThreeVector GetSizes() {return fSizes;}
     void SetSizes(G4ThreeVector a3vec) {fSizes = a3vec;}
+
+    G4double GetSizeX() {return fSizes.x();}
+    void SetSizeX(G4double xsize) {G4ThreeVector a3vec = G4ThreeVector(xsize,fSizes.y(),fSizes.z()); fSizes = a3vec;}
+
+    G4double GetSizeY() {return fSizes.y();}
+    void SetSizeY(G4double ysize) {G4ThreeVector a3vec = G4ThreeVector(fSizes.x(),ysize,fSizes.z()); fSizes = a3vec;}
+
+    G4double GetSizeZ() {return fSizes.z();}
+    void SetSizeZ(G4double zsize) {G4ThreeVector a3vec = G4ThreeVector(fSizes.x(),fSizes.y(),zsize); fSizes = a3vec;}
     
     G4ThreeVector GetBR() {return fBR;}
     void SetBR(G4ThreeVector a3vec) {fBR = a3vec;}

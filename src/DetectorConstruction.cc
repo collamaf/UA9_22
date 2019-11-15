@@ -144,7 +144,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 		
 	}
 	
-	if (fParameterMap["CrystX"]) SetSizes(G4ThreeVector(fParameterMap["CrystX"],fParameterMap["CrystY"],fParameterMap["CrystZ"]));
+	//	if (fParameterMap["CrystX"]) SetSizes(G4ThreeVector(fParameterMap["CrystX"]*CLHEP::mm,fParameterMap["CrystY"]*CLHEP::mm,fParameterMap["CrystZ"]*CLHEP::mm));
+	if (fParameterMap["CrystX"]) SetSizeX(fParameterMap["CrystX"]*CLHEP::mm);
+	if (fParameterMap["CrystY"]) SetSizeY(fParameterMap["CrystY"]*CLHEP::mm);
+	if (fParameterMap["CrystZ"]) SetSizeZ(fParameterMap["CrystZ"]*CLHEP::mm);
 	//** Crystal solid parameters **//
 	G4Box* crystalSolid = new G4Box("crystal.solid",
 																	fSizes.x()/2.,
