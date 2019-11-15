@@ -53,6 +53,7 @@ public:
 	std::vector<G4double>& GetPlanePart() {return fPlanePart; }
 	std::vector<G4double>& GetPlaneTime() {return fPlaneTime; }
 	std::vector<G4double>& GetPlanePlaneId() {return fPlanePlaneId; }
+	std::vector<G4double>& GetCrystAng() {return fCrystAng; }
 
 	
 private:
@@ -67,6 +68,7 @@ private:
 	std::vector<G4double> fPlanePart;
 	std::vector<G4double> fPlaneTime;
 	std::vector<G4double> fPlanePlaneId;
+        std::vector<G4double> fCrystAng;
 	
 	std::map<G4String,G4double>  fParameterMap;
 	

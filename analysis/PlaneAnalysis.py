@@ -84,9 +84,9 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
 
     for ip in range(0,len(planes)):
         c4.cd((ip+1)+(0*len(planes))); h_xy[ip].Draw("COLZ0")
-        c4.cd((ip+1)+(1*len(planes))).SetLogy(); h_x[ip].Draw()
+        c4.cd((ip+1)+(1*len(planes))).SetLogy(); h_x[ip].Draw(); h_y[ip].Draw("SAME")
         c4.cd((ip+1)+(2*len(planes))); h_cxcy[ip].Draw("COLZ0")
-        c4.cd((ip+1)+(3*len(planes))).SetLogy(); h_cx[ip].Draw()
+        c4.cd((ip+1)+(3*len(planes))).SetLogy(); h_cx[ip].Draw(); h_cy[ip].Draw("SAME")
     c4.Update()
 
     # Save what you need later

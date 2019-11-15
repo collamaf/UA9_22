@@ -70,7 +70,8 @@ void EventAction::BeginOfEventAction(const G4Event*){
 	fRunAction->GetPlanePart().clear();
 	fRunAction->GetPlaneTime().clear();
 	fRunAction->GetPlanePlaneId().clear();
-	
+	fRunAction->GetCrystAng().clear();
+
 	;}
 
 
@@ -135,6 +136,8 @@ void EventAction::EndOfEventAction(const G4Event* evt){
 		G4double angYout = (ssd[2].y() - posYin) / (ssd[2].z());
 		analysisManager->FillNtupleDColumn(4, angXout * 1.E6 * CLHEP::rad);
 		analysisManager->FillNtupleDColumn(5, angYout * 1.E6 * CLHEP::rad);
+
+		analysisManager->FillNtupleDColumn(6,fParameterMap["CrystAng"] * 1.E6 * CLHEP::rad); 
 		
 		analysisManager->AddNtupleRow();
 	}

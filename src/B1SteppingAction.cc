@@ -71,6 +71,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		fRunAction->GetPlaneEne().push_back(step->GetPostStepPoint()->GetKineticEnergy()/GeV);
 		fRunAction->GetPlaneTime().push_back(step->GetTrack()->GetGlobalTime()/ns);
 		fRunAction->GetPlanePart().push_back(step->GetTrack()->GetDynamicParticle()->GetDefinition()->GetPDGEncoding());
+		fRunAction->GetCrystAng().push_back(((fEventAction->GetParameterMap())["CrystAng"]) * 1.E6 *CLHEP::rad );
 		fRunAction->GetPlanePlaneId().push_back(NextVol->GetCopyNo());
 	}
 	

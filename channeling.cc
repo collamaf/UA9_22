@@ -175,7 +175,7 @@ int main(int argc,char** argv)
 	EventAction* eventAction = new EventAction(runAction);
 
 	runManager->SetUserAction(eventAction);
-runManager->SetUserAction(new B1SteppingAction(eventAction, runAction));
+	runManager->SetUserAction(new B1SteppingAction(eventAction, runAction));
 #else
 //	runManager->SetUserInitialization(new UserActionInitialization(ParameterMap));
 	UserActionInitialization* actionInit = new UserActionInitialization(ParameterMap);

@@ -4,6 +4,7 @@ from ROOT import gBenchmark, gStyle, gROOT
 import myStyle
 from setup import *
 import PlaneAnalysis as pA
+import CrystalAnalysis as cA
 
 gBenchmark.Start('myBench')
 
@@ -11,6 +12,7 @@ gBenchmark.Start('myBench')
 parser = argparse.ArgumentParser(description="mUA9 parser")
 parser.add_argument('--fileName', action="store", dest="fileName", default="mUA9_N10000.root", help='input file name')
 parser.add_argument('--tree', action="append", dest="trees", default=[], help='list of tree you want to process')
+parser.add_argument('--rotX', action="store", dest="rotX", default=0, help='Crystal rotation angle X [in mu-rad]')
 parser.add_argument('--noStop', action="store_true", dest="noStop", default=False, help='set to True to ignore wait')
 parser.add_argument('--savePdf', action="store_true", dest="savePdf", default=False, help='set to True to save canvas')
 parser.add_argument('--label', action="store", dest="label", default="lastRun", help='label for outpu files')
@@ -32,6 +34,8 @@ for key, t in myTrees.items():
     if t.GetName() == "Planes":
 #        pA.anaPlanes(t,args.label,args.savePdf)
         pA.treeLoop(t,args.label,args.savePdf)
+    elif t.GetName() == "ExExChTree":
+        cA.treeLoop(t,args.label,args.savePdf)
     else:
         print("Nothing to do ATM. Bye.")
 

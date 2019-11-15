@@ -45,6 +45,7 @@ class EventAction : public G4UserEventAction
 
     virtual void BeginOfEventAction(const G4Event*);
     virtual void EndOfEventAction(const G4Event*);
+    std::map<G4String,G4double> GetParameterMap() { return fParameterMap; };
 
   private:
     G4int fSDHT_ID;

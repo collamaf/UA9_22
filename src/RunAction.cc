@@ -53,6 +53,7 @@ RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap): G4UserRu
 	analysisManager->CreateNtupleDColumn("posYin");
 	analysisManager->CreateNtupleDColumn("angXout");
 	analysisManager->CreateNtupleDColumn("angYout");
+	analysisManager->CreateNtupleDColumn("crystAngX");
 	analysisManager->FinishNtuple();
 	
 	analysisManager->CreateNtuple("Beam", "Primary Beam");
@@ -79,9 +80,11 @@ RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap): G4UserRu
 	analysisManager->CreateNtupleDColumn(2, "Part", fPlanePart);
 	analysisManager->CreateNtupleDColumn(2, "Time", fPlaneTime);
 	analysisManager->CreateNtupleDColumn(2, "PlaneId", fPlanePlaneId);
+	analysisManager->CreateNtupleDColumn(2, "crystAngX", fCrystAng);
 	analysisManager->FinishNtuple();
 
-	G4cout<<"PROVA MAPPA RunAct: "<<fParameterMap["Ene"]<<G4endl;
+
+	//	G4cout<<"PROVA MAPPA RunAct: "<<fParameterMap["Ene"]<<G4endl;
 
 	
 }
