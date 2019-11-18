@@ -40,7 +40,7 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
     h_cxcy = Hist2DVec(len(planes),"h_cxcy","cos. y vs cos. x",40,cosR["min"],cosR["max"],40,cosR["min"],cosR["max"],"cosY [rad]","cosY [rad]",1)
     h_Ene = Hist1DVec(len(planes),"h_Ene","Energy",40,eneR["min"],eneR["max"],"Energy [GeV]",1)
     h_P = Hist1DVec(len(planes),"h_P","Momentum",40,eneR["min"],eneR["max"],"Momentum [GeV]",1)
-    h_big = Hist2D("h_big","Deflection vs. incidence",400,-2.0,2.0,400,-2.,2.0,"Deflection [mrad]","Incidence angle [mrad]",1)
+    h_big = Hist2D("h_big","Deflection vs. incidence",400,-200.0,200.0,400,-200.,200.0,"Deflection [#mu rad]","Incidence angle [#mu rad]",1)
 
 
     # Define che canvas you need
@@ -65,7 +65,7 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
             h_Ene[ip].Fill(event.Ene[ip])
         # Fill what is not plane-dependent
         if len(event.CosX) > 2 :
-            h_big.Fill(-1*(math.acos(event.CosX[2])-math.acos(event.CosX[1]))*10e3,(0.5*math.pi-math.acos(event.CosX[1]))*10e3)
+            h_big.Fill(-1*(math.acos(event.CosX[2])-math.acos(event.CosX[1]))*1.E6,(0.5*math.pi-math.acos(event.CosX[1]))*1.E6)
     print("End of loop over events.")
 
     # Draw what you need
