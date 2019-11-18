@@ -88,6 +88,8 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
 
     # Save what you need later
     if savePlot:
+        c3.SaveAs("CrysDeflection_"+label+".pdf")
+        c3.SaveAs("CrysDeflection_"+label+".png")
         c4.SaveAs("Crystal_"+label+".pdf")
         c4.SaveAs("Crystal_"+label+".png")
 

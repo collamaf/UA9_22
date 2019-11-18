@@ -111,8 +111,8 @@ void RunAction::BeginOfRunAction(const G4Run*){
 	if (fParameterMap["Part"]) OutputFilename.append("_Part" + (ParticleName[(G4int)fParameterMap["Part"]]));
 	if (fParameterMap["Ene"]) OutputFilename.append("_Ene" + to_string((G4int)fParameterMap["Ene"]));
 	if (fParameterMap["CrystX"]) OutputFilename.append("_CrystX" + to_string((G4int)fParameterMap["CrystX"])+ "Y"+ to_string((G4int)fParameterMap["CrystY"])+ "Z" +to_string((G4int)fParameterMap["CrystZ"]));
-	if (fParameterMap["SigmaX"]) OutputFilename.append("_SigmaX" + to_string((G4int)fParameterMap["SigmaX"])+ "Y"+ to_string((G4int)fParameterMap["SigmaY"])+ "Z" +to_string((G4int)fParameterMap["SigmaZ"]));
-
+	if (fParameterMap["SigmaX"]) OutputFilename.append("_SigmaX" + to_string((G4int)(fParameterMap["SigmaX"]*1.E6))+ "Y"+ to_string((G4int)(fParameterMap["SigmaY"]*1.E6))+ "Z" +to_string((G4int)(fParameterMap["SigmaZ"]*1.E6)));
+	if (fParameterMap["CrystAng"]) OutputFilename.append("_CrystAng" + to_string((G4int)(fParameterMap["CrystAng"]*1.E6)));
 	if (fParameterMap["BR"]) OutputFilename.append("_BR" + to_string((G4int)(fParameterMap["BR"])));
 	if (fParameterMap["Mag"]) OutputFilename.append("_Mag" + to_string((G4int)(fParameterMap["Mag"])));
 	if (fParameterMap["NoDet"]) OutputFilename.append("_NoDet");
