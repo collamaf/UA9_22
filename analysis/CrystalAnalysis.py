@@ -65,6 +65,8 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
         h_angYOut.Fill(event.angYout)
         h_angXYOut.Fill(event.angXout,event.angYout)
         h_big.Fill(event.angXout-event.angXin,event.angXin-event.crystAngX)
+        #h_big.Fill(event.angXout-event.angXin,event.angXin)
+
     print("End of loop over events.")
 
     # Draw what you need
