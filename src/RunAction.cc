@@ -108,6 +108,7 @@ void RunAction::BeginOfRunAction(const G4Run*){
 	ParticleName[13]="Mum";
 	ParticleName[22]="Gamma";
 	
+	if (fParameterMap["Label"]) OutputFilename.append("_" + to_string(fParameterMap["Label"]));
 	if (fParameterMap["Part"]) OutputFilename.append("_Part" + (ParticleName[(G4int)fParameterMap["Part"]]));
 	if (fParameterMap["Ene"]) OutputFilename.append("_Ene" + to_string((G4int)fParameterMap["Ene"]));
 	if (fParameterMap["CrystX"]) OutputFilename.append("_CrystX" + to_string((G4int)fParameterMap["CrystX"])+ "Y"+ to_string((G4int)fParameterMap["CrystY"])+ "Z" +to_string((G4int)fParameterMap["CrystZ"]));

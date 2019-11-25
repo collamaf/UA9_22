@@ -133,6 +133,11 @@ int main(int argc,char** argv)
 			{
 				VisFlag=stoi (argv[++i], NULL);;
 			}
+			else if(option.compare("-Label")==0)
+			{
+				ParameterMap["Label"]=strtod (argv[++i], NULL);;
+
+			}
 		}
 		else
 		{

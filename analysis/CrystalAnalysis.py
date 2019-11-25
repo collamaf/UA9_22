@@ -41,13 +41,13 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
     h_angXOut = Hist1D("h_angXOut","Outgoing X angle",40,-200.,200.,"#theta_{X}^{out} [#mu rad]",1)
     h_angYOut = Hist1D("h_angYOut","Outgoing Y angle",40,-200.,200.,"#theta_{Y}^{out} [#mu rad]",2)
     h_angXYOut = Hist2D("h_angXYOut","Outgoing X vs Y angle",40,-200.,200.,40,-200.,200.,"#theta_{X}^{out} [#mu rad]","#theta_{Y}^{out} [#mu rad]",1)
-    h_big = Hist2D("h_big","Deflection vs. incidence",400,-200.,200.0,400,-200.,200.0,"Deflection [#mu rad]","Incidence angle [#mu rad]",1)
+    h_big = Hist2D("h_big","Deflection vs. incidence",80,-200.,200.0,80,-200.,200.0,"Deflection [#mu rad]","Incidence angle [#mu rad]",1)
 
 
     # Define che canvas you need
     c2 = TCanvas('c2','',cW,cH)
-    c3 = TCanvas('c3','',cW*2,cH*2)
     c4 = TCanvas('c4','test',cW*len(planes),cH*rows)
+    c3 = TCanvas('c3','',cW*2,cH*2)
 
     # Loop over events
     nEntries=t.GetEntriesFast()
