@@ -1,4 +1,5 @@
 from ROOT import TCanvas, TFile, TH1F, TH2F
+from array import array
 import math
 import myStyle
 from setup import *
@@ -26,6 +27,16 @@ def Hist2DVec(size=1,name="h",title="h",bX=10,Xmin=0.,Xmax=10.,bY=10,Ymin=0.,Yma
         htv.append(ht.Clone())
     return htv
 
+## Emittance calculation
+def EmittanceRMS(histo):
+    # sqrt(<x^2><x'2>-<xx'>^2)
+    emRMS = 0.0
+    stats = array('d', [0.] * 10)
+    histo.GetStats(stats)
+#    print(stats[0],stats[3],stats[5],stats[6])
+    emRMS=math.sqrt((stats[3]*stats[5])-(stats[6]*stats[6]))/stats[0]
+    return emRMS
+
 # Main function
 def treeLoop(t,label = 'lastRun',savePlot=False):
     print("treeLoop() reading from ",t.GetName())
@@ -35,17 +46,21 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
     h_xIn = Hist1D("h_xIn","Incident pos. x",40,posR["min"],posR["max"],"X [mm]",1)
     h_yIn = Hist1D("h_yIn","Incident pos. y",40,posR["min"],posR["max"],"Y [mm]",2)
     h_xyIn = Hist2D("h_xyIn","Incident y vs x",40,posR["min"],posR["max"],40,posR["min"],posR["max"],"X [mm]","Y [mm]",1)
-    h_angXIn = Hist1D("h_angXIn","Incident X angle",40,-200.,200.,"#theta_{X}^{in} [#mu rad]",1)
-    h_angYIn = Hist1D("h_angYIn","Incident Y angle",40,-200.,200.,"#theta_{Y}^{in} [#mu rad]",2)
-    h_angXYIn = Hist2D("h_angXYIn","Incident X vs Y angle",40,-200.,200.,40,-200.,200.,"#theta_{X}^{in} [#mu rad]","#theta_{Y}^{in} [#mu rad]",1)
-    h_angXOut = Hist1D("h_angXOut","Outgoing X angle",40,-200.,200.,"#theta_{X}^{out} [#mu rad]",1)
-    h_angYOut = Hist1D("h_angYOut","Outgoing Y angle",40,-200.,200.,"#theta_{Y}^{out} [#mu rad]",2)
-    h_angXYOut = Hist2D("h_angXYOut","Outgoing X vs Y angle",40,-200.,200.,40,-200.,200.,"#theta_{X}^{out} [#mu rad]","#theta_{Y}^{out} [#mu rad]",1)
-    h_big = Hist2D("h_big","Deflection vs. incidence",80,-200.,200.0,80,-200.,200.0,"Deflection [#mu rad]","Incidence angle [#mu rad]",1)
+    h_angXIn = Hist1D("h_angXIn","Incident X angle",40,angR["min"],angR["max"],"#theta_{X}^{in} [#mu rad]",1)
+    h_angYIn = Hist1D("h_angYIn","Incident Y angle",40,angR["min"],angR["max"],"#theta_{Y}^{in} [#mu rad]",2)
+    h_angXYIn = Hist2D("h_angXYIn","Incident X vs Y angle",40,angR["min"],angR["max"],40,angR["min"],angR["max"],"#theta_{X}^{in} [#mu rad]","#theta_{Y}^{in} [#mu rad]",1)
+    h_angXOut = Hist1D("h_angXOut","Outgoing X angle",40,angR["min"],angR["max"],"#theta_{X}^{out} [#mu rad]",1)
+    h_angYOut = Hist1D("h_angYOut","Outgoing Y angle",40,angR["min"],angR["max"],"#theta_{Y}^{out} [#mu rad]",2)
+    h_angXYOut = Hist2D("h_angXYOut","Outgoing X vs Y angle",40,angR["min"],angR["max"],40,angR["min"],angR["max"],"#theta_{X}^{out} [#mu rad]","#theta_{Y}^{out} [#mu rad]",1)
+    h_big = Hist2D("h_big","Deflection vs. incidence",80,angR["min"],angR["max"],80,angR["min"],angR["max"],"Deflection [#mu rad]","Incidence angle [#mu rad]",1)
+    h_exIn = Hist2D("h_exIn","x' vs. x",80,posR["min"],posR["max"],80,angR["min"],angR["max"],"x_{In} [mm]","x'_{In} [#mu rad]",1)
+    h_exOut = Hist2D("h_exOut","x' vs. x",80,posR["min"],posR["max"],80,angR["min"],angR["max"],"x_{Out} [mm]","x'_{Out} [#mu rad]",1)
+    h_eyIn = Hist2D("h_eyIn","y' vs. y",80,posR["min"],posR["max"],80,angR["min"],angR["max"],"y_{In} [mm]","y'_{In} [#mu rad]",1)
+    h_eyOut = Hist2D("h_eyOut","y' vs. y",80,posR["min"],posR["max"],80,angR["min"],angR["max"],"y_{Out} [mm]","y'_{Out} [#mu rad]",1)
 
 
     # Define che canvas you need
-    c2 = TCanvas('c2','',cW,cH)
+    c2 = TCanvas('c2','',cW*2,cH*2)
     c4 = TCanvas('c4','test',cW*len(planes),cH*rows)
     c3 = TCanvas('c3','',cW*2,cH*2)
 
@@ -66,6 +81,10 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
         h_angXYOut.Fill(event.angXout,event.angYout)
         h_big.Fill(event.angXout-event.angXin,event.angXin-event.crystAngX)
         #h_big.Fill(event.angXout-event.angXin,event.angXin)
+        h_exIn.Fill(event.posXin,event.angXin)
+        h_exOut.Fill(event.posXin,event.angXout)
+        h_eyIn.Fill(event.posYin,event.angYin)
+        h_eyOut.Fill(event.posYin,event.angYout)
 
     print("End of loop over events.")
 
@@ -82,6 +101,15 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
     c4.cd(3+cols); h_angXYOut.Draw("COLZ0")
 
     c4.Update()
+
+    c2.cd()
+    c2.Divide(2,2)
+
+    c2.cd(1); h_exIn.Draw("COLZ0");     print("Emittance-x(pre): % 10.3E [mm-urad]"%EmittanceRMS(h_exIn))
+    c2.cd(2); h_exOut.Draw("COLZ0");    print("Emittance-x(post): % 10.3E [mm-urad]"%EmittanceRMS(h_exOut))
+    c2.cd(3); h_eyIn.Draw("COLZ0");     print("Emittance-y(pre): % 10.3E [mm-urad]"%EmittanceRMS(h_eyIn))
+    c2.cd(4); h_eyOut.Draw("COLZ0");    print("Emittance-y(post): % 10.3E [mm-urad]"%EmittanceRMS(h_eyOut))
+    c2.Update()
 
     c3.cd()
     h_big.Draw("COLZ0")
