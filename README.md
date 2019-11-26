@@ -110,6 +110,11 @@ and as a result you'll get a canvas with plots for every plane (_vertical rows_)
 - Removed part of G4 log
 - macro modified (added event loop)
 
+26-11-2019: by mbauce
+- Added emittance plot and emittance calculation (TBC)
+- Added '--ana BlaBla' to analysis macro to choose
+- other minor optimizations
+
 ## TODOs
 - [] Sistemare readme
 - [] elegantizzare particella primaria da linea di comando

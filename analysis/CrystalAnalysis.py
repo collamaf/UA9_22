@@ -105,10 +105,10 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
     c2.cd()
     c2.Divide(2,2)
 
-    c2.cd(1); h_exIn.Draw("COLZ0");     print("Emittance-x(pre): % 10.3E [mm-urad]"%EmittanceRMS(h_exIn))
-    c2.cd(2); h_exOut.Draw("COLZ0");    print("Emittance-x(post): % 10.3E [mm-urad]"%EmittanceRMS(h_exOut))
-    c2.cd(3); h_eyIn.Draw("COLZ0");     print("Emittance-y(pre): % 10.3E [mm-urad]"%EmittanceRMS(h_eyIn))
-    c2.cd(4); h_eyOut.Draw("COLZ0");    print("Emittance-y(post): % 10.3E [mm-urad]"%EmittanceRMS(h_eyOut))
+    c2.cd(1); h_exIn.Draw("COLZ0");  print("Emittance-x(pre): % 10.3E [mm-urad]"%EmittanceRMS(h_exIn))
+    c2.cd(2); h_exOut.Draw("COLZ0"); print("Emittance-x(post): % 10.3E [mm-urad]"%EmittanceRMS(h_exOut))
+    c2.cd(3); h_eyIn.Draw("COLZ0");  print("Emittance-y(pre): % 10.3E [mm-urad]"%EmittanceRMS(h_eyIn))
+    c2.cd(4); h_eyOut.Draw("COLZ0"); print("Emittance-y(post): % 10.3E [mm-urad]"%EmittanceRMS(h_eyOut))
     c2.Update()
 
     c3.cd()
