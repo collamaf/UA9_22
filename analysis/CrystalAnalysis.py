@@ -79,7 +79,7 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
         h_angXOut.Fill(event.angXout)
         h_angYOut.Fill(event.angYout)
         h_angXYOut.Fill(event.angXout,event.angYout)
-        h_big.Fill(event.angXout-event.angXin,event.angXin-event.crystAngX)
+        h_big.Fill(event.angXout-event.angXin,event.angXin+event.crystAngX)
         #h_big.Fill(event.angXout-event.angXin,event.angXin)
         h_exIn.Fill(event.posXin,event.angXin)
         h_exOut.Fill(event.posXin,event.angXout)

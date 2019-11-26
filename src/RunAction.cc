@@ -116,6 +116,7 @@ void RunAction::BeginOfRunAction(const G4Run*){
 	if (fParameterMap["CrystAng"]) OutputFilename.append("_CrystAng" + to_string((G4int)(fParameterMap["CrystAng"]*1.E6)));
 	if (fParameterMap["BR"]) OutputFilename.append("_BR" + to_string((G4int)(fParameterMap["BR"])));
 	if (fParameterMap["Mag"]) OutputFilename.append("_Mag" + to_string((G4int)(fParameterMap["Mag"])));
+	if (fParameterMap["NoCryst"]) OutputFilename.append("_NoCryst");
 	if (fParameterMap["NoDet"]) OutputFilename.append("_NoDet");
 
 	OutputFilename.append("_N" + to_string((G4int)fParameterMap["NPrim"]));

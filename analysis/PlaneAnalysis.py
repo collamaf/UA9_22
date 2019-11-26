@@ -83,7 +83,7 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
             
         # Fill what is not plane-dependent
         if len(event.CosX) > 2 :
-            h_big.Fill((utils.CosToAngle(event.CosX[2])-utils.CosToAngle(event.CosX[1]))*1.E6,(utils.CosToAngle(event.CosX[1]))*1.E6)
+            h_big.Fill((utils.CosToAngle(event.CosX[2])-utils.CosToAngle(event.CosX[1]))*1.E6,(utils.CosToAngle(event.CosX[1]))*1.E6+event.crystAngX[0])
     print("End of loop over events.")
 
     # Draw what you need
