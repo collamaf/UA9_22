@@ -1,6 +1,7 @@
 from ROOT import TCanvas, TFile, TH1F, TH2F
 from array import array
 import math
+import utils
 import myStyle
 from setup import *
 
@@ -33,9 +34,8 @@ def EmittanceRMS(histo):
     emRMS = 0.0
     stats = array('d', [0.] * 10)
     histo.GetStats(stats)
-    print(stats)
-    print((stats[3]*stats[5])-(stats[6]*stats[6]))
-    emRMS=math.sqrt((stats[3]*stats[5])-(stats[6]*stats[6]))/stats[0]
+    #print((stats[3]*stats[5])-(stats[6]*stats[6]))
+    emRMS=math.sqrt(abs((stats[3]*stats[5])-(stats[6]*stats[6])))/stats[0]
     return emRMS
 
 # Main function
@@ -78,8 +78,8 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
             h_cy[ip].Fill(event.CosY[ip])
             h_cxcy[ip].Fill(event.CosX[ip],event.CosY[ip])
             h_Ene[ip].Fill(event.Ene[ip])
-            h_ex[ip].Fill(event.X[ip],(0.5*math.pi-math.acos(event.CosX[ip]))*1.E6)
-            h_ey[ip].Fill(event.Y[ip],(0.5*math.pi-math.acos(event.CosX[ip]))*1.E6)
+            h_ex[ip].Fill(event.X[ip],utils.CosToAngle(event.CosX[ip])*1.E6)
+            h_ey[ip].Fill(event.Y[ip],utils.CosToAngle(event.CosY[ip])*1.E6)
             
         # Fill what is not plane-dependent
         if len(event.CosX) > 2 :
@@ -110,8 +110,8 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
     c5.cd()
     c5.Divide(len(planes),2)
     for ip in range(0,len(planes)):
-        c5.cd((ip+1)+(0*len(planes))); h_ex[ip].Draw("COLZ0");# print("Emittance-x(%d): % 10.3E [mm-urad]"%(ip,EmittanceRMS(h_ex[ip])))
-        c5.cd((ip+1)+(1*len(planes))); h_ey[ip].Draw("COLZ0");# print("Emittance-y(%d): % 10.3E [mm-urad]"%(ip,EmittanceRMS(h_ey[ip])))
+        c5.cd((ip+1)+(0*len(planes))); h_ex[ip].Draw("COLZ0"); print("Emittance-x(%d): % 10.3E [mm-urad]"%(ip,EmittanceRMS(h_ex[ip])))
+        c5.cd((ip+1)+(1*len(planes))); h_ey[ip].Draw("COLZ0"); print("Emittance-y(%d): % 10.3E [mm-urad]"%(ip,EmittanceRMS(h_ey[ip])))
     c5.Update()
 
     # Save what you need later
