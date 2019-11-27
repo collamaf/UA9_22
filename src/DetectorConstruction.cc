@@ -182,7 +182,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     } else  crystalChannelingData->SetBR(fBR.x());
   }
 
-  //  if(fParameterMap["NoCryst"]){
   G4LogicalVolume* dummyCrystalLogic =
     new G4LogicalVolume(crystalSolid,
 			worldMaterial,
@@ -217,7 +216,17 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 						    worldLogic,
 						    false,
 						    0);
-  
+
+  if(fParameterMap["NoCryst"]){
+    physCrystal= new G4PVPlacement(rot,
+				   G4ThreeVector(),
+				   dummyCrystalLogic,
+				   "crystal.physic",
+				   worldLogic,
+				   false,
+				   0);
+  }
+
 #ifndef G4MULTITHREADED
   G4ChannelingOptrMultiParticleChangeCrossSection* testMany =
     new G4ChannelingOptrMultiParticleChangeCrossSection();
