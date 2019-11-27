@@ -39,7 +39,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-UserActionInitialization::UserActionInitialization(std::map<G4String,G4double> & ParameterMap):G4VUserActionInitialization(), fParameterMap(ParameterMap)
+UserActionInitialization::UserActionInitialization(std::map<G4String,G4double> & ParameterMap, G4String OutputFilename):G4VUserActionInitialization(), fParameterMap(ParameterMap), OutputFilename(OutputFilename)
 //UserActionInitialization::UserActionInitialization():G4VUserActionInitialization()
 {
 	G4cout<<"PROVA MAPPA UserInit: "<<fParameterMap["Ene"]<<G4endl;
@@ -57,7 +57,7 @@ void UserActionInitialization::Build() const {
 	
 	SetUserAction(new StackingAction());
 	
-	RunAction* runAction = new RunAction(fParameterMap);
+	RunAction* runAction = new RunAction(fParameterMap, OutputFilename);
 	SetUserAction(runAction);
 	
 	EventAction* eventAction=new EventAction(runAction, fParameterMap);
