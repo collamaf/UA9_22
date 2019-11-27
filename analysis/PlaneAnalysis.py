@@ -52,9 +52,9 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
     h_cxcy = Hist2DVec(len(planes),"h_cxcy","cos. y vs cos. x",40,cosR["min"],cosR["max"],40,cosR["min"],cosR["max"],"cosY [rad]","cosY [rad]",1)
     h_Ene = Hist1DVec(len(planes),"h_Ene","Energy",40,eneR["min"],eneR["max"],"Energy [GeV]",1)
     h_P = Hist1DVec(len(planes),"h_P","Momentum",40,eneR["min"],eneR["max"],"Momentum [GeV]",1)
-    h_big = Hist2D("h_big","Deflection vs. incidence",80,angR["min"],angR["max"],80,angR["min"],angR["max"],"Deflection [#mu rad]","Incidence angle [#mu rad]",1)
-    h_ex = Hist2DVec(len(planes),"h_ex","x' vs. x",80,posR["min"],posR["max"],80,angR["min"],angR["max"],"x [mm]","x' [#mu rad]",1)
-    h_ey = Hist2DVec(len(planes),"h_ey","y' vs. y",80,posR["min"],posR["max"],80,angR["min"],angR["max"],"y [mm]","y' [#mu rad]",1)
+    h_big = Hist2D("h_big","Deflection vs. incidence",200,angR["min"],angR["max"],200,angR["min"],angR["max"],"Deflection [#mu rad]","Incidence angle [#mu rad]",1)
+    h_ex = Hist2DVec(len(planes),"h_ex","x' vs. x",80,posR["min"],posR["max"],200,angR["min"],angR["max"],"x [mm]","x' [#mu rad]",1)
+    h_ey = Hist2DVec(len(planes),"h_ey","y' vs. y",80,posR["min"],posR["max"],200,angR["min"],angR["max"],"y [mm]","y' [#mu rad]",1)
 
 
     # Define che canvas you need
