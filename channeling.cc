@@ -75,6 +75,8 @@ int main(int argc,char** argv)
 	
 	G4bool VisFlag=false;
 	G4String MacroName="";
+	G4String OutputFilename = "mUA9";
+	G4cout<<"Filename: "<<OutputFilename<<G4endl;
 
 	for(int i=1;i<argc;i++)
 		if(argv[i][0] =='-')
@@ -139,8 +141,8 @@ int main(int argc,char** argv)
 			}
 			else if(option.compare("-Label")==0)
 			{
-				ParameterMap["Label"]=strtod (argv[++i], NULL);;
-
+			  OutputFilename.append(argv[++i]);
+			  G4cout<<"Filename: "<<OutputFilename<<G4endl;
 			}
 		}
 		else
@@ -187,7 +189,7 @@ int main(int argc,char** argv)
 	runManager->SetUserAction(new B1SteppingAction(eventAction, runAction));
 #else
 //	runManager->SetUserInitialization(new UserActionInitialization(ParameterMap));
-	UserActionInitialization* actionInit = new UserActionInitialization(ParameterMap);
+	UserActionInitialization* actionInit = new UserActionInitialization(ParameterMap,OutputFilename);
 	runManager->SetUserInitialization(actionInit);
 #endif
 	DetectorConstruction* detConst=new DetectorConstruction(ParameterMap);
@@ -195,8 +197,6 @@ int main(int argc,char** argv)
 	
 	
 	
-	G4String OutputFilename = "mUA9";
-
 	if (ParameterMap["Part"]) OutputFilename.append("_Part" + to_string(ParameterMap["Part"]));
 	if (ParameterMap["Ene"]) OutputFilename.append("_Ene" + to_string((G4int)ParameterMap["Ene"]));
 	if (ParameterMap["CrystX"]) OutputFilename.append("_CrystX" + to_string((G4int)ParameterMap["CrystX"])+ "Y"+ to_string((G4int)ParameterMap["CrystY"])+ "Z" +to_string((G4int)ParameterMap["CrystZ"]));
@@ -214,6 +214,8 @@ int main(int argc,char** argv)
 	ParticleName[-13]="mu+";
 	ParticleName[13]="mu-";
 	ParticleName[22]="gamma";
+	ParticleName[2212]="proton";
+	ParticleName[211]="pi+";
 	
 	// Initialize visualization
 	//
