@@ -115,6 +115,11 @@ and as a result you'll get a canvas with plots for every plane (_vertical rows_)
 - Added '--ana BlaBla' to analysis macro to choose
 - other minor optimizations
 
+27-11-2019: by mbauce
+- Modified default parameters in 'ua9_ref0.mac'
+- Crystal rotation is now incremental (wrt original rotation)
+- The above should fix also the "0" case
+
 ## TODOs
 - [] Sistemare readme
 - [] elegantizzare particella primaria da linea di comando

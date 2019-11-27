@@ -52,11 +52,11 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
     h_angXOut = Hist1D("h_angXOut","Outgoing X angle",40,angR["min"],angR["max"],"#theta_{X}^{out} [#mu rad]",1)
     h_angYOut = Hist1D("h_angYOut","Outgoing Y angle",40,angR["min"],angR["max"],"#theta_{Y}^{out} [#mu rad]",2)
     h_angXYOut = Hist2D("h_angXYOut","Outgoing X vs Y angle",40,angR["min"],angR["max"],40,angR["min"],angR["max"],"#theta_{X}^{out} [#mu rad]","#theta_{Y}^{out} [#mu rad]",1)
-    h_big = Hist2D("h_big","Deflection vs. incidence",80,angR["min"],angR["max"],80,angR["min"],angR["max"],"Deflection [#mu rad]","Incidence angle [#mu rad]",1)
-    h_exIn = Hist2D("h_exIn","x' vs. x",80,posR["min"],posR["max"],80,angR["min"],angR["max"],"x_{In} [mm]","x'_{In} [#mu rad]",1)
-    h_exOut = Hist2D("h_exOut","x' vs. x",80,posR["min"],posR["max"],80,angR["min"],angR["max"],"x_{Out} [mm]","x'_{Out} [#mu rad]",1)
-    h_eyIn = Hist2D("h_eyIn","y' vs. y",80,posR["min"],posR["max"],80,angR["min"],angR["max"],"y_{In} [mm]","y'_{In} [#mu rad]",1)
-    h_eyOut = Hist2D("h_eyOut","y' vs. y",80,posR["min"],posR["max"],80,angR["min"],angR["max"],"y_{Out} [mm]","y'_{Out} [#mu rad]",1)
+    h_big = Hist2D("h_big","Deflection vs. incidence",200,angR["min"],angR["max"],200,angR["min"],angR["max"],"Deflection [#mu rad]","Incidence angle [#mu rad]",1)
+    h_exIn = Hist2D("h_exIn","x' vs. x",80,posR["min"],posR["max"],200,angR["min"],angR["max"],"x_{In} [mm]","x'_{In} [#mu rad]",1)
+    h_exOut = Hist2D("h_exOut","x' vs. x",80,posR["min"],posR["max"],200,angR["min"],angR["max"],"x_{Out} [mm]","x'_{Out} [#mu rad]",1)
+    h_eyIn = Hist2D("h_eyIn","y' vs. y",80,posR["min"],posR["max"],200,angR["min"],angR["max"],"y_{In} [mm]","y'_{In} [#mu rad]",1)
+    h_eyOut = Hist2D("h_eyOut","y' vs. y",80,posR["min"],posR["max"],200,angR["min"],angR["max"],"y_{Out} [mm]","y'_{Out} [#mu rad]",1)
 
 
     # Define che canvas you need

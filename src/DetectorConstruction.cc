@@ -200,9 +200,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   if(fAngles.x()!=0.){
     rot->rotateX(fAngles.x());
   }
-  if(fAngles.y()!=0.){ //if I asked a particular angle rotation along Y..
-    if (fParameterMap["CrystAng"]) rot->rotateY(fParameterMap["CrystAng"]);
-    else rot->rotateY(fAngles.y());
+  if(fAngles.y()!=0.){
+    rot->rotateY(fAngles.y());
+  }
+  if (fParameterMap["CrystAng"]){ //if I asked a particular angle rotation along Y..
+    rot->rotateY(fParameterMap["CrystAng"]);
   }
   if(fAngles.z()!=0.){
     rot->rotateZ(fAngles.z());

@@ -1,8 +1,8 @@
 #detector geometry
 /xtal/setMaterial G4_Si
-/xtal/setAngle 0. -25.25E-6 0. rad
+/xtal/setAngle 0. -30.5E-6 0. rad #rotation is usually .5*channeling_deflection
 /xtal/setSize 2.0 70. 4.0 mm
-/xtal/setBR 65.5738 0. 0. m
+/xtal/setBR 65.5738 0. 0. m #61 urad in this run
 /xtal/setEC data/Si220pl
 # /tracking/verbose 2
 # /run/numberOfThreads 1
