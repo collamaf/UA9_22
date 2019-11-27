@@ -36,7 +36,7 @@ class G4Run;
 class RunAction : public G4UserRunAction
 {
 public:
-	RunAction(const std::map<G4String,G4double> &);
+        RunAction(const std::map<G4String,G4double> &, G4String );
 	virtual ~RunAction();
 	
 	virtual void BeginOfRunAction(const G4Run*);
@@ -72,7 +72,7 @@ private:
 	
 	std::map<G4String,G4double>  fParameterMap;
 	
-	G4String OutputFilename = "mUA9";
+	G4String OutputFilename;
 
 };
 
