@@ -37,3 +37,6 @@ build/
 
 #leftovers
 *~
+
+# Logs
+*.log

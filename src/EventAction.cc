@@ -113,10 +113,10 @@ void EventAction::EndOfEventAction(const G4Event* evt){
                 if(aHit->GetLayerID()==i2) {
                     ssd[i2] = aHit->GetWorldPos();
                     bTotalHits++;
-								}
-						}
-				}
 		}
+	    }
+	}
+    }
 	
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	if(bTotalHits > 2){

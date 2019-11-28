@@ -209,18 +209,19 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     rot->rotateZ(fAngles.z());
   }
   
-  G4VPhysicalVolume* physCrystal= new G4PVPlacement(rot,
-						    G4ThreeVector(),
-						    crystalLogic,
-						    "crystal.physic",
-						    worldLogic,
-						    false,
-						    0);
-
+  G4VPhysicalVolume* physCrystal;
   if(fParameterMap["NoCryst"]){
     physCrystal= new G4PVPlacement(rot,
 				   G4ThreeVector(),
 				   dummyCrystalLogic,
+				   "crystal.physic",
+				   worldLogic,
+				   false,
+				   0);
+  } else {
+    physCrystal= new G4PVPlacement(rot,
+				   G4ThreeVector(),
+				   crystalLogic,
 				   "crystal.physic",
 				   worldLogic,
 				   false,
