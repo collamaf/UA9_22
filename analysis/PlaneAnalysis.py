@@ -118,6 +118,8 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
     if savePlot:
         c4.SaveAs("Summary_"+label+".pdf")
         c4.SaveAs("Summary_"+label+".png")
+        c5.SaveAs("PhaseSpace_"+label+".pdf")
+        c5.SaveAs("PhaseSpace_"+label+".png")
         c2.SaveAs("Ene_"+label+".pdf")
         c2.SaveAs("Ene_"+label+".png")
         c3.SaveAs("Channeling_"+label+".pdf")
