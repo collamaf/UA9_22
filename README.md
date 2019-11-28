@@ -120,6 +120,9 @@ and as a result you'll get a canvas with plots for every plane (_vertical rows_)
 - Crystal rotation is now incremental (wrt original rotation)
 - The above should fix also the "0" case
 
+28-11-2019: by mbauce
+- The removal of crystal using 'NoCryst' now works fine
+
 ## TODOs
 - [] Sistemare readme
 - [] elegantizzare particella primaria da linea di comando
