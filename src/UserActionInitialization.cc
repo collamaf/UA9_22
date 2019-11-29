@@ -42,7 +42,7 @@
 UserActionInitialization::UserActionInitialization(std::map<G4String,G4double> & ParameterMap, G4String OutputFilename):G4VUserActionInitialization(), fParameterMap(ParameterMap), OutputFilename(OutputFilename)
 //UserActionInitialization::UserActionInitialization():G4VUserActionInitialization()
 {
-	G4cout<<"PROVA MAPPA UserInit: "<<fParameterMap["Ene"]<<G4endl;
+	G4cout<<"PROVA MAPPA UserInit: "<<fParameterMap["KeepSec"]<<G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -55,8 +55,9 @@ void UserActionInitialization::Build() const {
 	PrimaryGeneratorAction* primGenAction=new PrimaryGeneratorAction(fParameterMap);
 	SetUserAction(primGenAction);
 	
-	SetUserAction(new StackingAction());
-	
+	StackingAction* stackAct=new StackingAction(fParameterMap);
+	SetUserAction(stackAct);
+
 	RunAction* runAction = new RunAction(fParameterMap, OutputFilename);
 	SetUserAction(runAction);
 	

@@ -88,8 +88,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //** World **//
   G4Material* worldMaterial =
     G4NistManager::Instance()->FindOrBuildMaterial("G4_Galactic");
-  
-  G4double worldSizeXY =  1. * CLHEP::meter;
+
+	G4Material* matPb =
+    G4NistManager::Instance()->FindOrBuildMaterial("G4_Pb");
+
+	G4double worldSizeXY =  1. * CLHEP::meter;
   G4double worldSizeZ  = 22. * CLHEP::meter;
   
   G4Box* worldSolid = new G4Box("world.solid",

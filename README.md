@@ -37,6 +37,7 @@ make -j4
 - CrystAng: crystal horizontal rotation angle [rad]
 - Mag: magnetic field [T]
 - NoDet: remove detector material
+- KeepSec: keep (and propagate) secondary particles (Default is off)
 - Vis: 1 for visualization
 
 
@@ -123,6 +124,7 @@ and as a result you'll get a canvas with plots for every plane (_vertical rows_)
 28-11-2019: by mbauce
 - The removal of crystal using 'NoCryst' now works fine
 
+29-11-2019: by collmaf
+- Add command line parameter ("KeepSec") to keep and track secondary particles. Deep perf impact (~x 100 for 50GevMu).
+
 ## TODOs
-- [] Sistemare readme
-- [] elegantizzare particella primaria da linea di comando

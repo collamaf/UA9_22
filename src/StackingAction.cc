@@ -27,10 +27,12 @@
 #include "StackingAction.hh"
 #include "G4Track.hh"
 
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-StackingAction::StackingAction(){
+StackingAction::StackingAction(const std::map<G4String,G4double> & ParameterMap): fParameterMap(ParameterMap){
     fKillSecondary  = true;
+	this->SetKillStatus(!fParameterMap["KeepSec"]);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

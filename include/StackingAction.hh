@@ -30,6 +30,7 @@
 
 #include "G4UserStackingAction.hh"
 #include "globals.hh"
+#include <map>
 
 class G4Track;
 
@@ -39,7 +40,7 @@ class StackingAction : public G4UserStackingAction
 {
 public:
 
-  StackingAction();
+  StackingAction(const std::map<G4String,G4double> &);
   virtual ~StackingAction();
    
   void SetKillStatus(G4bool value);
@@ -48,6 +49,8 @@ public:
     
 private:
   G4bool fKillSecondary;
+	std::map<G4String,G4double> fParameterMap;
+
 
 };
 

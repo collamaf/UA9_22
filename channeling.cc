@@ -72,6 +72,7 @@ int main(int argc,char** argv)
 //	ParameterMap["Div"]=0.0017;
 //	ParameterMap["Ene"]=17;
 	ParameterMap["NPrim"]=100;
+	ParameterMap["KeepSec"]=0;
 	
 	G4bool VisFlag=false;
 	G4String MacroName="";
@@ -122,6 +123,10 @@ int main(int argc,char** argv)
 			else if(option.compare("-CrystAng")==0)
 			{
 				ParameterMap["CrystAng"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-KeepSec")==0)
+			{
+				ParameterMap["KeepSec"]=strtod (argv[++i], NULL);;
 			}
 			else if(option.compare("-NoDet")==0)
 			{

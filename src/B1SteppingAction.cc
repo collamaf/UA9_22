@@ -59,6 +59,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	G4VPhysicalVolume* ThisVol = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
 	G4VPhysicalVolume* NextVol = step->GetPostStepPoint()->GetTouchableHandle()->GetVolume();
 	
+	
 	if (NextVol && NextVol->GetName()=="physDummyPlane") {
 		//		G4cout<<"ENTRO NEL PIANO "<<NextVol->GetCopyNo()<<G4endl;
 		fRunAction->GetPlaneX().push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
