@@ -88,6 +88,16 @@ DetectorConstructionMessenger(
     fSiDetThickCmd->SetParameterName("siDetThick",true);
     fSiDetThickCmd->SetDefaultValue(0.300);
     fSiDetThickCmd->SetDefaultUnit("mm");
+
+    fSiDetSizeCmd = new G4UIcmdWith3VectorAndUnit("/sidet/setSize",this);
+    fSiDetSizeCmd->SetGuidance("Set Silicon Detector Sizes - x,y,z");
+    fSiDetSizeCmd->SetParameterName("sidetSizeX",
+				    "sidetSizeY",
+				    "sidetSizeX",
+				    true);
+    fSiDetSizeCmd->SetDefaultValue(G4ThreeVector(38.,38.,0.64));
+    fSiDetSizeCmd->SetDefaultUnit("mm");
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -100,6 +110,7 @@ DetectorConstructionMessenger::
     delete fXtalECCmd;
     delete fXtalBRCmd;
     delete fSiDetThickCmd;
+    delete fSiDetSizeCmd;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -124,6 +135,9 @@ void DetectorConstructionMessenger::SetNewValue(
     }
     if(command==fSiDetThickCmd ){
       fTarget->SetSiDetThickness(fSiDetThickCmd->GetNewDoubleValue(newValue));
+    }
+    if(command==fSiDetSizeCmd ){
+      fTarget->SetSiDetSizes(fSiDetSizeCmd->GetNew3VectorValue(newValue));
     }
 }
 
@@ -150,6 +164,9 @@ G4String DetectorConstructionMessenger::GetCurrentValue(
     }
     if ( command==fSiDetThickCmd ){
         cv = fTarget->GetSiDetThickness();
+    }
+    if ( command==fSiDetSizeCmd ){
+        cv = fSiDetSizeCmd->ConvertToString(fTarget->GetSiDetSizes(),"mm");
     }
     return cv;
 }

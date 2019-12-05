@@ -47,13 +47,17 @@ RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap, G4String 
 	
 	//** Creating ntuple **//
 	analysisManager->CreateNtuple("ExExChTree", "Angles and Positions");
-	analysisManager->CreateNtupleDColumn("angXin");
-	analysisManager->CreateNtupleDColumn("angYin");
-	analysisManager->CreateNtupleDColumn("posXin");
-	analysisManager->CreateNtupleDColumn("posYin");
-	analysisManager->CreateNtupleDColumn("angXout");
-	analysisManager->CreateNtupleDColumn("angYout");
-	analysisManager->CreateNtupleDColumn("crystAngX");
+	analysisManager->CreateNtupleDColumn("angXin");//0
+	analysisManager->CreateNtupleDColumn("angYin");//1
+	analysisManager->CreateNtupleDColumn("posXin");//2
+	analysisManager->CreateNtupleDColumn("posYin");//3
+	analysisManager->CreateNtupleDColumn("angXout");//4
+	analysisManager->CreateNtupleDColumn("angYout");//5
+	analysisManager->CreateNtupleDColumn("crystAngX");//6
+	analysisManager->CreateNtupleDColumn("sdHitId");//7
+	analysisManager->CreateNtupleDColumn("sdHitX");//8
+	analysisManager->CreateNtupleDColumn("sdHitY");//9
+	analysisManager->CreateNtupleDColumn("sdHitZ");//10
 	analysisManager->FinishNtuple();
 	
 	analysisManager->CreateNtuple("Beam", "Primary Beam");

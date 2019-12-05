@@ -113,13 +113,15 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 						   0);
 	
   //** Detectors instantiation **//
-  G4ThreeVector fDetectorSizes(G4ThreeVector(38.0 * CLHEP::mm,
-					     38.0 * CLHEP::mm,
-					     fSiDetThickness)); // was 0.64 mm
-  G4double fDetectorDistance[3] = {
-    -9.998 * CLHEP::m,
+  G4ThreeVector fDetectorSizes = fSiDetSizes;
+//  G4ThreeVector fDetectorSizes(G4ThreeVector(38.0 * CLHEP::mm,
+//					     38.0 * CLHEP::mm,
+//					     fSiDetThickness)); // was 0.64 mm
+  G4double fDetectorDistance[4] = {
+    -1.320 * CLHEP::m,
     -0.320 * CLHEP::m,
-    +10.756* CLHEP::m};
+    +0.320 * CLHEP::m,
+    +10.32 * CLHEP::m};
   
   G4Box* ssdSolid = new G4Box("ssd.solid",
 			      fDetectorSizes.x()/2.,
@@ -134,7 +136,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 			detectorMaterial,
 			"ssd.logic");
   
-  for(size_t i1=0;i1<3;i1++){
+  for(size_t i1=0;i1<4;i1++){
     new G4PVPlacement(0,
 		      G4ThreeVector(0.,
 				    0.,

@@ -80,10 +80,11 @@ void EventAction::BeginOfEventAction(const G4Event*){
 void EventAction::EndOfEventAction(const G4Event* evt){
     G4SDManager* SDman = G4SDManager::GetSDMpointer();
     
-    G4ThreeVector ssd[3];
+    G4ThreeVector ssd[4];
     ssd[0]= G4ThreeVector(0.,0.,0.);
     ssd[1]= G4ThreeVector(0.,0.,0.);
     ssd[2]= G4ThreeVector(0.,0.,0.);
+    ssd[3]= G4ThreeVector(0.,0.,0.);
 
     if(fSDHT_ID == -1) {
         G4String sdName;
@@ -106,7 +107,7 @@ void EventAction::EndOfEventAction(const G4Event* evt){
     if(sdht){
         
         int n_hit_sd = sdht->entries();
-        for(int i2=0;i2<3;i2++){
+        for(int i2=0;i2<4;i2++){
             for(int i1=0;i1<n_hit_sd;i1++)
             {
                 SensitiveDetectorHit* aHit = (*sdht)[i1];
@@ -118,7 +119,14 @@ void EventAction::EndOfEventAction(const G4Event* evt){
 	}
     }
 	
-	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
+    for(int is=0;is<4;is++){
+      analysisManager->FillNtupleDColumn(7,is);
+      analysisManager->FillNtupleDColumn(8,ssd[is].x());
+      analysisManager->FillNtupleDColumn(9,ssd[is].y());
+      analysisManager->FillNtupleDColumn(10,ssd[is].z());
+    }
 	if(bTotalHits > 2){
 		G4double angXin  = (ssd[1].x() - ssd[0].x()) / (ssd[1].z() - ssd[0].z());
 		G4double angYin  = (ssd[1].y() - ssd[0].y()) / (ssd[1].z() - ssd[0].z());

@@ -63,6 +63,7 @@ class DetectorConstructionMessenger: public G4UImessenger
     G4UIcmdWith3VectorAndUnit* fXtalAngleCmd;
     G4UIcmdWithAString*  fXtalECCmd;
     G4UIcmdWithADoubleAndUnit*  fSiDetThickCmd;
+    G4UIcmdWith3VectorAndUnit* fSiDetSizeCmd;
 
 };
 

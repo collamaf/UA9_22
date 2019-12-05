@@ -85,6 +85,9 @@ public:
     G4double GetSiDetThickness() {return fSiDetThickness;}
     void SetSiDetThickness(G4double thick) {fSiDetThickness = thick;}
 
+    G4ThreeVector GetSiDetSizes() {return fSiDetSizes;}
+    void SetSiDetSizes(G4ThreeVector a3vec) {fSiDetSizes = a3vec;}
+
 private:
     G4String fECfileName;
     G4String fECOfileName;
@@ -93,6 +96,7 @@ private:
     G4ThreeVector fBR;
     G4ThreeVector fAngles;
     G4double  fSiDetThickness;
+    G4ThreeVector fSiDetSizes;
 	std::map<G4String,G4double>  fParameterMap;
 
 };
