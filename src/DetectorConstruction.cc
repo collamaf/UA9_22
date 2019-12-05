@@ -115,7 +115,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   //** Detectors instantiation **//
   G4ThreeVector fDetectorSizes(G4ThreeVector(38.0 * CLHEP::mm,
 					     38.0 * CLHEP::mm,
-					     0.64 * CLHEP::mm));
+					     fSiDetThickness)); // was 0.64 mm
   G4double fDetectorDistance[3] = {
     -9.998 * CLHEP::m,
     -0.320 * CLHEP::m,

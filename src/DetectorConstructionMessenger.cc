@@ -82,6 +82,12 @@ DetectorConstructionMessenger(
     fXtalECCmd->SetGuidance("Set crystal EC.");
     fXtalECCmd->SetParameterName("xEC",true);
     fXtalECCmd->SetDefaultValue("data/Si220pl");
+
+    fSiDetThickCmd = new G4UIcmdWithADoubleAndUnit("/sidet/thick",this);
+    fSiDetThickCmd->SetGuidance("Set Silicon Detector thickness");
+    fSiDetThickCmd->SetParameterName("siDetThick",true);
+    fSiDetThickCmd->SetDefaultValue(0.300);
+    fSiDetThickCmd->SetDefaultUnit("mm");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -93,6 +99,7 @@ DetectorConstructionMessenger::
     delete fXtalAngleCmd;
     delete fXtalECCmd;
     delete fXtalBRCmd;
+    delete fSiDetThickCmd;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -114,6 +121,9 @@ void DetectorConstructionMessenger::SetNewValue(
     }
     if(command==fXtalECCmd ){
         fTarget->SetEC(newValue);
+    }
+    if(command==fSiDetThickCmd ){
+      fTarget->SetSiDetThickness(fSiDetThickCmd->GetNewDoubleValue(newValue));
     }
 }
 
@@ -137,6 +147,9 @@ G4String DetectorConstructionMessenger::GetCurrentValue(
     }
     if( command==fXtalECCmd ){
         cv = fTarget->GetEC();
+    }
+    if ( command==fSiDetThickCmd ){
+        cv = fTarget->GetSiDetThickness();
     }
     return cv;
 }
