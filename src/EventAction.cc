@@ -71,6 +71,16 @@ void EventAction::BeginOfEventAction(const G4Event*){
 	fRunAction->GetPlaneTime().clear();
 	fRunAction->GetPlanePlaneId().clear();
 	fRunAction->GetCrystAng().clear();
+	fRunAction->GetPosXin().clear();
+	fRunAction->GetPosYin().clear();
+	fRunAction->GetAngXin().clear();
+	fRunAction->GetAngYin().clear();
+	fRunAction->GetAngXout().clear();
+	fRunAction->GetAngYout().clear();
+	fRunAction->GetSdHitId().clear();
+	fRunAction->GetSdHitX().clear();
+	fRunAction->GetSdHitY().clear();
+	fRunAction->GetSdHitZ().clear();
 
 	;}
 
@@ -121,32 +131,34 @@ void EventAction::EndOfEventAction(const G4Event* evt){
 	
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-    for(int is=0;is<4;is++){
-      analysisManager->FillNtupleDColumn(7,is);
-      analysisManager->FillNtupleDColumn(8,ssd[is].x());
-      analysisManager->FillNtupleDColumn(9,ssd[is].y());
-      analysisManager->FillNtupleDColumn(10,ssd[is].z());
-    }
+
 	if(bTotalHits > 2){
+
+	  for(int is=0;is<4;is++){
+	    fRunAction->GetSdHitId().push_back(is);
+	    fRunAction->GetSdHitX().push_back(ssd[is].x());
+	    fRunAction->GetSdHitY().push_back(ssd[is].y());
+	    fRunAction->GetSdHitZ().push_back(ssd[is].z());
+	  }
+
 		G4double angXin  = (ssd[1].x() - ssd[0].x()) / (ssd[1].z() - ssd[0].z());
 		G4double angYin  = (ssd[1].y() - ssd[0].y()) / (ssd[1].z() - ssd[0].z());
-		
-		analysisManager->FillNtupleDColumn(0, angXin * 1.E6 * CLHEP::rad);
-		analysisManager->FillNtupleDColumn(1, angYin * 1.E6 * CLHEP::rad);
+		fRunAction->GetAngXin().push_back(angXin * 1.E6 * CLHEP::rad);
+		fRunAction->GetAngYin().push_back(angYin * 1.E6 * CLHEP::rad);
 		
 		double posXin = ssd[1].x() - angXin * ssd[1].z();
 		double posYin = ssd[1].y() - angYin * ssd[1].z();
-		
-		analysisManager->FillNtupleDColumn(2, posXin / CLHEP::mm);
-		analysisManager->FillNtupleDColumn(3, posYin / CLHEP::mm);
+		fRunAction->GetPosXin().push_back(posXin * 1.E6 * CLHEP::rad);
+		fRunAction->GetPosYin().push_back(posYin * 1.E6 * CLHEP::rad);
+
 		
 		G4double angXout = (ssd[2].x() - posXin) / (ssd[2].z());
 		G4double angYout = (ssd[2].y() - posYin) / (ssd[2].z());
-		analysisManager->FillNtupleDColumn(4, angXout * 1.E6 * CLHEP::rad);
-		analysisManager->FillNtupleDColumn(5, angYout * 1.E6 * CLHEP::rad);
+		fRunAction->GetAngXout().push_back(angXout * 1.E6 * CLHEP::rad);
+		fRunAction->GetAngYout().push_back(angYout * 1.E6 * CLHEP::rad);
 
-		analysisManager->FillNtupleDColumn(6,fParameterMap["CrystAng"] * 1.E6 * CLHEP::rad); 
-		
+		fRunAction->GetCrystAng().push_back((fParameterMap["CrystAng"]) * 1.E6 * CLHEP::rad);
+    
 		analysisManager->AddNtupleRow();
 	}
 	analysisManager->AddNtupleRow(1);

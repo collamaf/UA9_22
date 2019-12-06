@@ -127,4 +127,12 @@ and as a result you'll get a canvas with plots for every plane (_vertical rows_)
 29-11-2019: by collmaf
 - Add command line parameter ("KeepSec") to keep and track secondary particles. Deep perf impact (~x 100 for 50GevMu).
 
+06-12-2019: by mbauce
+- created a first setup for mUA9 TB - see mUA9_tb0.mac
+- Moved to 4 Si layers with size available in macro
+- Renamed the ExExChTree to ExpTree
+- Added to the aforementioned tree the info from the Si detectors (hits Id,X,Y,Z)
+
 ## TODOs
+- need to create a macro for digi/smearing of SiDet hits
+- need to create a macro for flexible data analysis of SiDet hits 

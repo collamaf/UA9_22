@@ -72,10 +72,14 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		fRunAction->GetPlaneEne().push_back(step->GetPostStepPoint()->GetKineticEnergy()/GeV);
 		fRunAction->GetPlaneTime().push_back(step->GetTrack()->GetGlobalTime()/ns);
 		fRunAction->GetPlanePart().push_back(step->GetTrack()->GetDynamicParticle()->GetDefinition()->GetPDGEncoding());
-		fRunAction->GetCrystAng().push_back(((fEventAction->GetParameterMap())["CrystAng"]) * 1.E6 * CLHEP::rad );
+		//		fRunAction->GetCrystAng().push_back(((fEventAction->GetParameterMap())["CrystAng"]) * 1.E6 * CLHEP::rad );
 		fRunAction->GetPlanePlaneId().push_back(NextVol->GetCopyNo());
 	}
-	
+	if (NextVol && NextVol->GetName()=="ssd.physic") {
+	  fRunAction->GetSdAngX().push_back(step->GetPostStepPoint()->GetMomentumDirection().x());
+	  fRunAction->GetSdAngY().push_back(step->GetPostStepPoint()->GetMomentumDirection().y());
+	  fRunAction->GetSdAngId().push_back(NextVol->GetCopyNo());
+	}
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -46,18 +46,21 @@ RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap, G4String 
 	analysisManager->SetFirstHistoId(1);
 	
 	//** Creating ntuple **//
-	analysisManager->CreateNtuple("ExExChTree", "Angles and Positions");
-	analysisManager->CreateNtupleDColumn("angXin");//0
-	analysisManager->CreateNtupleDColumn("angYin");//1
-	analysisManager->CreateNtupleDColumn("posXin");//2
-	analysisManager->CreateNtupleDColumn("posYin");//3
-	analysisManager->CreateNtupleDColumn("angXout");//4
-	analysisManager->CreateNtupleDColumn("angYout");//5
-	analysisManager->CreateNtupleDColumn("crystAngX");//6
-	analysisManager->CreateNtupleDColumn("sdHitId");//7
-	analysisManager->CreateNtupleDColumn("sdHitX");//8
-	analysisManager->CreateNtupleDColumn("sdHitY");//9
-	analysisManager->CreateNtupleDColumn("sdHitZ");//10
+	analysisManager->CreateNtuple("ExpTree", "Info from Exp. Setup");
+	analysisManager->CreateNtupleDColumn("angXin", fAngXin);//0
+	analysisManager->CreateNtupleDColumn("angYin", fAngYin);//1
+	analysisManager->CreateNtupleDColumn("posXin", fPosXin);//2
+	analysisManager->CreateNtupleDColumn("posYin", fPosYin);//3
+	analysisManager->CreateNtupleDColumn("angXout", fAngXout);//4
+	analysisManager->CreateNtupleDColumn("angYout", fAngYout);//5
+	analysisManager->CreateNtupleDColumn("crystAngX", fCrystAng);//6
+	analysisManager->CreateNtupleDColumn("sdHitId", fSdHitId);//7
+	analysisManager->CreateNtupleDColumn("sdHitX", fSdHitX);//8
+	analysisManager->CreateNtupleDColumn("sdHitY", fSdHitY);//9
+	analysisManager->CreateNtupleDColumn("sdHitZ", fSdHitZ);//10
+	analysisManager->CreateNtupleDColumn("sdAngX", fSdAngX);
+	analysisManager->CreateNtupleDColumn("sdAngY", fSdAngY);
+	analysisManager->CreateNtupleDColumn("sdAngId", fSdAngId);
 	analysisManager->FinishNtuple();
 	
 	analysisManager->CreateNtuple("Beam", "Primary Beam");
