@@ -81,8 +81,11 @@ void EventAction::BeginOfEventAction(const G4Event*){
 	fRunAction->GetSdHitX().clear();
 	fRunAction->GetSdHitY().clear();
 	fRunAction->GetSdHitZ().clear();
-
-	;}
+	fRunAction->GetSdHitId().clear();
+	fRunAction->GetSdAngX().clear();
+	fRunAction->GetSdAngY().clear();
+	fRunAction->GetSdAngId().clear();
+}
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -159,8 +162,8 @@ void EventAction::EndOfEventAction(const G4Event* evt){
 
 		fRunAction->GetCrystAng().push_back((fParameterMap["CrystAng"]) * 1.E6 * CLHEP::rad);
     
-		analysisManager->AddNtupleRow();
 	}
+	analysisManager->AddNtupleRow();
 	analysisManager->AddNtupleRow(1);
 	analysisManager->AddNtupleRow(2);
 	
