@@ -35,6 +35,8 @@ for iAna in args.analyses:
         myTrees[iAna] = inFile.Get("Planes")
     elif iAna == "Crystal" and iAna not in myTrees:
         myTrees[iAna] = inFile.Get("ExExChTree")
+    elif iAna == "TB" and iAna not in myTrees:
+        myTrees[iAna] = inFile.Get("ExpTree")
 
 ### Process those trees and perform the analysis you need
 for key, t in myTrees.items():
@@ -42,6 +44,8 @@ for key, t in myTrees.items():
 #        pA.anaPlanes(t,args.label,args.savePdf)
         pA.treeLoop(t,args.label,args.savePdf)
     elif t.GetName() == "ExExChTree":
+        cA.treeLoop(t,args.label,args.savePdf)
+    elif t.GetName() == "ExpTree":
         cA.treeLoop(t,args.label,args.savePdf)
     else:
         print("Nothing to do ATM. Bye.")

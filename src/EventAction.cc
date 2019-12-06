@@ -151,8 +151,8 @@ void EventAction::EndOfEventAction(const G4Event* evt){
 		
 		double posXin = ssd[1].x() - angXin * ssd[1].z();
 		double posYin = ssd[1].y() - angYin * ssd[1].z();
-		fRunAction->GetPosXin().push_back(posXin * 1.E6 * CLHEP::rad);
-		fRunAction->GetPosYin().push_back(posYin * 1.E6 * CLHEP::rad);
+		fRunAction->GetPosXin().push_back(posXin);
+		fRunAction->GetPosYin().push_back(posYin);
 
 		
 		G4double angXout = (ssd[2].x() - posXin) / (ssd[2].z());

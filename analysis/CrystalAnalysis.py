@@ -33,7 +33,7 @@ def EmittanceRMS(histo):
     emRMS = 0.0
     stats = array('d', [0.] * 10)
     histo.GetStats(stats)
-#    print(stats[0],stats[3],stats[5],stats[6])
+    print(stats[0],stats[3],stats[5],stats[6])
     emRMS=math.sqrt((stats[3]*stats[5])-(stats[6]*stats[6]))/stats[0]
     return emRMS
 
@@ -70,21 +70,21 @@ def treeLoop(t,label = 'lastRun',savePlot=False):
     for i, event in enumerate(t): 
         if ((i/nEntries*100)%10) == 0 : print(i/nEntries*100,"% done")
 
-        h_xIn.Fill(event.posXin)
-        h_yIn.Fill(event.posYin)
-        h_xyIn.Fill(event.posXin,event.posYin)
-        h_angXIn.Fill(event.angXin)
-        h_angYIn.Fill(event.angYin)
-        h_angXYIn.Fill(event.angXin,event.angYin)
-        h_angXOut.Fill(event.angXout)
-        h_angYOut.Fill(event.angYout)
-        h_angXYOut.Fill(event.angXout,event.angYout)
-        h_big.Fill(event.angXout-event.angXin,event.angXin+event.crystAngX)
+        h_xIn.Fill(event.posXin[0])
+        h_yIn.Fill(event.posYin[0])
+        h_xyIn.Fill(event.posXin[0],event.posYin[0])
+        h_angXIn.Fill(event.angXin[0])
+        h_angYIn.Fill(event.angYin[0])
+        h_angXYIn.Fill(event.angXin[0],event.angYin[0])
+        h_angXOut.Fill(event.angXout[0])
+        h_angYOut.Fill(event.angYout[0])
+        h_angXYOut.Fill(event.angXout[0],event.angYout[0])
+        h_big.Fill(event.angXout[0]-event.angXin[0],event.angXin[0]+event.crystAngX[0])
         #h_big.Fill(event.angXout-event.angXin,event.angXin)
-        h_exIn.Fill(event.posXin,event.angXin)
-        h_exOut.Fill(event.posXin,event.angXout)
-        h_eyIn.Fill(event.posYin,event.angYin)
-        h_eyOut.Fill(event.posYin,event.angYout)
+        h_exIn.Fill(event.posXin[0],event.angXin[0])
+        h_exOut.Fill(event.posXin[0],event.angXout[0])
+        h_eyIn.Fill(event.posYin[0],event.angYin[0])
+        h_eyOut.Fill(event.posYin[0],event.angYout[0])
 
     print("End of loop over events.")
 
