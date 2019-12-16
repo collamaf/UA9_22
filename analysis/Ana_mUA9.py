@@ -5,6 +5,7 @@ import myStyle
 from setup import *
 import PlaneAnalysis as pA
 import CrystalAnalysis as cA
+import TBAnalysis as tbA
 
 gBenchmark.Start('myBench')
 
@@ -17,6 +18,8 @@ parser.add_argument('--rotX', action="store", dest="rotX", default=0, help='Crys
 parser.add_argument('--noStop', action="store_true", dest="noStop", default=False, help='set to True to ignore wait')
 parser.add_argument('--savePdf', action="store_true", dest="savePdf", default=False, help='set to True to save canvas')
 parser.add_argument('--label', action="store", dest="label", default="lastRun", help='label for outpu files')
+parser.add_argument('--shiftX', action="store", dest="shiftAngX", default=0.0, help='shift angle for rescaling emittance')
+
 args = parser.parse_args()
 inFile = TFile(args.fileName)
 
@@ -46,7 +49,7 @@ for key, t in myTrees.items():
     elif t.GetName() == "ExExChTree":
         cA.treeLoop(t,args.label,args.savePdf)
     elif t.GetName() == "ExpTree":
-        cA.treeLoop(t,args.label,args.savePdf)
+        tbA.treeLoop(t,args.label,args.shiftAngX,args.savePdf)
     else:
         print("Nothing to do ATM. Bye.")
 

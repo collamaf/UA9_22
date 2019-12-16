@@ -1,4 +1,9 @@
+murad = 1.E-6
 planes = [0,1,2,3]
+
+xtalX = 2.0 #mm
+xtalY = 7.0 #mm
+xtalZ = 1.0 #mm 
 
 cH = 300
 cW = 300
@@ -9,18 +14,20 @@ posR = {
 }
 
 cosR = {
-    "min" : -0.0002,
-    "max" : +0.0002
+    "min" : -0.002,
+    "max" : +0.002
 }
 
 angR = {
-    "min" : -200.,
-    "max" : 200.
+    "min" : -2000.,
+    "max" : 2000.
 }
 
 eneR = {
-    "min" : 21.6,
-    "max" : 22.6
+#    "min" : 21.6,
+#    "max" : 22.6
+    "min" : 395,
+    "max" : 400
 }
 
 pColor = {
