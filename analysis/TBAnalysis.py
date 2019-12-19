@@ -33,7 +33,7 @@ def EmittanceRMS(histo):
     emRMS = 0.0
     stats = array('d', [0.] * 10)
     histo.GetStats(stats)
-    print(stats[0],stats[3],stats[5],stats[6])
+    #print(stats[0],stats[3],stats[5],stats[6])
     emRMS=math.sqrt((stats[3]*stats[5])-(stats[6]*stats[6]))/stats[0]
     return emRMS
 
@@ -64,7 +64,7 @@ def treeLoop(t,label = 'lastRun',shiftAngX=0.0,savePlot=False):
     h_angXOut = Hist1D("h_angXOut","Outgoing X angle",40,angR["min"],angR["max"],"#theta_{X}^{out} [#mu rad]",1)
     h_angYOut = Hist1D("h_angYOut","Outgoing Y angle",40,angR["min"],angR["max"],"#theta_{Y}^{out} [#mu rad]",2)
     h_angXYOut = Hist2D("h_angXYOut","Outgoing X vs Y angle",40,angR["min"],angR["max"],40,angR["min"],angR["max"],"#theta_{X}^{out} [#mu rad]","#theta_{Y}^{out} [#mu rad]",1)
-    h_big = Hist2D("h_big","Deflection vs. incidence",200,angR["min"],angR["max"],200,angR["min"],angR["max"],"Deflection [#mu rad]","Incidence angle [#mu rad]",1)
+    h_big = Hist2D("h_big","Deflection vs. incidence",200,10*angR["min"],10*angR["max"],200,10*angR["min"],10*angR["max"],"Deflection [#mu rad]","Incidence angle [#mu rad]",1)
     h_exIn = Hist2D("h_exIn","x' vs. x",80,posR["min"],posR["max"],200,angR["min"],angR["max"],"x_{In} [mm]","x'_{In} [#mu rad]",1)
     h_exOut = Hist2D("h_exOut","x' vs. x",80,posR["min"],posR["max"],200,angR["min"],angR["max"],"x_{Out} [mm]","x'_{Out} [#mu rad]",1)
     h_eyIn = Hist2D("h_eyIn","y' vs. y",80,posR["min"],posR["max"],200,angR["min"],angR["max"],"y_{In} [mm]","y'_{In} [#mu rad]",1)
@@ -99,18 +99,18 @@ def treeLoop(t,label = 'lastRun',shiftAngX=0.0,savePlot=False):
         if not passSelections(e):
             continue
         # ... or manually
-        if thetaXout<500. :
-            continue
-        if math.fabs(Xin)>0.5*xtalX :
-            continue
+        #if thetaXout<500. : continue
+        if math.fabs(thetaXin)>(30.) : continue #30 urad corresponds to critical angle
+        if math.fabs(Xin)>(0.8*xtalX) : continue
 
         for ih in range(0,len(e.sdHitId)):
             h_xSiDet[int(e.sdHitId[ih])].Fill(e.sdHitX[ih])
             h_ySiDet[int(e.sdHitId[ih])].Fill(e.sdHitY[ih])
             h_xySiDet[int(e.sdHitId[ih])].Fill(e.sdHitX[ih],e.sdHitY[ih])
-            h_angXSiDet[int(e.sdHitId[ih])].Fill(e.sdAngX[ih]/murad)
-            h_angYSiDet[int(e.sdHitId[ih])].Fill(e.sdAngY[ih]/murad)
-            h_angSiDet[int(e.sdHitId[ih])].Fill(e.sdAngX[ih]/murad,e.sdAngY[ih]/murad)
+        for ih in range(0,len(e.sdAngId)):
+            h_angXSiDet[int(e.sdAngId[ih])].Fill(e.sdAngX[ih]/murad)
+            h_angYSiDet[int(e.sdAngId[ih])].Fill(e.sdAngY[ih]/murad)
+            h_angSiDet[int(e.sdAngId[ih])].Fill(e.sdAngX[ih]/murad,e.sdAngY[ih]/murad)
 
         h_xIn.Fill(Xin)
         h_yIn.Fill(Yin)
@@ -122,7 +122,7 @@ def treeLoop(t,label = 'lastRun',shiftAngX=0.0,savePlot=False):
         h_angYOut.Fill(Yout)
         h_angXYOut.Fill(thetaXout,thetaYout)
         h_big.Fill(thetaXout-thetaXin,thetaXin+e.crystAngX[0])
-        h_exIn.Fill(Xin,thetaXin-float(shiftAngX))
+        h_exIn.Fill(Xin,thetaXin)#-float(shiftAngX))
         h_exOut.Fill(Xout,thetaXout-float(shiftAngX))
         h_eyIn.Fill(Yin,thetaYin)
         h_eyOut.Fill(Yout,thetaYout)
@@ -132,31 +132,23 @@ def treeLoop(t,label = 'lastRun',shiftAngX=0.0,savePlot=False):
     # Draw what you need
     c1.cd(); c1.Divide(cols,2)
     for ih in range(0,nlayers):
-        c1.cd(ih+1); h_xySiDet[ih].Draw("CONTZ")
-        c1.cd(ih+1+cols).SetLogy(); h_ySiDet[ih].Draw(); h_xSiDet[ih].Draw("SAME"); 
+        c1.cd(ih+1); h_xySiDet[ih].Draw("CONT1Z")
+        c1.cd(ih+1+cols).SetLogy(); h_xSiDet[ih].Draw(); h_ySiDet[ih].Draw("SAME"); 
     c1.Update()
 
     c2.cd(); c2.Divide(cols,2)
     for ih in range(0,nlayers):
-        c2.cd(ih+1); h_angSiDet[ih].Draw("CONTZ")
-        c2.cd(ih+1+cols).SetLogy(); h_angYSiDet[ih].Draw(); h_angXSiDet[ih].Draw("SAME"); 
+        c2.cd(ih+1); h_angSiDet[ih].Draw("CONT1Z")
+        c2.cd(ih+1+cols).SetLogy(); h_angXSiDet[ih].Draw(); h_angYSiDet[ih].Draw("SAME"); 
     c2.Update()
     
-#    c4.cd(1).SetLogy(); h_xIn.Draw(); h_yIn.Draw("SAME")
-#    c4.cd(1+cols); h_xyIn.Draw("COLZ0")
-#    c4.cd(2).SetLogy(); h_angXIn.Draw(); h_angYIn.Draw("SAME")
-#    c4.cd(2+cols); h_angXYIn.Draw("COLZ0")
-#    c4.cd(3).SetLogy(); h_angXOut.Draw(); h_angYOut.Draw("SAME")
-#    c4.cd(3+cols); h_angXYOut.Draw("COLZ0")
-#
-#    c4.Update()
-#
+
     c3.cd(); c3.Divide(2,2)
 
-    c3.cd(1); h_exIn.Draw("CONTZ");  print("Emittance-x(pre): % 10.3E [mm-urad]"%EmittanceRMS(h_exIn))
-    c3.cd(2); h_exOut.Draw("CONTZ"); print("Emittance-x(post): % 10.3E [mm-urad]"%EmittanceRMS(h_exOut))
-    c3.cd(3); h_eyIn.Draw("CONTZ");  print("Emittance-y(pre): % 10.3E [mm-urad]"%EmittanceRMS(h_eyIn))
-    c3.cd(4); h_eyOut.Draw("CONTZ"); print("Emittance-y(post): % 10.3E [mm-urad]"%EmittanceRMS(h_eyOut))
+    c3.cd(1); h_exIn.Draw("CONT1Z");  #print("Emittance-x(pre): % 10.3E [mm-urad]"%EmittanceRMS(h_exIn))
+    c3.cd(2); h_exOut.Draw("CONT1Z"); #print("Emittance-x(post): % 10.3E [mm-urad]"%EmittanceRMS(h_exOut))
+    c3.cd(3); h_eyIn.Draw("CONT1Z");  #print("Emittance-y(pre): % 10.3E [mm-urad]"%EmittanceRMS(h_eyIn))
+    c3.cd(4); h_eyOut.Draw("CONT1Z"); #print("Emittance-y(post): % 10.3E [mm-urad]"%EmittanceRMS(h_eyOut))
     c3.Update()
 
     c4.cd()
@@ -164,13 +156,24 @@ def treeLoop(t,label = 'lastRun',shiftAngX=0.0,savePlot=False):
     c4.Update()
 
 
+    plotF="./PlotExp/"
     # Save what you need later
     if savePlot:
-        c3.SaveAs("CrysDeflection_"+label+".pdf")
-        c3.SaveAs("CrysDeflection_"+label+".png")
-        c4.SaveAs("Crystal_"+label+".pdf")
-        c4.SaveAs("Crystal_"+label+".png")
+        c1.SaveAs(plotF+"Positions_"+label+".pdf")
+        c1.SaveAs(plotF+"Positions_"+label+".png")
+        c2.SaveAs(plotF+"Angles_"+label+".pdf")
+        c2.SaveAs(plotF+"Angles_"+label+".png")
+        c3.SaveAs(plotF+"Emittance_"+label+".pdf")
+        c3.SaveAs(plotF+"Emittance_"+label+".png")
+        c4.SaveAs(plotF+"Crystal_"+label+".pdf")
+        c4.SaveAs(plotF+"Crystal_"+label+".png")
 
+    if savePlot:
+        outFname=label+"_ps_out.root"
+        outF = TFile(outFname,"RECREATE")
+        h_exOut.Write(label+"_exOut")
+        h_eyOut.Write(label+"_eyOut")
+        outF.Close()
     # Wait for people to look at the plots
     input('done with treeLoop(): should I proceed?')
     return
