@@ -133,6 +133,9 @@ and as a result you'll get a canvas with plots for every plane (_vertical rows_)
 - Renamed the ExExChTree to ExpTree
 - Added to the aforementioned tree the info from the Si detectors (hits Id,X,Y,Z)
 
+03-03-2020: by collamaf
+- Fix errore in entries of Beam root leaf: P was missing, for now I fill twice with E
+
 ## TODOs
 - need to create a macro for digi/smearing of SiDet hits
 - need to create a macro for flexible data analysis of SiDet hits 
