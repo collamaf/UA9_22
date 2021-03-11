@@ -44,7 +44,11 @@ StackingAction::~StackingAction(){;}
 G4ClassificationOfNewTrack
 StackingAction::ClassifyNewTrack(const G4Track* aTrack){
     G4ClassificationOfNewTrack status = fUrgent;
-    
+    if(aTrack->GetTrackID()==0) {
+      if((abs(aTrack->GetStep()->GetPreStepPoint()->GetPosition().x())/CLHEP::mm >= 1.5*CLHEP::mm)||
+	 (abs(aTrack->GetStep()->GetPreStepPoint()->GetPosition().y())/CLHEP::mm >= 1.5*CLHEP::mm))
+	status = fKill;
+    }
     if(fKillSecondary){
         if(aTrack->GetTrackID()>1){
             status = fKill;
