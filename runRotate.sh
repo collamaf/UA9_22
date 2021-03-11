@@ -49,10 +49,10 @@ do
 #    cp ../$MACRO .
     cmd="./channeling $MACRO -CrystAng ${a}E-6 $OPTIONS"
     echo "$cmd"
-    eval $cmd >& $logFile
+    ##eval $cmd >& $logFile
     hdcmd=$(cat $logFile |grep hadd |grep G4WT0)
     echo "$hdcmd"
-    eval ${hdcmd#*>}    
+    ##eval ${hdcmd#*>}    
 #    cd ..
 done
 
@@ -61,4 +61,4 @@ filesToMerge=$(ls | grep ${LABEL} |grep root)
 mergedFile=$( cut -d '_' -f 1 <<< $filesToMerge)"_merged.root"
 mrgcmd="hadd $mergedFile $filesToMerge"
 echo $mrgcmd
-eval $mrgcmd
+##eval $mrgcmd
