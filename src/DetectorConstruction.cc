@@ -69,6 +69,7 @@ DetectorConstruction::DetectorConstruction(const std::map<G4String,G4double> & P
 		       1.94 * CLHEP::mm)),
   fBR(G4ThreeVector(0.,0.,0.)),
   fAngles(G4ThreeVector(0.,0.,0.)),
+fSiDetSizes(G4ThreeVector(38.*mm,38.*mm,0.3*mm)),
   fParameterMap(ParameterMap){
   fMessenger = new DetectorConstructionMessenger(this);
 }

@@ -58,7 +58,8 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent){
 	analysisManager->FillNtupleDColumn(1, 4, fGPS->GetParticleMomentumDirection().y());
 	analysisManager->FillNtupleDColumn(1, 5, fGPS->GetParticleMomentumDirection().z());
 	analysisManager->FillNtupleDColumn(1, 6, fGPS->GetParticleEnergy()/GeV);
-	analysisManager->FillNtupleDColumn(1, 7, fGPS->GetParticleDefinition()->GetPDGEncoding());
+	analysisManager->FillNtupleDColumn(1, 7, fGPS->GetParticleEnergy()/GeV);
+	analysisManager->FillNtupleDColumn(1, 8, fGPS->GetParticleDefinition()->GetPDGEncoding());
 
 }
 
