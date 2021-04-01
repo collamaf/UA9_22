@@ -87,6 +87,20 @@ python(3) Ana_mUA9.py --fileName mUA9_N1000.root --tree Planes
 ```
 and as a result you'll get a canvas with plots for every plane (_vertical rows_) showing (from top to bottom): y vs. x, x, CosY vs. cosX, cosX.
 
+## Backward engineering
+- The UA9 files are in `@lxplus.cern.ch:/eos/experiment/UA9/H8/current/dat`
+- Need to remove some zeroes in the `.dat` files which are appearing in the form of lines such as `0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0`. A command should do the trick (files are huge, it will take some time)
+```
+cat ACP80_0.dat | grep -v '0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0' >& ACP80_0.data_nozeros
+mv ACP80_0.data_nozeros ACP80_0.data
+```
+- Macro `analysis/FilterData.ipynb` is to filter large data files according to some preliminary cuts: `max_d0x = 1.5` and `max_d0y = 1.5`. This create a smaller file named `*_flt.dat`
+- The commands below are producing the plot with acceptances as a function of the impinging angle
+```
+cd analysis
+python plotAcceptances.py
+```
+
 ### CHANGE LOG
 07-09-2019:
 - First Commit
