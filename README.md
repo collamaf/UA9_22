@@ -88,13 +88,34 @@ python(3) Ana_mUA9.py --fileName mUA9_N1000.root --tree Planes
 and as a result you'll get a canvas with plots for every plane (_vertical rows_) showing (from top to bottom): y vs. x, x, CosY vs. cosX, cosX.
 
 ## Backward engineering
-- The UA9 files are in `@lxplus.cern.ch:/eos/experiment/UA9/H8/current/dat`
+### Process Data from UA9
+- The UA9 files are in `@lxplus.cern.ch:/eos/experiment/UA9/H8/current/dat`. Currently available
+
+|File | Size | Info|
+|------------|--------|--------|
+|ACP80_6534.dat | 342 Mb | angle +20 (AM)|
+|ACP80_0.dat | 7.1 Gb | angle 0|
+|ACP80_plus10.dat | 4.4 Gb | angle +10 (VR|
+|ACP80_plus50.dat | 2.3 Gb | angle +50 (VR)|
+|ACP80_plus90.dat | 2.6 Gb | angle +90 (VR)|
+|ACP80_min50.dat | 2.3 Gb | angle -50 (CH)|
+|ACP80_min70.dat | 2.3 Gb | angle -70 (CH)|
+|ACP80_min90.dat | 5.0 Gb | angle -90 (CH)|
+
 - Need to remove some zeroes in the `.dat` files which are appearing in the form of lines such as `0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0`. A command should do the trick (files are huge, it will take some time)
 ```
 cat ACP80_0.dat | grep -v '0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0' >& ACP80_0.dat_nozeros
 mv ACP80_0.dat_nozeros ACP80_0.dat
 ```
-- Macro `analysis/FilterData.ipynb` is to filter large data files according to some preliminary cuts: `max_d0x = 1.5` and `max_d0y = 1.5`. This create a smaller file named `*_flt.dat`
+- Macro `analysis/FilterData.ipynb` is to filter large data files according to some preliminary cuts: `max_d0x = 1.5` and `max_d0y = 1.5`. This create a smaller file named `*_flt.dat`. A copy of the filtered files is being placed in `@lxplus.cern.ch:/eos/user/m/mbauce/UA9_data/`
+
+### Run and process simulation 
+
+*coming soon, need to re-check the instructions above*
+
+### Compare Data to Simulation
+- Macro `analysis/CompareRuns.ipynb` is analysing runs of data and eventually comparing a set of them (e.g. can be Data at different angles, Sims at different angles or Data/Sim comparison for a given angle). You need one each to run the comparison. At the beginning of the jupyter macro you can (un-)comment the files you like to analyse. Check carefully the plots and read the messages between cells. Process first DATA, then Sim (if doing all at once it will probably crash/complain).
+- Macro `analysis/CompareRuns.ipynb` is writing at the very end the acceptances in the `Acceptances.txt` file (and doing other stuff). Check you understand what's happening and how these are evaluated.
 - The commands below are producing the plot with acceptances as a function of the impinging angle
 ```
 cd analysis
