@@ -87,7 +87,7 @@ python(3) Ana_mUA9.py --fileName mUA9_N1000.root --tree Planes
 ```
 and as a result you'll get a canvas with plots for every plane (_vertical rows_) showing (from top to bottom): y vs. x, x, CosY vs. cosX, cosX.
 
-## Backward engineering
+## Backward engineering (April '21 - a year later)
 ### Process Data from UA9
 - The UA9 files are in `@lxplus.cern.ch:/eos/experiment/UA9/H8/current/dat`. Currently available
 
@@ -111,7 +111,17 @@ mv ACP80_0.dat_nozeros ACP80_0.dat
 
 ### Run and process simulation 
 
-*coming soon, need to re-check the instructions above*
+- run a Simulation with a command like 
+```
+source runRotate.sh -m=ua9_ref0.mac -n=10000 -l=SimSq
+``` 
+where in `runRotate.sh` you need to define at the top the angles you like to generate. The macro `ua90_ref0.mac` is the reference macro for the UA9 setup, `10000` are the generated primaries. The output goes in `mUA9SimSq_Part_Ene180_CrystAng*_N10000.root` and the log of the simulation in `sim_SimSq_a*.log`.
+- run `dumpRootToCSV.py` to dump the content of the simulated ROOT file to a `.dat` file. An example command is 
+```
+python dumpRootToCSV.py --fileName build/mUA9SimSq_Part_Ene180_CrystAngXXXX_N10000.root
+```
+where `XXX` is the angle in the file name you like to process. Move the produced `.dat` files to the `BigDataFiles` for subsequent processing.
+
 
 ### Compare Data to Simulation
 - Macro `analysis/CompareRuns.ipynb` is analysing runs of data and eventually comparing a set of them (e.g. can be Data at different angles, Sims at different angles or Data/Sim comparison for a given angle). You need one each to run the comparison. At the beginning of the jupyter macro you can (un-)comment the files you like to analyse. Check carefully the plots and read the messages between cells. Process first DATA, then Sim (if doing all at once it will probably crash/complain).
