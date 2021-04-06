@@ -1,33 +1,57 @@
 # UA9Mu
 
 Geant4 simulation for Channeling in view of UA9 mu experiments
-Last edit: 07-11-2019
+Last edit: 06-04-2021
 
+- [Checkout the code](#checkout-the-code)
+- [Compile the code](#compile-the-code)
+- [Run simulations](#run-simulations)
+  - [Available Command Line Arguments](#available-command-line-arguments)
+  - [Geometry](#geometry)
+  - [Primary particle](#primary-particle)
+  - [Physics](#physics)
+  - [Output](#output)
+- [Analyze simulations](#analyze-simulations)
+- [Process Data from UA9](#process-data-from-ua9)
+- [Compare Data to Simulations](#compare-data-to-simulations)
+- [CHANGELOG](#changelog)
+- [TODOs](#todos)
+
+## Checkout the code
+
+to clone this repository
+```
+git clone https://github.com/collamaf/UA9Mu.git
+```
+and then insert your username and password.
+
+## Compile the code
+
+```
+cd build
+cmake -DGeant4_DIR=$G4INSTALL ../
+make -j4
+```
 CAVEAT - For now the sim correctly works only if Geant is compiled with MT. Then you can use only 1 thread by using in the macro:
 ```
 /run/numberOfThreads 1
 ```
 
-## How to checkout
-
-to clone the repository:
-```
-git clone https://github.com/collamaf/UA9Mu.git
-```
-and then insert your username and password
-
-
-
-## How to Run:
+## Run simulations
+Once compiled the code you can run simulation going into the `build` folder and launching the macro
 ```
 cd build
-cmake -DGeant4_DIR=$G4INSTALL ../
-make -j4
 ./channeling -{arg} VALUE etc etc
 ./channeling -Vis 1 -CrystX 1000 -CrystY 1000 -CrystZ 2000 
 ```
+There is a script to quickly launch a simulation (after compiling the code), which should work in the general case
+```
+source runRotate.sh -m=ua9_ref0.mac -n=10000 -l=SimSq
+``` 
+where in `runRotate.sh` you need to define at the top the angles you like to generate. This script is simply setting up the environment and sending the `./channeling` macro on different angles.
+The macro `ua90_ref0.mac` is the reference macro for the UA9 setup, `10000` are the generated primaries. The output goes in `mUA9SimSq_Part_Ene180_CrystAng*_N10000.root` and the log of the simulation in `sim_SimSq_a*.log`.
 
-#### Available Command Line Arguments:
+#### Available Command Line Arguments
 - Ene: beam energy [GeV]
 - Part: beam particle [PDG code]
 - NPrim: number of primaries to simulate
@@ -41,22 +65,23 @@ make -j4
 - Vis: 1 for visualization
 
 
-#### GEOMETRY (in increasing z coord.)
+#### Geometry
+Note: this is expressed in increasing z coordinates
 - Channeling crystal placed at origin. Current size hardcoded in DetConst: 1x70x1.94 mm
 - 3 Si detectors: -9.998 m, -0.320 m and 10.756 m
 - 4 dummy (empty planes) for scoring purposes: along z at: -10.5m, -Cristal, +Cristal, +10.5m
 
-### PRIMARY PARTICLE
+#### Primary particle
 The primary events are 400 GeV/c protons launched at -10.5 m from the crystal with 13.36 microrad x 11.25 microrad divergence.
 Modifiable via macro commands
 
 
 
-#### PHYSICS
+#### Physics
 In the example the physics of channeling and volume reflection has been added to the standard Geant4 physics. The description of the used model can be found in the paper ‘A model for the  interaction of high-energy particles in straight and bent crystals implemented in Geant4’ by E. Bagli et al., available online at http://arxiv.org/abs/1403.5819
 
 
-#### OUTPUT:
+#### Output
 The simulation produces 1 .root file, with 3 ntuples:
 ExExChTree:
 - angXin : incoming particle X angle at the crystal
@@ -80,15 +105,21 @@ Planes: contains info at dummy planes crossing
 - Part
 - PlaneId: 0, 1, 2, 3
 
-## How to analyze simulation results
+## Analyze simulations
 Once you ran the simulation and have an output file such as `mUA9_N1000.root` you can run the following command
 ```
 python(3) Ana_mUA9.py --fileName mUA9_N1000.root --tree Planes
 ```
 and as a result you'll get a canvas with plots for every plane (_vertical rows_) showing (from top to bottom): y vs. x, x, CosY vs. cosX, cosX.
 
+To dump the content of the simulated ROOT file to a `.dat` file for subsequent analysis (see next) a useful, yet simple, script `dumpRootToCSV.py` is available and can be run as
+```
+python dumpRootToCSV.py --fileName build/mUA9SimSq_Part_Ene180_CrystAngXXXX_N10000.root
+```
+where `XXX` is the angle in the file name you like to process. Move the produced `.dat` files to the `BigDataFiles` for subsequent processing.
+
 ## Backward engineering (April '21 - a year later)
-### Process Data from UA9
+## Process Data from UA9
 - The UA9 files are in `@lxplus.cern.ch:/eos/experiment/UA9/H8/current/dat`. Currently available
 
 |File | Size | Info|
@@ -109,21 +140,7 @@ mv ACP80_0.dat_nozeros ACP80_0.dat
 ```
 - Macro `analysis/FilterData.ipynb` is to filter large data files according to some preliminary cuts: `max_d0x = 1.5` and `max_d0y = 1.5`. This create a smaller file named `*_flt.dat`. A copy of the filtered files is being placed in `@lxplus.cern.ch:/eos/user/m/mbauce/UA9_data/`
 
-### Run and process simulation 
-
-- run a Simulation with a command like 
-```
-source runRotate.sh -m=ua9_ref0.mac -n=10000 -l=SimSq
-``` 
-where in `runRotate.sh` you need to define at the top the angles you like to generate. The macro `ua90_ref0.mac` is the reference macro for the UA9 setup, `10000` are the generated primaries. The output goes in `mUA9SimSq_Part_Ene180_CrystAng*_N10000.root` and the log of the simulation in `sim_SimSq_a*.log`.
-- run `dumpRootToCSV.py` to dump the content of the simulated ROOT file to a `.dat` file. An example command is 
-```
-python dumpRootToCSV.py --fileName build/mUA9SimSq_Part_Ene180_CrystAngXXXX_N10000.root
-```
-where `XXX` is the angle in the file name you like to process. Move the produced `.dat` files to the `BigDataFiles` for subsequent processing.
-
-
-### Compare Data to Simulation
+## Compare Data to Simulations
 - Macro `analysis/CompareRuns.ipynb` is analysing runs of data and eventually comparing a set of them (e.g. can be Data at different angles, Sims at different angles or Data/Sim comparison for a given angle). You need one each to run the comparison. At the beginning of the jupyter macro you can (un-)comment the files you like to analyse. Check carefully the plots and read the messages between cells. Process first DATA, then Sim (if doing all at once it will probably crash/complain).
 - Macro `analysis/CompareRuns.ipynb` is writing at the very end the acceptances in the `Acceptances.txt` file (and doing other stuff). Check you understand what's happening and how these are evaluated.
 - The commands below are producing the plot with acceptances as a function of the impinging angle
@@ -132,7 +149,7 @@ cd analysis
 python plotAcceptances.py
 ```
 
-### CHANGE LOG
+## CHANGELOG
 07-09-2019:
 - First Commit
 
@@ -183,6 +200,9 @@ python plotAcceptances.py
 
 04-03-2020: by collamaf
 - Add default value for fSiDetSize. No more need for macros
+
+06-04-2021: by mbauce
+- Cleaned a bit the code, macros, improved the `README` and tested the flow.
 
 ## TODOs
 - need to create a macro for digi/smearing of SiDet hits
