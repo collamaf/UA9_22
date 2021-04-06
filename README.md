@@ -87,6 +87,51 @@ python(3) Ana_mUA9.py --fileName mUA9_N1000.root --tree Planes
 ```
 and as a result you'll get a canvas with plots for every plane (_vertical rows_) showing (from top to bottom): y vs. x, x, CosY vs. cosX, cosX.
 
+## Backward engineering (April '21 - a year later)
+### Process Data from UA9
+- The UA9 files are in `@lxplus.cern.ch:/eos/experiment/UA9/H8/current/dat`. Currently available
+
+|File | Size | Info|
+|------------|--------|--------|
+|ACP80_6534.dat | 342 Mb | angle +20 (AM)|
+|ACP80_0.dat | 7.1 Gb | angle 0|
+|ACP80_plus10.dat | 4.4 Gb | angle +10 (VR|
+|ACP80_plus50.dat | 2.3 Gb | angle +50 (VR)|
+|ACP80_plus90.dat | 2.6 Gb | angle +90 (VR)|
+|ACP80_min50.dat | 2.3 Gb | angle -50 (CH)|
+|ACP80_min70.dat | 2.3 Gb | angle -70 (CH)|
+|ACP80_min90.dat | 5.0 Gb | angle -90 (CH)|
+
+- Need to remove some zeroes in the `.dat` files which are appearing in the form of lines such as `0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0`. A command should do the trick (files are huge, it will take some time)
+```
+cat ACP80_0.dat | grep -v '0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0' >& ACP80_0.dat_nozeros
+mv ACP80_0.dat_nozeros ACP80_0.dat
+```
+- Macro `analysis/FilterData.ipynb` is to filter large data files according to some preliminary cuts: `max_d0x = 1.5` and `max_d0y = 1.5`. This create a smaller file named `*_flt.dat`. A copy of the filtered files is being placed in `@lxplus.cern.ch:/eos/user/m/mbauce/UA9_data/`
+
+### Run and process simulation 
+
+- run a Simulation with a command like 
+```
+source runRotate.sh -m=ua9_ref0.mac -n=10000 -l=SimSq
+``` 
+where in `runRotate.sh` you need to define at the top the angles you like to generate. The macro `ua90_ref0.mac` is the reference macro for the UA9 setup, `10000` are the generated primaries. The output goes in `mUA9SimSq_Part_Ene180_CrystAng*_N10000.root` and the log of the simulation in `sim_SimSq_a*.log`.
+- run `dumpRootToCSV.py` to dump the content of the simulated ROOT file to a `.dat` file. An example command is 
+```
+python dumpRootToCSV.py --fileName build/mUA9SimSq_Part_Ene180_CrystAngXXXX_N10000.root
+```
+where `XXX` is the angle in the file name you like to process. Move the produced `.dat` files to the `BigDataFiles` for subsequent processing.
+
+
+### Compare Data to Simulation
+- Macro `analysis/CompareRuns.ipynb` is analysing runs of data and eventually comparing a set of them (e.g. can be Data at different angles, Sims at different angles or Data/Sim comparison for a given angle). You need one each to run the comparison. At the beginning of the jupyter macro you can (un-)comment the files you like to analyse. Check carefully the plots and read the messages between cells. Process first DATA, then Sim (if doing all at once it will probably crash/complain).
+- Macro `analysis/CompareRuns.ipynb` is writing at the very end the acceptances in the `Acceptances.txt` file (and doing other stuff). Check you understand what's happening and how these are evaluated.
+- The commands below are producing the plot with acceptances as a function of the impinging angle
+```
+cd analysis
+python plotAcceptances.py
+```
+
 ### CHANGE LOG
 07-09-2019:
 - First Commit
