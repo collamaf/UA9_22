@@ -28,10 +28,8 @@ fig = plt.figure(figsize=(6,4))
 
 plt.plot(dsMC['angle'],dsMC['eff1S'],'--r',label='$A_{1\sigma}$ Simulation')
 plt.plot(dsMC['angle'],dsMC['eff2S'],'--b',label='$A_{2\sigma}$ Simulation')
-#
 plt.plot(dsData['angle'],dsData['eff1S'],'or',label='$A_{1\sigma}$ Data (%s)'%dataLabel)
 plt.plot(dsData['angle'],dsData['eff2S'],'ob',label='$A_{2\sigma}$ Data (%s)'%dataLabel)
-
 plt.title(r'Acceptance $\theta_b$ +/- 1(2)$\sigma$  ($\theta_b$= {:.1f} $\mu$rad)'.format(bendAngle))
 plt.xlabel('Beam angle',fontsize='15')
 plt.ylabel('Window acceptance',fontsize='15')
@@ -48,7 +46,6 @@ for x,y in zip(dsData['angle'],dsData['eff2S']):
     plt.annotate(label,(x,y),textcoords="offset points",xytext=(0,10),ha='center',color='b')
 
 plt.annotate("Alignement",(-1*bendAngle,0.7),textcoords="offset points",xytext=(10,0),ha='center',rotation=90)
-
 
 plt.show()
 fig.savefig("Acceptances.png",bbox_inches='tight')
