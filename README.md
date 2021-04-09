@@ -14,6 +14,7 @@ Last edit: 06-04-2021
 - [Analyze simulations](#analyze-simulations)
 - [Process Data from UA9](#process-data-from-ua9)
 - [Compare Data to Simulations](#compare-data-to-simulations)
+- [Plot acceptances](#plot-acceptances)
 - [CHANGELOG](#changelog)
 - [TODOs](#todos)
 
@@ -141,13 +142,24 @@ mv ACP80_0.dat_nozeros ACP80_0.dat
 - Macro `analysis/FilterData.ipynb` is to filter large data files according to some preliminary cuts: `max_d0x = 1.5` and `max_d0y = 1.5`. This create a smaller file named `*_flt.dat`. A copy of the filtered files is being placed in `@lxplus.cern.ch:/eos/user/m/mbauce/UA9_data/`
 
 ## Compare Data to Simulations
-- Macro `analysis/CompareRuns.ipynb` is analysing runs of data and eventually comparing a set of them (e.g. can be Data at different angles, Sims at different angles or Data/Sim comparison for a given angle). You need one each to run the comparison. At the beginning of the jupyter macro you can (un-)comment the files you like to analyse. Check carefully the plots and read the messages between cells. Process first DATA, then Sim (if doing all at once it will probably crash/complain).
-- Macro `analysis/CompareRuns.ipynb` is writing at the very end the acceptances in the `Acceptances.txt` file (and doing other stuff). Check you understand what's happening and how these are evaluated.
-- The commands below are producing the plot with acceptances as a function of the impinging angle
+The macro `analysis/CompareRuns.ipynb` is analysing runs of data and eventually comparing a set of them (e.g. can be Data at different angles, Sims at different angles or Data/Sim comparison for a given angle). You need one or more `.dat` files to analyse. 
+At the beginning of the jupyter macro you can define the files you want to analyse: setting `whichFiles` to `Sim`, `Data`, `All` is enabling a set of simulated samples, data samples, or both. This is checking whether files exist in the local Data folder (typically `BigDataFiles`) and ignoring the missing ones. You can set `whichFiles` to `Comp` if you want to compare specific Data/Simulated samples, side-by-side: in the corresponding part of the code you can set the desired datasets. 
+
+NOTE: In the list of dataset, the macro is looking for a reference dataset (angle 0, aligned to perfect channelling): if this is missing you may encounter several complaints.
+
+NOTE: Check carefully the plots and read the messages between cells: make sure you always understand what is happening!
+
+
+The macro `analysis/CompareRuns.ipynb` is writing at the very end (last cell) the acceptances in the `Acceptances.txt` file. Check the code and make sure you understand what's happening and how these are evaluated. These are the fraction of initial events entering a given window alighned with the outgoing channeled beam, with a N-sigma width given by the fit on the outgoing angle distribution of the dataset corresponding to *perfect channelling alignement*.
+
+## Plot acceptances
+
+The commands below are producing the plot with acceptances as a function of the impinging angle
 ```
 cd analysis
 python plotAcceptances.py
 ```
+This is reading the "Acceptances.txt" file so you need to check what is in there, unless you just generated one with the `analysis/CompareRuns.ipynb` macro.
 
 ## CHANGELOG
 07-09-2019:
