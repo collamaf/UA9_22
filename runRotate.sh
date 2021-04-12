@@ -4,10 +4,11 @@
 
 # angles here in urad (milliradians) - will take care later about that
 #angles=(-100 -90 -80 -70 -60 -50 -40 -30 -20 -10 0 10 20 30 40 50 60 70 80 90 100)
-#angles=(-100 -60 0 60 100)
-angles=(0)
+#angles=(-90 -60 -30 30 60 90)
+#angles=(-10 -20 -40)
+angles=(35 45 55)
 LABEL="na"
-
+MERGE=false
 
 for i in "$@"
 do
@@ -34,7 +35,7 @@ case $i in
 esac
 done
 
-OPTIONS="-Label $LABEL -NPrim $NPRIM -Part -11 -Ene 50 "
+OPTIONS="-Label $LABEL -NPrim $NPRIM -Part 2212 -Ene 180" # -NoCryst 1"
 
 for a in "${angles[@]}"
 do
@@ -49,16 +50,19 @@ do
 #    cp ../$MACRO .
     cmd="./channeling $MACRO -CrystAng ${a}E-6 $OPTIONS"
     echo "$cmd"
-    ##eval $cmd >& $logFile
+    eval $cmd >& $logFile
     hdcmd=$(cat $logFile |grep hadd |grep G4WT0)
     echo "$hdcmd"
-    ##eval ${hdcmd#*>}    
+    eval ${hdcmd#*>}    
 #    cd ..
 done
 
-#merge output
-filesToMerge=$(ls | grep ${LABEL} |grep root)
-mergedFile=$( cut -d '_' -f 1 <<< $filesToMerge)"_merged.root"
-mrgcmd="hadd $mergedFile $filesToMerge"
-echo $mrgcmd
-##eval $mrgcmd
+if $MERGE
+then
+    #merge output
+    filesToMerge=$(ls | grep ${LABEL} |grep root)
+    mergedFile=$( cut -d '_' -f 1 <<< $filesToMerge)"_merged.root"
+    mrgcmd="hadd $mergedFile $filesToMerge"
+    echo $mrgcmd
+    eval $mrgcmd
+fi
