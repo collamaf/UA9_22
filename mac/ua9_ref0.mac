@@ -1,10 +1,13 @@
 #detector geometry
 /xtal/setMaterial G4_Si
 /xtal/setAngle 0. -30.5E-6 0. rad #rotation is usually .5*channeling_deflection
-/xtal/setSize 2.0 70. 4.0 mm
+/xtal/setSize 2.8 70. 4.0 mm
 /xtal/setBR 65.5738 0. 0. m #61 urad in this run
 /xtal/setEC data/Si220pl
-# /tracking/verbose 2
+
+/sidet/thick 0.64 mm
+/sidet/setSize 38.0 38.0 0.64 mm
+
 # /run/numberOfThreads 1
 #initialize run before stacking and primary generator actions
 /run/initialize
@@ -17,7 +20,10 @@
 /control/verbose 2
 # /tracking/verbose 2
 
-/gps/pos/type Point
+/gps/pos/type Plane
+/gps/pos/shape Rectangle
+/gps/pos/halfx 1.8 mm
+/gps/pos/halfy 1.8 mm
 /gps/pos/centre 0 0 -10.5 m
 
 /gps/ang/type beam2d
