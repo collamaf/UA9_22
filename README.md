@@ -119,6 +119,8 @@ python dumpRootToCSV.py --fileName build/mUA9SimSq_Part_Ene180_CrystAngXXXX_N100
 ```
 where `XXX` is the angle in the file name you like to process. Move the produced `.dat` files to the `BigDataFiles` for subsequent processing.
 
+*Note: * In the simulated files the name contains the angle with the wrong sign so when producing the `.dat` file change that in the name (+50 should be named `min50`, -30 should be named `plus30`).
+
 ## Backward engineering (April '21 - a year later)
 ## Process Data from UA9
 - The UA9 files are in `@lxplus.cern.ch:/eos/experiment/UA9/H8/current/dat`. Currently available
