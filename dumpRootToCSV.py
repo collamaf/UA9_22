@@ -3,7 +3,7 @@ import argparse
 parser = argparse.ArgumentParser(description="mUA9 parser")
 parser.add_argument('--fileName', action="store", dest="fileName", default="build/mUA9COVID_Part_Ene180_CrystAng0_N1000.root", help='input file name')
 parser.add_argument('--tree', action="store", dest="tree", default="ExpTree", help='list of tree you want to process')
-parser.add_argument('--out', action="store", dest="out", help='list of tree you want to process')
+parser.add_argument('--out', action="store", dest="out", help='output file name')
 args = parser.parse_args()
 
 from ROOT import TFile
