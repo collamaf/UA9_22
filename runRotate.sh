@@ -6,7 +6,9 @@
 #angles=(-100 -90 -80 -70 -60 -50 -40 -30 -20 -10 0 10 20 30 40 50 60 70 80 90 100)
 #angles=(-90 -60 -30 30 60 90)
 #angles=(-10 -20 -40)
-angles=(35 45 55)
+#angles=(35 45 55)
+angles=(-800 -700 -600 -500 -400 -300 -200 -100 0 100 200 300 400 500 600 700 800)
+#angles=(-700 -600)
 LABEL="na"
 MERGE=false
 
@@ -35,7 +37,8 @@ case $i in
 esac
 done
 
-OPTIONS="-Label $LABEL -NPrim $NPRIM -Part 2212 -Ene 180" # -NoCryst 1"
+#OPTIONS="-Label $LABEL -NPrim $NPRIM -Part 2212 -Ene 180" # -NoCryst 1"
+OPTIONS="-Label $LABEL -NPrim $NPRIM" # -NoCryst 1"
 
 for a in "${angles[@]}"
 do
