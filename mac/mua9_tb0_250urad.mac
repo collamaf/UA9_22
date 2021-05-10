@@ -1,0 +1,39 @@
+#detector geometry
+/xtal/setMaterial G4_Si
+/xtal/setAngle 0. -0.25E-3 0. rad #rotation is usually .5*channeling_deflection
+/xtal/setSize 2.0 70. 1.0 mm
+/xtal/setBR 2.0 0. 0. m #0.5 mrad in this run
+/xtal/setEC data/Si220pl
+
+#detector information
+#/sidet/thick 38.0 mm
+/sidet/setSize 38. 38. 0.3 mm
+#/sidet/ndet 3
+
+# /run/numberOfThreads 1
+#initialize run before stacking and primary generator actions
+/run/initialize
+
+#set gps properties
+/gps/ene/mono 10. GeV
+/gps/particle mu+
+
+/run/verbose 0
+/control/verbose 0
+# /tracking/verbose 2
+
+/gps/pos/type Plane
+/gps/pos/shape Rectangle
+/gps/pos/halfx 1.8 mm
+/gps/pos/halfy 1.8 mm
+/gps/pos/centre 0 0 -10.5 m
+
+/gps/ang/type beam2d
+/gps/ang/rot1 1  0  0
+/gps/ang/rot2 0 -1  0
+/gps/ang/sigma_x 250.E-6 rad
+/gps/ang/sigma_y 250.E-6 rad
+
+#beam on
+# /run/beamOn 10000
+# /control/execute NumPrim.mac
