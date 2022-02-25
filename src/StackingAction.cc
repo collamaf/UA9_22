@@ -31,7 +31,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 StackingAction::StackingAction(const std::map<G4String,G4double> & ParameterMap): fParameterMap(ParameterMap){
-    fKillSecondary  = true;
+	fKillSecondary  = true;
 	this->SetKillStatus(!fParameterMap["KeepSec"]);
 }
 
@@ -43,24 +43,24 @@ StackingAction::~StackingAction(){;}
 
 G4ClassificationOfNewTrack
 StackingAction::ClassifyNewTrack(const G4Track* aTrack){
-    G4ClassificationOfNewTrack status = fUrgent;
-    if(aTrack->GetTrackID()==0) {
-      if((abs(aTrack->GetStep()->GetPreStepPoint()->GetPosition().x())/CLHEP::mm >= 1.5*CLHEP::mm)||
-	 (abs(aTrack->GetStep()->GetPreStepPoint()->GetPosition().y())/CLHEP::mm >= 1.5*CLHEP::mm))
-	status = fKill;
-    }
-    if(fKillSecondary){
-        if(aTrack->GetTrackID()>1){
-            status = fKill;
-        }
-    }
-    return status;
+	G4ClassificationOfNewTrack status = fUrgent;
+	if(aTrack->GetTrackID()==0) {
+		if((abs(aTrack->GetStep()->GetPreStepPoint()->GetPosition().x())/CLHEP::mm >= 1.5*CLHEP::mm)||
+			 (abs(aTrack->GetStep()->GetPreStepPoint()->GetPosition().y())/CLHEP::mm >= 1.5*CLHEP::mm))
+			status = fKill;
+	}
+	if(fKillSecondary){
+		if(aTrack->GetTrackID()>1){
+			status = fKill;
+		}
+	}
+	return status;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void StackingAction::SetKillStatus(G4bool value){
-    fKillSecondary = value;
+	fKillSecondary = value;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

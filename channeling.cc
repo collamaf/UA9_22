@@ -68,9 +68,9 @@ int main(int argc,char** argv)
 	G4UIExecutive* ui = 0;
 	
 	std::map<G4String,G4double> ParameterMap;
-//	ParameterMap["BR"]=0.17;
-//	ParameterMap["Div"]=0.0017;
-//	ParameterMap["Ene"]=17;
+	//	ParameterMap["BR"]=0.17;
+	//	ParameterMap["Div"]=0.0017;
+	//	ParameterMap["Ene"]=17;
 	ParameterMap["NPrim"]=100;
 	ParameterMap["KeepSec"]=0;
 	
@@ -78,7 +78,7 @@ int main(int argc,char** argv)
 	G4String MacroName="";
 	G4String OutputFilename = "mUA9";
 	G4cout<<"Filename: "<<OutputFilename<<G4endl;
-
+	
 	for(int i=1;i<argc;i++)
 		if(argv[i][0] =='-')
 		{
@@ -146,8 +146,8 @@ int main(int argc,char** argv)
 			}
 			else if(option.compare("-Label")==0)
 			{
-			  OutputFilename.append(argv[++i]);
-			  G4cout<<"Filename: "<<OutputFilename<<G4endl;
+				OutputFilename.append(argv[++i]);
+				G4cout<<"Filename: "<<OutputFilename<<G4endl;
 			}
 		}
 		else
@@ -184,16 +184,16 @@ int main(int argc,char** argv)
 	// Set user action classes
 	runManager->SetUserAction(new PrimaryGeneratorAction());
 	runManager->SetUserAction(new StackingAction());
-//	runManager->SetUserAction(new RunAction());
+	//	runManager->SetUserAction(new RunAction());
 	RunAction* runAction = new RunAction();
 	runManager->SetUserAction(runAction);
 	
 	EventAction* eventAction = new EventAction(runAction);
-
+	
 	runManager->SetUserAction(eventAction);
 	runManager->SetUserAction(new B1SteppingAction(eventAction, runAction));
 #else
-//	runManager->SetUserInitialization(new UserActionInitialization(ParameterMap));
+	//	runManager->SetUserInitialization(new UserActionInitialization(ParameterMap));
 	UserActionInitialization* actionInit = new UserActionInitialization(ParameterMap,OutputFilename);
 	runManager->SetUserInitialization(actionInit);
 #endif
@@ -205,9 +205,9 @@ int main(int argc,char** argv)
 	if (ParameterMap["Part"]) OutputFilename.append("_Part" + to_string(ParameterMap["Part"]));
 	if (ParameterMap["Ene"]) OutputFilename.append("_Ene" + to_string((G4int)ParameterMap["Ene"]));
 	if (ParameterMap["CrystX"]) OutputFilename.append("_CrystX" + to_string((G4int)ParameterMap["CrystX"])+ "Y"+ to_string((G4int)ParameterMap["CrystY"])+ "Z" +to_string((G4int)ParameterMap["CrystZ"]));
-
+	
 	if (ParameterMap["BR"]) OutputFilename.append("_BR" + to_string((G4int)(ParameterMap["BR"])));
-
+	
 	OutputFilename.append("_N" + to_string((G4int)ParameterMap["NPrim"]));
 	
 	if (VisFlag) OutputFilename.append("_TEST");
@@ -228,7 +228,7 @@ int main(int argc,char** argv)
 	visManager->Initialize();
 	
 	G4UImanager* UImanager = G4UImanager::GetUIpointer();
-
+	
 	if ( VisFlag ) { //Prepare for vis
 		ui = new G4UIExecutive(argc, argv);
 	}
@@ -256,16 +256,16 @@ int main(int argc,char** argv)
 		ui->SessionStart();
 		delete ui;
 	}
-		
+	
 	// Job termination
 	// Free the store: user actions, physics_list and detector_description are
 	// owned and deleted by the run manager, so they should not be deleted
 	// in the main() program !
-//	runAction->PrintRunHadd(G4Threading::G4GetNumberOfCores() - 2);
+	//	runAction->PrintRunHadd(G4Threading::G4GetNumberOfCores() - 2);
 	
 	if (VisFlag) delete visManager;
 	delete runManager;
-
+	
 	return 0;
 }
 

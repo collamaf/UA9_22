@@ -44,59 +44,59 @@
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
-    
-    DetectorConstruction(const std::map<G4String,G4double> &);
-    ~DetectorConstruction();
-    
-    void DefineMaterials();
-    G4VPhysicalVolume* Construct();
-
+	
+	DetectorConstruction(const std::map<G4String,G4double> &);
+	~DetectorConstruction();
+	
+	void DefineMaterials();
+	G4VPhysicalVolume* Construct();
+	
 private:
-    void ConstructSDandField();
-
+	void ConstructSDandField();
+	
 private:
-    DetectorConstructionMessenger* fMessenger;
-
+	DetectorConstructionMessenger* fMessenger;
+	
 public:
-    G4String GetEC() {return fECfileName;}
-    void SetEC(G4String aString) {fECfileName = aString;}
-
-    G4String GetMaterial() {return fMaterialName;}
-    void SetMaterial(G4String aString) {fMaterialName = aString;}
-    
-    G4ThreeVector GetSizes() {return fSizes;}
-    void SetSizes(G4ThreeVector a3vec) {fSizes = a3vec;}
-
-    G4double GetSizeX() {return fSizes.x();}
-    void SetSizeX(G4double xsize) {G4ThreeVector a3vec = G4ThreeVector(xsize,fSizes.y(),fSizes.z()); fSizes = a3vec;}
-
-    G4double GetSizeY() {return fSizes.y();}
-    void SetSizeY(G4double ysize) {G4ThreeVector a3vec = G4ThreeVector(fSizes.x(),ysize,fSizes.z()); fSizes = a3vec;}
-
-    G4double GetSizeZ() {return fSizes.z();}
-    void SetSizeZ(G4double zsize) {G4ThreeVector a3vec = G4ThreeVector(fSizes.x(),fSizes.y(),zsize); fSizes = a3vec;}
-    
-    G4ThreeVector GetBR() {return fBR;}
-    void SetBR(G4ThreeVector a3vec) {fBR = a3vec;}
-
-    G4ThreeVector GetAngles() {return fAngles;}
-    void SetAngles(G4ThreeVector a3vec) {fAngles = a3vec;}
-
-    G4double GetSiDetThickness() {return fSiDetThickness;}
-    void SetSiDetThickness(G4double thick) {fSiDetThickness = thick;}
-
-    G4ThreeVector GetSiDetSizes() {return fSiDetSizes;}
-    void SetSiDetSizes(G4ThreeVector a3vec) {fSiDetSizes = a3vec;}
-
+	G4String GetEC() {return fECfileName;}
+	void SetEC(G4String aString) {fECfileName = aString;}
+	
+	G4String GetMaterial() {return fMaterialName;}
+	void SetMaterial(G4String aString) {fMaterialName = aString;}
+	
+	G4ThreeVector GetSizes() {return fSizes;}
+	void SetSizes(G4ThreeVector a3vec) {fSizes = a3vec;}
+	
+	G4double GetSizeX() {return fSizes.x();}
+	void SetSizeX(G4double xsize) {G4ThreeVector a3vec = G4ThreeVector(xsize,fSizes.y(),fSizes.z()); fSizes = a3vec;}
+	
+	G4double GetSizeY() {return fSizes.y();}
+	void SetSizeY(G4double ysize) {G4ThreeVector a3vec = G4ThreeVector(fSizes.x(),ysize,fSizes.z()); fSizes = a3vec;}
+	
+	G4double GetSizeZ() {return fSizes.z();}
+	void SetSizeZ(G4double zsize) {G4ThreeVector a3vec = G4ThreeVector(fSizes.x(),fSizes.y(),zsize); fSizes = a3vec;}
+	
+	G4ThreeVector GetBR() {return fBR;}
+	void SetBR(G4ThreeVector a3vec) {fBR = a3vec;}
+	
+	G4ThreeVector GetAngles() {return fAngles;}
+	void SetAngles(G4ThreeVector a3vec) {fAngles = a3vec;}
+	
+	G4double GetSiDetThickness() {return fSiDetThickness;}
+	void SetSiDetThickness(G4double thick) {fSiDetThickness = thick;}
+	
+	G4ThreeVector GetSiDetSizes() {return fSiDetSizes;}
+	void SetSiDetSizes(G4ThreeVector a3vec) {fSiDetSizes = a3vec;}
+	
 private:
-    G4String fECfileName;
-    G4String fECOfileName;
-    G4String fMaterialName;
-    G4ThreeVector fSizes;
-    G4ThreeVector fBR;
-    G4ThreeVector fAngles;
-    G4double  fSiDetThickness;
-    G4ThreeVector fSiDetSizes;
+	G4String fECfileName;
+	G4String fECOfileName;
+	G4String fMaterialName;
+	G4ThreeVector fSizes;
+	G4ThreeVector fBR;
+	G4ThreeVector fAngles;
+	G4double  fSiDetThickness;
+	G4ThreeVector fSiDetSizes;
 	std::map<G4String,G4double>  fParameterMap;
-
+	
 };

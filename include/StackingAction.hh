@@ -39,19 +39,19 @@ class G4Track;
 class StackingAction : public G4UserStackingAction
 {
 public:
-
-  StackingAction(const std::map<G4String,G4double> &);
-  virtual ~StackingAction();
-   
-  void SetKillStatus(G4bool value);
-    
-  G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track*);
-    
+	
+	StackingAction(const std::map<G4String,G4double> &);
+	virtual ~StackingAction();
+	
+	void SetKillStatus(G4bool value);
+	
+	G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track*);
+	
 private:
-  G4bool fKillSecondary;
+	G4bool fKillSecondary;
 	std::map<G4String,G4double> fParameterMap;
-
-
+	
+	
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

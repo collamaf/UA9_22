@@ -43,13 +43,13 @@ class G4GeneralParticleSource;
 
 class UserActionInitialization : public G4VUserActionInitialization{
 public:
-  UserActionInitialization(std::map<G4String,G4double> &, G4String);
-  ~UserActionInitialization();
-    void Build() const;
-
+	UserActionInitialization(std::map<G4String,G4double> &, G4String);
+	~UserActionInitialization();
+	void Build() const;
+	
 private:
 	std::map<G4String,G4double> fParameterMap;
-        G4String OutputFilename;
+	G4String OutputFilename;
 };
 
 #endif

@@ -44,27 +44,27 @@ class G4UIcmdWithADouble;
 
 class DetectorConstructionMessenger: public G4UImessenger
 {
-  public:
-    DetectorConstructionMessenger(
-                    DetectorConstruction* mpga);
-    ~DetectorConstructionMessenger();
-
-    virtual void SetNewValue(G4UIcommand * command,G4String newValues);
-    virtual G4String GetCurrentValue(G4UIcommand * command);
-
-  private:
-    DetectorConstruction * fTarget;
-
-    G4UIdirectory* fMyXtalDirectory;
-    
-    G4UIcmdWithAString*  fXtalMaterialCmd;
-    G4UIcmdWith3VectorAndUnit* fXtalSizeCmd;
-    G4UIcmdWith3VectorAndUnit* fXtalBRCmd;
-    G4UIcmdWith3VectorAndUnit* fXtalAngleCmd;
-    G4UIcmdWithAString*  fXtalECCmd;
-    G4UIcmdWithADoubleAndUnit*  fSiDetThickCmd;
-    G4UIcmdWith3VectorAndUnit* fSiDetSizeCmd;
-
+public:
+	DetectorConstructionMessenger(
+																DetectorConstruction* mpga);
+	~DetectorConstructionMessenger();
+	
+	virtual void SetNewValue(G4UIcommand * command,G4String newValues);
+	virtual G4String GetCurrentValue(G4UIcommand * command);
+	
+private:
+	DetectorConstruction * fTarget;
+	
+	G4UIdirectory* fMyXtalDirectory;
+	
+	G4UIcmdWithAString*  fXtalMaterialCmd;
+	G4UIcmdWith3VectorAndUnit* fXtalSizeCmd;
+	G4UIcmdWith3VectorAndUnit* fXtalBRCmd;
+	G4UIcmdWith3VectorAndUnit* fXtalAngleCmd;
+	G4UIcmdWithAString*  fXtalECCmd;
+	G4UIcmdWithADoubleAndUnit*  fSiDetThickCmd;
+	G4UIcmdWith3VectorAndUnit* fSiDetSizeCmd;
+	
 };
 
 #endif

@@ -39,16 +39,16 @@ class RunAction;
 
 class EventAction : public G4UserEventAction
 {
-  public:
-    EventAction(RunAction* , const std::map<G4String,G4double> &);
-    virtual ~EventAction();
-
-    virtual void BeginOfEventAction(const G4Event*);
-    virtual void EndOfEventAction(const G4Event*);
-    std::map<G4String,G4double> GetParameterMap() { return fParameterMap; };
-
-  private:
-    G4int fSDHT_ID;
+public:
+	EventAction(RunAction* , const std::map<G4String,G4double> &);
+	virtual ~EventAction();
+	
+	virtual void BeginOfEventAction(const G4Event*);
+	virtual void EndOfEventAction(const G4Event*);
+	std::map<G4String,G4double> GetParameterMap() { return fParameterMap; };
+	
+private:
+	G4int fSDHT_ID;
 	RunAction* fRunAction;
 	std::map<G4String,G4double>  fParameterMap;
 };

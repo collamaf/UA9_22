@@ -57,7 +57,7 @@ void UserActionInitialization::Build() const {
 	
 	StackingAction* stackAct=new StackingAction(fParameterMap);
 	SetUserAction(stackAct);
-
+	
 	RunAction* runAction = new RunAction(fParameterMap, OutputFilename);
 	SetUserAction(runAction);
 	
@@ -65,7 +65,7 @@ void UserActionInitialization::Build() const {
 	SetUserAction(eventAction);
 	
 	SetUserAction(new B1SteppingAction(eventAction, runAction));
-
+	
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....

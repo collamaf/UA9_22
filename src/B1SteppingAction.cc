@@ -60,7 +60,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	G4VPhysicalVolume* NextVol = step->GetPostStepPoint()->GetTouchableHandle()->GetVolume();
 	
 	if (NextVol && NextVol->GetName()=="physDummyPlane") {
-	        //G4cout<<"ENTRO NEL PIANO "<<NextVol->GetCopyNo()<<G4endl;
+		//G4cout<<"ENTRO NEL PIANO "<<NextVol->GetCopyNo()<<G4endl;
 		fRunAction->GetPlaneX().push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
 		fRunAction->GetPlaneY().push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
 		fRunAction->GetPlaneZ().push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
@@ -75,12 +75,12 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		fRunAction->GetPlanePlaneId().push_back(NextVol->GetCopyNo());
 	}
 	if (ThisVol->GetName()!="ssd.physic" && NextVol && NextVol->GetName()=="ssd.physic") {
-	  //G4cout<<"ENTRO NEL SiDet "<<NextVol->GetCopyNo()<<G4endl;
-	  fRunAction->GetSdAngX().push_back(step->GetPostStepPoint()->GetMomentumDirection().x());
-	  fRunAction->GetSdAngY().push_back(step->GetPostStepPoint()->GetMomentumDirection().y());
-	  fRunAction->GetSdAngId().push_back(NextVol->GetCopyNo());
+		//G4cout<<"ENTRO NEL SiDet "<<NextVol->GetCopyNo()<<G4endl;
+		fRunAction->GetSdAngX().push_back(step->GetPostStepPoint()->GetMomentumDirection().x());
+		fRunAction->GetSdAngY().push_back(step->GetPostStepPoint()->GetMomentumDirection().y());
+		fRunAction->GetSdAngId().push_back(NextVol->GetCopyNo());
 	}
-
+	
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

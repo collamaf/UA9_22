@@ -33,23 +33,23 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 PrimaryGeneratorAction::PrimaryGeneratorAction(const std::map<G4String,G4double> & ParameterMap):G4VUserPrimaryGeneratorAction() , fParameterMap(ParameterMap) {
-    fGPS = new G4GeneralParticleSource();
+	fGPS = new G4GeneralParticleSource();
 	G4cout<<"PROVA MAPPA PrimGen: "<<fParameterMap["Ene"]<<G4endl;
-
+	
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 PrimaryGeneratorAction::~PrimaryGeneratorAction(){
-    delete fGPS;
+	delete fGPS;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent){
-    fGPS->GeneratePrimaryVertex(anEvent);
+	fGPS->GeneratePrimaryVertex(anEvent);
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-
+	
 	//G4cout<<"Genero primario con E= "<<fGPS->GetParticleEnergy()/GeV<<G4endl;
 	analysisManager->FillNtupleDColumn(1, 0, fGPS->GetParticlePosition().x()/mm);
 	analysisManager->FillNtupleDColumn(1, 1, fGPS->GetParticlePosition().y()/mm);
@@ -60,7 +60,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent){
 	analysisManager->FillNtupleDColumn(1, 6, fGPS->GetParticleEnergy()/GeV);
 	analysisManager->FillNtupleDColumn(1, 7, fGPS->GetParticleEnergy()/GeV);
 	analysisManager->FillNtupleDColumn(1, 8, fGPS->GetParticleDefinition()->GetPDGEncoding());
-
+	
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

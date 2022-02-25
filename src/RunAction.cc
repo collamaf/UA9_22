@@ -74,7 +74,7 @@ RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap, G4String 
 	analysisManager->CreateNtupleDColumn(1,"Ene");
 	analysisManager->CreateNtupleDColumn(1,"Part");
 	analysisManager->FinishNtuple();
-
+	
 	analysisManager->CreateNtuple("Planes", "Dummy planes scoring");
 	analysisManager->CreateNtupleDColumn(2, "X", fPlaneX);
 	analysisManager->CreateNtupleDColumn(2, "Y", fPlaneY);
@@ -89,10 +89,10 @@ RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap, G4String 
 	analysisManager->CreateNtupleDColumn(2, "PlaneId", fPlanePlaneId);
 	analysisManager->CreateNtupleDColumn(2, "crystAngX", fCrystAng);
 	analysisManager->FinishNtuple();
-
-
+	
+	
 	//	G4cout<<"PROVA MAPPA RunAct: "<<fParameterMap["Ene"]<<G4endl;
-
+	
 	
 }
 
@@ -106,7 +106,7 @@ RunAction::~RunAction(){
 
 void RunAction::BeginOfRunAction(const G4Run*){
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-//	G4String fileName = "ExExCh";
+	//	G4String fileName = "ExExCh";
 	
 	std::map<G4int,G4String> ParticleName;
 	ParticleName[11]="Ele";
@@ -127,7 +127,7 @@ void RunAction::BeginOfRunAction(const G4Run*){
 	if (fParameterMap["NoCryst"]) OutputFilename.append("_NoCryst");
 	if (fParameterMap["NoDet"]) OutputFilename.append("_NoDet");
 	if (fParameterMap["KeepSec"]) OutputFilename.append("_Sec");
-
+	
 	OutputFilename.append("_N" + to_string((G4int)fParameterMap["NPrim"]));
 	
 	analysisManager->OpenFile(OutputFilename + ".root");

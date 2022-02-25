@@ -39,136 +39,136 @@
 
 DetectorConstructionMessenger::
 DetectorConstructionMessenger(
-                              DetectorConstruction* mpga)
+															DetectorConstruction* mpga)
 :fTarget(mpga){
-    fMyXtalDirectory = new G4UIdirectory("/xtal/");
-    fMyXtalDirectory->SetGuidance("Crystal setup control commands.");
-    
-    fXtalMaterialCmd = new G4UIcmdWithAString("/xtal/setMaterial",
-                                              this);
-    fXtalMaterialCmd->SetGuidance("Set crystal material.");
-    fXtalMaterialCmd->SetParameterName("xMat",true);
-    fXtalMaterialCmd->SetDefaultValue("G4_Si");
-    
-    fXtalSizeCmd = new G4UIcmdWith3VectorAndUnit("/xtal/setSize",this);
-    fXtalSizeCmd->SetGuidance("Set crystal size.");
-    fXtalSizeCmd->SetParameterName("xtalSizeX",
-                                   "xtalSizeY",
-                                   "xtalSizeZ",
-                                   true);
-    fXtalSizeCmd->SetDefaultValue(G4ThreeVector(6.,2.,6.));
-    fXtalSizeCmd->SetDefaultUnit("mm");
-    
-    fXtalBRCmd = new G4UIcmdWith3VectorAndUnit("/xtal/setBR",this);
-    fXtalBRCmd->SetGuidance("Set crystal bending radius.");
-    fXtalBRCmd->SetParameterName("xtalBRX",
-                                 "xtalBRY",
-                                 "xtalBRZ",
-                                 true);
-    fXtalBRCmd->SetDefaultValue(G4ThreeVector(0.,0.,0.));
-    fXtalBRCmd->SetDefaultUnit("m");
-    
-    fXtalAngleCmd = new G4UIcmdWith3VectorAndUnit("/xtal/setAngle",this);
-    fXtalAngleCmd->SetGuidance("Set crystal angles.");
-    fXtalAngleCmd->SetParameterName("xtalAngleX",
-                                    "xtalAngleY",
-                                    "xtalAngleZ",
-                                    true);
-    fXtalAngleCmd->SetDefaultValue(G4ThreeVector(0.,0.,0.));
-    fXtalAngleCmd->SetDefaultUnit("rad");
-    
-    fXtalECCmd = new G4UIcmdWithAString("/xtal/setEC",
-                                        this);
-    fXtalECCmd->SetGuidance("Set crystal EC.");
-    fXtalECCmd->SetParameterName("xEC",true);
-    fXtalECCmd->SetDefaultValue("data/Si220pl");
-
-    fSiDetThickCmd = new G4UIcmdWithADoubleAndUnit("/sidet/thick",this);
-    fSiDetThickCmd->SetGuidance("Set Silicon Detector thickness");
-    fSiDetThickCmd->SetParameterName("siDetThick",true);
-    fSiDetThickCmd->SetDefaultValue(0.300);
-    fSiDetThickCmd->SetDefaultUnit("mm");
-
-    fSiDetSizeCmd = new G4UIcmdWith3VectorAndUnit("/sidet/setSize",this);
-    fSiDetSizeCmd->SetGuidance("Set Silicon Detector Sizes - x,y,z");
-    fSiDetSizeCmd->SetParameterName("sidetSizeX",
-				    "sidetSizeY",
-				    "sidetSizeX",
-				    true);
-    fSiDetSizeCmd->SetDefaultValue(G4ThreeVector(38.,38.,0.64));
-    fSiDetSizeCmd->SetDefaultUnit("mm");
-
+	fMyXtalDirectory = new G4UIdirectory("/xtal/");
+	fMyXtalDirectory->SetGuidance("Crystal setup control commands.");
+	
+	fXtalMaterialCmd = new G4UIcmdWithAString("/xtal/setMaterial",
+																						this);
+	fXtalMaterialCmd->SetGuidance("Set crystal material.");
+	fXtalMaterialCmd->SetParameterName("xMat",true);
+	fXtalMaterialCmd->SetDefaultValue("G4_Si");
+	
+	fXtalSizeCmd = new G4UIcmdWith3VectorAndUnit("/xtal/setSize",this);
+	fXtalSizeCmd->SetGuidance("Set crystal size.");
+	fXtalSizeCmd->SetParameterName("xtalSizeX",
+																 "xtalSizeY",
+																 "xtalSizeZ",
+																 true);
+	fXtalSizeCmd->SetDefaultValue(G4ThreeVector(6.,2.,6.));
+	fXtalSizeCmd->SetDefaultUnit("mm");
+	
+	fXtalBRCmd = new G4UIcmdWith3VectorAndUnit("/xtal/setBR",this);
+	fXtalBRCmd->SetGuidance("Set crystal bending radius.");
+	fXtalBRCmd->SetParameterName("xtalBRX",
+															 "xtalBRY",
+															 "xtalBRZ",
+															 true);
+	fXtalBRCmd->SetDefaultValue(G4ThreeVector(0.,0.,0.));
+	fXtalBRCmd->SetDefaultUnit("m");
+	
+	fXtalAngleCmd = new G4UIcmdWith3VectorAndUnit("/xtal/setAngle",this);
+	fXtalAngleCmd->SetGuidance("Set crystal angles.");
+	fXtalAngleCmd->SetParameterName("xtalAngleX",
+																	"xtalAngleY",
+																	"xtalAngleZ",
+																	true);
+	fXtalAngleCmd->SetDefaultValue(G4ThreeVector(0.,0.,0.));
+	fXtalAngleCmd->SetDefaultUnit("rad");
+	
+	fXtalECCmd = new G4UIcmdWithAString("/xtal/setEC",
+																			this);
+	fXtalECCmd->SetGuidance("Set crystal EC.");
+	fXtalECCmd->SetParameterName("xEC",true);
+	fXtalECCmd->SetDefaultValue("data/Si220pl");
+	
+	fSiDetThickCmd = new G4UIcmdWithADoubleAndUnit("/sidet/thick",this);
+	fSiDetThickCmd->SetGuidance("Set Silicon Detector thickness");
+	fSiDetThickCmd->SetParameterName("siDetThick",true);
+	fSiDetThickCmd->SetDefaultValue(0.300);
+	fSiDetThickCmd->SetDefaultUnit("mm");
+	
+	fSiDetSizeCmd = new G4UIcmdWith3VectorAndUnit("/sidet/setSize",this);
+	fSiDetSizeCmd->SetGuidance("Set Silicon Detector Sizes - x,y,z");
+	fSiDetSizeCmd->SetParameterName("sidetSizeX",
+																	"sidetSizeY",
+																	"sidetSizeX",
+																	true);
+	fSiDetSizeCmd->SetDefaultValue(G4ThreeVector(38.,38.,0.64));
+	fSiDetSizeCmd->SetDefaultUnit("mm");
+	
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
 DetectorConstructionMessenger::
 ~DetectorConstructionMessenger(){
-    delete fXtalMaterialCmd;
-    delete fXtalSizeCmd;
-    delete fXtalAngleCmd;
-    delete fXtalECCmd;
-    delete fXtalBRCmd;
-    delete fSiDetThickCmd;
-    delete fSiDetSizeCmd;
+	delete fXtalMaterialCmd;
+	delete fXtalSizeCmd;
+	delete fXtalAngleCmd;
+	delete fXtalECCmd;
+	delete fXtalBRCmd;
+	delete fSiDetThickCmd;
+	delete fSiDetSizeCmd;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
 void DetectorConstructionMessenger::SetNewValue(
-                                                G4UIcommand *command,
-                                                G4String newValue){
-    if(command==fXtalMaterialCmd ){
-        fTarget->SetMaterial(newValue);
-    }
-    if(command==fXtalSizeCmd ){
-        fTarget->SetSizes(fXtalSizeCmd->GetNew3VectorValue(newValue));
-    }
-    if(command==fXtalBRCmd ){
-        fTarget->SetBR(fXtalBRCmd->GetNew3VectorValue(newValue));
-    }
-    if(command==fXtalAngleCmd ){
-        fTarget->SetAngles(fXtalAngleCmd->GetNew3VectorValue(newValue));
-    }
-    if(command==fXtalECCmd ){
-        fTarget->SetEC(newValue);
-    }
-    if(command==fSiDetThickCmd ){
-      fTarget->SetSiDetThickness(fSiDetThickCmd->GetNewDoubleValue(newValue));
-    }
-    if(command==fSiDetSizeCmd ){
-      fTarget->SetSiDetSizes(fSiDetSizeCmd->GetNew3VectorValue(newValue));
-    }
+																								G4UIcommand *command,
+																								G4String newValue){
+	if(command==fXtalMaterialCmd ){
+		fTarget->SetMaterial(newValue);
+	}
+	if(command==fXtalSizeCmd ){
+		fTarget->SetSizes(fXtalSizeCmd->GetNew3VectorValue(newValue));
+	}
+	if(command==fXtalBRCmd ){
+		fTarget->SetBR(fXtalBRCmd->GetNew3VectorValue(newValue));
+	}
+	if(command==fXtalAngleCmd ){
+		fTarget->SetAngles(fXtalAngleCmd->GetNew3VectorValue(newValue));
+	}
+	if(command==fXtalECCmd ){
+		fTarget->SetEC(newValue);
+	}
+	if(command==fSiDetThickCmd ){
+		fTarget->SetSiDetThickness(fSiDetThickCmd->GetNewDoubleValue(newValue));
+	}
+	if(command==fSiDetSizeCmd ){
+		fTarget->SetSiDetSizes(fSiDetSizeCmd->GetNew3VectorValue(newValue));
+	}
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
 G4String DetectorConstructionMessenger::GetCurrentValue(
-                                                        G4UIcommand * command){
-    G4String cv;
-    
-    if( command==fXtalMaterialCmd ){
-        cv = fTarget->GetMaterial();
-    }
-    if( command==fXtalSizeCmd ){
-        cv = fXtalSizeCmd->ConvertToString(fTarget->GetSizes(),"mm");
-    }
-    if( command==fXtalBRCmd ){
-        cv = fXtalBRCmd->ConvertToString(fTarget->GetBR(),"m");
-    }
-    if( command==fXtalAngleCmd ){
-        cv = fXtalAngleCmd->ConvertToString(fTarget->GetAngles(),"rad");
-    }
-    if( command==fXtalECCmd ){
-        cv = fTarget->GetEC();
-    }
-    if ( command==fSiDetThickCmd ){
-        cv = fTarget->GetSiDetThickness();
-    }
-    if ( command==fSiDetSizeCmd ){
-        cv = fSiDetSizeCmd->ConvertToString(fTarget->GetSiDetSizes(),"mm");
-    }
-    return cv;
+																												G4UIcommand * command){
+	G4String cv;
+	
+	if( command==fXtalMaterialCmd ){
+		cv = fTarget->GetMaterial();
+	}
+	if( command==fXtalSizeCmd ){
+		cv = fXtalSizeCmd->ConvertToString(fTarget->GetSizes(),"mm");
+	}
+	if( command==fXtalBRCmd ){
+		cv = fXtalBRCmd->ConvertToString(fTarget->GetBR(),"m");
+	}
+	if( command==fXtalAngleCmd ){
+		cv = fXtalAngleCmd->ConvertToString(fTarget->GetAngles(),"rad");
+	}
+	if( command==fXtalECCmd ){
+		cv = fTarget->GetEC();
+	}
+	if ( command==fSiDetThickCmd ){
+		cv = fTarget->GetSiDetThickness();
+	}
+	if ( command==fSiDetSizeCmd ){
+		cv = fSiDetSizeCmd->ConvertToString(fTarget->GetSiDetSizes(),"mm");
+	}
+	return cv;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....

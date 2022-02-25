@@ -49,7 +49,7 @@
 EventAction::EventAction(RunAction* runAction, const std::map<G4String,G4double> & ParameterMap):
 fSDHT_ID(-1), fRunAction(runAction), fParameterMap(ParameterMap){
 	G4cout<<"PROVA MAPPA EveAct: "<<fParameterMap["Ene"]<<G4endl;
-
+	
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -91,59 +91,59 @@ void EventAction::BeginOfEventAction(const G4Event*){
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
 void EventAction::EndOfEventAction(const G4Event* evt){
-    G4SDManager* SDman = G4SDManager::GetSDMpointer();
-    
-    G4ThreeVector ssd[4];
-    ssd[0]= G4ThreeVector(0.,0.,0.);
-    ssd[1]= G4ThreeVector(0.,0.,0.);
-    ssd[2]= G4ThreeVector(0.,0.,0.);
-    ssd[3]= G4ThreeVector(0.,0.,0.);
-
-    if(fSDHT_ID == -1) {
-        G4String sdName;
-        if(SDman->FindSensitiveDetector(sdName="telescope",0)){
-            fSDHT_ID = SDman->GetCollectionID(sdName="telescope/collection");
-        }
-    }
-    
-    SensitiveDetectorHitsCollection* sdht = 0;
-    G4HCofThisEvent *hce = evt->GetHCofThisEvent();
-    
-    if(hce){
-        if(fSDHT_ID != -1){
-            G4VHitsCollection* aHCSD = hce->GetHC(fSDHT_ID);
-            sdht = (SensitiveDetectorHitsCollection*)(aHCSD);
-        }
-    }
-    
-    int bTotalHits = 0;
-    if(sdht){
-        
-        int n_hit_sd = sdht->entries();
-        for(int i2=0;i2<4;i2++){
-            for(int i1=0;i1<n_hit_sd;i1++)
-            {
-                SensitiveDetectorHit* aHit = (*sdht)[i1];
-                if(aHit->GetLayerID()==i2) {
-                    ssd[i2] = aHit->GetWorldPos();
-                    bTotalHits++;
-		}
-	    }
-	}
-    }
+	G4SDManager* SDman = G4SDManager::GetSDMpointer();
 	
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-
-
+	G4ThreeVector ssd[4];
+	ssd[0]= G4ThreeVector(0.,0.,0.);
+	ssd[1]= G4ThreeVector(0.,0.,0.);
+	ssd[2]= G4ThreeVector(0.,0.,0.);
+	ssd[3]= G4ThreeVector(0.,0.,0.);
+	
+	if(fSDHT_ID == -1) {
+		G4String sdName;
+		if(SDman->FindSensitiveDetector(sdName="telescope",0)){
+			fSDHT_ID = SDman->GetCollectionID(sdName="telescope/collection");
+		}
+	}
+	
+	SensitiveDetectorHitsCollection* sdht = 0;
+	G4HCofThisEvent *hce = evt->GetHCofThisEvent();
+	
+	if(hce){
+		if(fSDHT_ID != -1){
+			G4VHitsCollection* aHCSD = hce->GetHC(fSDHT_ID);
+			sdht = (SensitiveDetectorHitsCollection*)(aHCSD);
+		}
+	}
+	
+	int bTotalHits = 0;
+	if(sdht){
+		
+		int n_hit_sd = sdht->entries();
+		for(int i2=0;i2<4;i2++){
+			for(int i1=0;i1<n_hit_sd;i1++)
+			{
+				SensitiveDetectorHit* aHit = (*sdht)[i1];
+				if(aHit->GetLayerID()==i2) {
+					ssd[i2] = aHit->GetWorldPos();
+					bTotalHits++;
+				}
+			}
+		}
+	}
+	
+	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+	
+	
 	if(bTotalHits > 2){
-
-	  for(int is=0;is<4;is++){
-	    fRunAction->GetSdHitId().push_back(is);
-	    fRunAction->GetSdHitX().push_back(ssd[is].x());
-	    fRunAction->GetSdHitY().push_back(ssd[is].y());
-	    fRunAction->GetSdHitZ().push_back(ssd[is].z());
-	  }
-
+		
+		for(int is=0;is<4;is++){
+			fRunAction->GetSdHitId().push_back(is);
+			fRunAction->GetSdHitX().push_back(ssd[is].x());
+			fRunAction->GetSdHitY().push_back(ssd[is].y());
+			fRunAction->GetSdHitZ().push_back(ssd[is].z());
+		}
+		
 		G4double angXin  = (ssd[1].x() - ssd[0].x()) / (ssd[1].z() - ssd[0].z());
 		G4double angYin  = (ssd[1].y() - ssd[0].y()) / (ssd[1].z() - ssd[0].z());
 		fRunAction->GetAngXin().push_back(angXin * 1.E6 * CLHEP::rad);
@@ -153,15 +153,15 @@ void EventAction::EndOfEventAction(const G4Event* evt){
 		double posYin = ssd[1].y() - angYin * ssd[1].z();
 		fRunAction->GetPosXin().push_back(posXin);
 		fRunAction->GetPosYin().push_back(posYin);
-
+		
 		
 		G4double angXout = (ssd[2].x() - posXin) / (ssd[2].z());
 		G4double angYout = (ssd[2].y() - posYin) / (ssd[2].z());
 		fRunAction->GetAngXout().push_back(angXout * 1.E6 * CLHEP::rad);
 		fRunAction->GetAngYout().push_back(angYout * 1.E6 * CLHEP::rad);
-
+		
 		fRunAction->GetCrystAng().push_back((fParameterMap["CrystAng"]) * 1.E6 * CLHEP::rad);
-    
+		
 	}
 	analysisManager->AddNtupleRow();
 	analysisManager->AddNtupleRow(1);
