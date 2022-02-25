@@ -86,6 +86,7 @@ void DetectorConstruction::DefineMaterials(){;}
 
 G4VPhysicalVolume* DetectorConstruction::Construct(){
 	
+	//#####################################
 	//** World **//
 	G4Material* worldMaterial =
 	G4NistManager::Instance()->FindOrBuildMaterial("G4_Galactic");
@@ -112,17 +113,31 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 																									 0,
 																									 false,
 																									 0);
-	
+	//#####################################
+
+	//#####################################
 	//** Detectors instantiation **//
 	G4ThreeVector fDetectorSizes = fSiDetSizes;
 	//  G4ThreeVector fDetectorSizes(G4ThreeVector(38.0 * CLHEP::mm,
 	//					     38.0 * CLHEP::mm,
 	//					     fSiDetThickness)); // was 0.64 mm
+//	G4double fDetectorDistance[4] = {
+//		-1.320 * CLHEP::m,
+//		-0.320 * CLHEP::m,
+//		+0.320 * CLHEP::m,
+//		+10.32 * CLHEP::m};
 	G4double fDetectorDistance[4] = {
-		-1.320 * CLHEP::m,
-		-0.320 * CLHEP::m,
-		+0.320 * CLHEP::m,
-		+10.32 * CLHEP::m};
+		fParameterMap["Det0Z"]?fParameterMap["Det0Z"] * CLHEP::m : -1.320 * CLHEP::m,
+		fParameterMap["Det1Z"]?fParameterMap["Det1Z"] * CLHEP::m : -0.320 * CLHEP::m,
+		fParameterMap["Det2Z"]?fParameterMap["Det2Z"] * CLHEP::m : +0.320 * CLHEP::m,
+		fParameterMap["Det3Z"]?fParameterMap["Det3Z"] * CLHEP::m : +10.32 * CLHEP::m
+		
+	};
+	
+	G4cout<<"POS DET " <<fDetectorDistance[0] / CLHEP::m <<G4endl;
+	G4cout<<"POS DET " <<fDetectorDistance[1] / CLHEP::m<<G4endl;
+	G4cout<<"POS DET " <<fDetectorDistance[2] / CLHEP::m<<G4endl;
+	G4cout<<"POS DET " <<fDetectorDistance[3] / CLHEP::m<<G4endl;
 	
 	G4Box* ssdSolid = new G4Box("ssd.solid",
 															fDetectorSizes.x()/2.,
@@ -148,18 +163,20 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 											false,
 											i1);
 	}
-	
+	//#####################################
+
+	//#####################################
+	//** Crystal **//
 	//	if (fParameterMap["CrystX"]) SetSizes(G4ThreeVector(fParameterMap["CrystX"]*CLHEP::mm,fParameterMap["CrystY"]*CLHEP::mm,fParameterMap["CrystZ"]*CLHEP::mm));
 	if (fParameterMap["CrystX"]) SetSizeX(fParameterMap["CrystX"]*CLHEP::mm);
 	if (fParameterMap["CrystY"]) SetSizeY(fParameterMap["CrystY"]*CLHEP::mm);
 	if (fParameterMap["CrystZ"]) SetSizeZ(fParameterMap["CrystZ"]*CLHEP::mm);
-	//** Crystal solid parameters **//
+	
 	G4Box* crystalSolid = new G4Box("crystal.solid",
 																	fSizes.x()/2.,
 																	fSizes.y()/2.,
 																	fSizes.z()/2.);
 	
-	//** Crystal Definition Start **//
 	G4Material* mat =
 	G4NistManager::Instance()->FindOrBuildMaterial("G4_Si");
 	G4ExtendedMaterial* Crystal =
@@ -188,7 +205,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 		} else  crystalChannelingData->SetBR(fBR.x());
 	}
 	
-	G4LogicalVolume* dummyCrystalLogic =
+	G4LogicalVolume* dummyCrystalLogic = //Fake crystal (made of void) to be placed when a no-crystal run is needed
 	new G4LogicalVolume(crystalSolid,
 											worldMaterial,
 											"crystal.dummy");
@@ -199,7 +216,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 														 "crystal.logic");
 	crystalLogic->SetVerbose(1);
 	//** Crystal Definition End **//
-	
+	//#####################################
+
 	G4RotationMatrix* rot = new G4RotationMatrix;
 	
 	if(fAngles.x()!=0.){
@@ -219,7 +237,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	if(fParameterMap["NoCryst"]){
 		physCrystal= new G4PVPlacement(rot,
 																	 G4ThreeVector(),
-																	 dummyCrystalLogic,
+																	 dummyCrystalLogic, /***/
 																	 "crystal.physic",
 																	 worldLogic,
 																	 false,
@@ -251,21 +269,28 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	
 	
 	//-- Dummy planes to score particles
-	G4double dummyPlane_X=1*m;
-	G4double dummyPlane_Y=1*m;
-	G4double dummyPlane_Z=.1*mm;
+	G4double dummyPlane_DX=1*m;
+	G4double dummyPlane_DY=1*m;
+	G4double dummyPlane_DZ=.1*mm;
 	G4double delta=0.00*mm;
 	G4bool checkOverlaps=true;
 	
-	G4ThreeVector posDummyPlane0= G4ThreeVector(0, 0, -10.4999*m);
-	G4ThreeVector posDummyPlane1= G4ThreeVector(0, 0, 0-fSizes.z()/2.-delta-dummyPlane_Z/2.);
-	G4ThreeVector posDummyPlane2= G4ThreeVector(0, 0, 0+fSizes.z()/2.+delta+dummyPlane_Z/2.);
-	G4ThreeVector posDummyPlane3= G4ThreeVector(0, 0, -posDummyPlane0.z());
+	G4double dummyPlane0_Z=fParameterMap["Plane0Z"] ?fParameterMap["Plane0Z"] *m : -10.4999*m; // at beam orogin
+	G4double dummyPlane1_Z=fParameterMap["Plane1Z"] ?fParameterMap["Plane1Z"] *m :-fSizes.z()/2.-delta-dummyPlane_DZ/2.; // right before crystal
+	G4double dummyPlane2_Z=fParameterMap["Plane2Z"] ?fParameterMap["Plane2Z"] *m :+fSizes.z()/2.+delta+dummyPlane_DZ/2.; // right after crystal
+	G4double dummyPlane3_Z=fParameterMap["Plane3Z"] ?fParameterMap["Plane3Z"] *m :-dummyPlane0_Z; // symmetrical
+
+	G4ThreeVector posDummyPlane0= G4ThreeVector(0, 0, dummyPlane0_Z);
+	G4ThreeVector posDummyPlane1= G4ThreeVector(0, 0, dummyPlane1_Z);
+	G4ThreeVector posDummyPlane2= G4ThreeVector(0, 0, dummyPlane2_Z);
+	G4ThreeVector posDummyPlane3= G4ThreeVector(0, 0, dummyPlane3_Z);
 	
-	G4cout<<"CIAO " <<posDummyPlane1.z() <<G4endl;
-	G4cout<<"CIAO " <<posDummyPlane2.z() <<G4endl;
-	
-	G4Box* geoDummyPlane = new G4Box("geoDummyPlane", dummyPlane_X/2, dummyPlane_Y/2, dummyPlane_Z/2);
+	G4cout<<"POS PIANI " <<posDummyPlane0.z()/m <<G4endl;
+	G4cout<<"POS PIANI " <<posDummyPlane1.z()/m <<G4endl;
+	G4cout<<"POS PIANI " <<posDummyPlane2.z()/m <<G4endl;
+	G4cout<<"POS PIANI " <<posDummyPlane3.z()/m <<G4endl;
+
+	G4Box* geoDummyPlane = new G4Box("geoDummyPlane", dummyPlane_DX/2, dummyPlane_DY/2, dummyPlane_DZ/2);
 	G4LogicalVolume* logicDummyPlane = new G4LogicalVolume(geoDummyPlane, worldMaterial, "logicDummyPlane");
 	
 	new G4PVPlacement(0,posDummyPlane0,logicDummyPlane,"physDummyPlane",worldLogic,false,0,checkOverlaps);

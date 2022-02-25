@@ -36,7 +36,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 using namespace std;
 RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap, G4String fileName): G4UserRunAction(), fParameterMap(ParameterMap), OutputFilename(fileName){
-	G4RunManager::GetRunManager()->SetPrintProgress(1);
+//	G4RunManager::GetRunManager()->SetPrintProgress(1000);
 	
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	G4cout << "Using " << analysisManager->GetType() << G4endl;
@@ -109,11 +109,13 @@ void RunAction::BeginOfRunAction(const G4Run*){
 	//	G4String fileName = "ExExCh";
 	
 	std::map<G4int,G4String> ParticleName;
-	ParticleName[11]="Ele";
-	ParticleName[-11]="Pos";
-	ParticleName[-13]="Mup";
-	ParticleName[13]="Mum";
-	ParticleName[22]="Gamma";
+	ParticleName[11]="e-";
+	ParticleName[-11]="e+";
+	ParticleName[-13]="mu+";
+	ParticleName[13]="mu-";
+	ParticleName[22]="gamma";
+	ParticleName[2212]="proton";
+	ParticleName[211]="pi+";
 	
 	if (fParameterMap["Label"]) OutputFilename.append("_" + to_string(int(fParameterMap["Label"])));
 	if (fParameterMap["Part"]) OutputFilename.append("_Part" + (ParticleName[(G4int)fParameterMap["Part"]]));
@@ -126,6 +128,12 @@ void RunAction::BeginOfRunAction(const G4Run*){
 	if (fParameterMap["Mag"]) OutputFilename.append("_Mag" + to_string((G4int)(fParameterMap["Mag"])));
 	if (fParameterMap["NoCryst"]) OutputFilename.append("_NoCryst");
 	if (fParameterMap["NoDet"]) OutputFilename.append("_NoDet");
+	
+	if (fParameterMap["Det0Z"])	OutputFilename.append("_Det0Z" + to_string((G4int)fParameterMap["Det0Z"]*100));
+	if (fParameterMap["Det1Z"]) OutputFilename.append("_Det1Z" + to_string((G4int)fParameterMap["Det1Z"]*100));
+	if (fParameterMap["Det2Z"]) OutputFilename.append("_Det2Z" + to_string((G4int)fParameterMap["Det2Z"]*100));
+	if (fParameterMap["Det3Z"]) OutputFilename.append("_Det3Z" + to_string((G4int)fParameterMap["Det3Z"]*100));
+	
 	if (fParameterMap["KeepSec"]) OutputFilename.append("_Sec");
 	
 	OutputFilename.append("_N" + to_string((G4int)fParameterMap["NPrim"]));

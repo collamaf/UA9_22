@@ -140,6 +140,38 @@ int main(int argc,char** argv)
 			{
 				ParameterMap["Mag"]=strtod (argv[++i], NULL);;
 			}
+			else if(option.compare("-Plane0Z")==0)
+			{
+				ParameterMap["Plane0Z"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-Plane1Z")==0)
+			{
+				ParameterMap["Plane1Z"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-Plane2Z")==0)
+			{
+				ParameterMap["Plane2Z"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-Plane3Z")==0)
+			{
+				ParameterMap["Plane3Z"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-Det0Z")==0)
+			{
+				ParameterMap["Det0Z"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-Det1Z")==0)
+			{
+				ParameterMap["Det1Z"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-Det2Z")==0)
+			{
+				ParameterMap["Det2Z"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-Det3Z")==0)
+			{
+				ParameterMap["Det3Z"]=strtod (argv[++i], NULL);;
+			}
 			else if(option.compare("-Vis")==0)
 			{
 				VisFlag=stoi (argv[++i], NULL);;
@@ -200,17 +232,6 @@ int main(int argc,char** argv)
 	DetectorConstruction* detConst=new DetectorConstruction(ParameterMap);
 	runManager->SetUserInitialization(detConst);
 	
-	
-	
-	if (ParameterMap["Part"]) OutputFilename.append("_Part" + to_string(ParameterMap["Part"]));
-	if (ParameterMap["Ene"]) OutputFilename.append("_Ene" + to_string((G4int)ParameterMap["Ene"]));
-	if (ParameterMap["CrystX"]) OutputFilename.append("_CrystX" + to_string((G4int)ParameterMap["CrystX"])+ "Y"+ to_string((G4int)ParameterMap["CrystY"])+ "Z" +to_string((G4int)ParameterMap["CrystZ"]));
-	
-	if (ParameterMap["BR"]) OutputFilename.append("_BR" + to_string((G4int)(ParameterMap["BR"])));
-	
-	OutputFilename.append("_N" + to_string((G4int)ParameterMap["NPrim"]));
-	
-	if (VisFlag) OutputFilename.append("_TEST");
 	
 	std::map<G4int,G4String> ParticleName;
 	

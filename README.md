@@ -1,7 +1,7 @@
-# UA9Mu
+# UA9_22
 
-Geant4 simulation for Channeling in view of UA9 mu experiments
-Last edit: 06-04-2021
+Geant4 simulation for Channeling in view of UA9 mu experiments **New 2022 Version**
+Last edit: 25-02-2022
 
 - [Checkout the code](#checkout-the-code)
 - [Compile the code](#compile-the-code)
@@ -62,19 +62,21 @@ The macro `ua90_ref0.mac` is the reference macro for the UA9 setup, `10000` are 
 - CrystAng: crystal horizontal rotation angle [rad]
 - Mag: magnetic field [T]
 - NoDet: remove detector material
+- Plane?Z: Z position of dummy planes [m]
+- Det?Z: Z position of detectors [m]
 - KeepSec: keep (and propagate) secondary particles (Default is off)
 - Vis: 1 for visualization
 
 
 #### Geometry
 Note: this is expressed in increasing z coordinates
-- Channeling crystal placed at origin. Current size hardcoded in DetConst: 1x70x1.94 mm
-- 3 Si detectors: -9.998 m, -0.320 m and 10.756 m
-- 4 dummy (empty planes) for scoring purposes: along z at: -10.5m, -Cristal, +Cristal, +10.5m
+- Channeling crystal placed at origin.
+- 4 Si detectors:
+- 4 dummy (empty planes) for scoring purposes: along z at: [default] -10.5m, -Cristal, +Cristal, +10.5m
 
 #### Primary particle
 The primary events are 400 GeV/c protons launched at -10.5 m from the crystal with 13.36 microrad x 11.25 microrad divergence.
-Modifiable via macro commands
+Modifiable via macro commands (GPS)
 
 
 
@@ -219,6 +221,11 @@ This is reading the "Acceptances.txt" file so you need to check what is in there
 
 06-04-2021: by mbauce
 - Cleaned a bit the code, macros, improved the `README` and tested the flow.
+
+25-02-2022: by collamaf
+- Fix indentation
+- Little cleaning of geo
+- Add possibility to pass from command lines also Z position of detectors (-Det?Z) and dummyPlanes (-Plane?Z), both in m. 
 
 ## TODOs
 - need to create a macro for digi/smearing of SiDet hits
