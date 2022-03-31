@@ -201,10 +201,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	if(fBR!=G4ThreeVector()){
 		if (fParameterMap["BR"]) {
 			G4cout<<"DetConst modifica BR "<< fParameterMap["BR"]<<G4endl;
-			crystalChannelingData->SetBR(fParameterMap["BR"]);
+			crystalChannelingData->SetBR(fParameterMap["BR"]*CLHEP::m);
 		} else  crystalChannelingData->SetBR(fBR.x());
 	}
-	
+	G4ThreeVector temp;
+	G4cout<<"DetConst BendingRadius= "<< crystalChannelingData->GetBR(temp)/CLHEP::m<<" "<<temp.x()/CLHEP::m<<G4endl;
+
 	G4LogicalVolume* dummyCrystalLogic = //Fake crystal (made of void) to be placed when a no-crystal run is needed
 	new G4LogicalVolume(crystalSolid,
 											worldMaterial,

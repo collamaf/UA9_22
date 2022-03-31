@@ -78,6 +78,7 @@ int main(int argc,char** argv)
 	G4String MacroName="";
 	G4String OutputFilename = "mUA9";
 	G4cout<<"Filename: "<<OutputFilename<<G4endl;
+	G4int ExpSetup=-1;
 	
 	for(int i=1;i<argc;i++)
 		if(argv[i][0] =='-')
@@ -176,6 +177,10 @@ int main(int argc,char** argv)
 			{
 				VisFlag=stoi (argv[++i], NULL);;
 			}
+			else if(option.compare("-Setup")==0)
+			{
+				ExpSetup=stoi (argv[++i], NULL);;
+			}
 			else if(option.compare("-Label")==0)
 			{
 				OutputFilename.append(argv[++i]);
@@ -188,6 +193,11 @@ int main(int argc,char** argv)
 			VisFlag=false;
 		}
 	
+	if (ExpSetup==1) {
+		MacroName="mua922_conf1.mac";
+		OutputFilename.append("_Conf1");
+
+	}
 	
 	
 	// Construct the default run manager

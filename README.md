@@ -66,6 +66,7 @@ The macro `ua90_ref0.mac` is the reference macro for the UA9 setup, `10000` are 
 - Det?Z: Z position of detectors [m]
 - KeepSec: keep (and propagate) secondary particles (Default is off)
 - Vis: 1 for visualization
+- Setup: 1 is setup 1 of 2022 UA9 measurements
 
 
 #### Geometry
@@ -226,6 +227,9 @@ This is reading the "Acceptances.txt" file so you need to check what is in there
 - Fix indentation
 - Little cleaning of geo
 - Add possibility to pass from command lines also Z position of detectors (-Det?Z) and dummyPlanes (-Plane?Z), both in m. 
+
+31-03-2022: by collamaf
+- Add possibility to pass from command line also the experimental setup: 1 loads `mua922_conf1.mac` 
 
 ## TODOs
 - need to create a macro for digi/smearing of SiDet hits
