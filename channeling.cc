@@ -179,7 +179,16 @@ int main(int argc,char** argv)
 			}
 			else if(option.compare("-Setup")==0)
 			{
-				ExpSetup=stoi (argv[++i], NULL);;
+//				ExpSetup=stoi (argv[++i], NULL);;
+				ParameterMap["Setup"]=stoi (argv[++i], NULL);;
+			}
+			else if(option.compare("-SecondX")==0)
+			{
+				ParameterMap["SecondX"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-NoCh")==0)
+			{
+				ParameterMap["NoCh"]=strtod (argv[++i], NULL);;
 			}
 			else if(option.compare("-Label")==0)
 			{
@@ -193,10 +202,13 @@ int main(int argc,char** argv)
 			VisFlag=false;
 		}
 	
-	if (ExpSetup==1) {
+	if (ParameterMap["Setup"]==1) {
 		MacroName="mua922_conf1.mac";
 		OutputFilename.append("_Conf1");
 
+	}else if (ParameterMap["Setup"]==3) {
+		MacroName="mua922_conf3.mac";
+		OutputFilename.append("_Conf3");
 	}
 	
 	

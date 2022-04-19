@@ -36,7 +36,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 using namespace std;
 RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap, G4String fileName): G4UserRunAction(), fParameterMap(ParameterMap), OutputFilename(fileName){
-//	G4RunManager::GetRunManager()->SetPrintProgress(1000);
+	G4RunManager::GetRunManager()->SetPrintProgress(1000);
 	
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	G4cout << "Using " << analysisManager->GetType() << G4endl;
@@ -128,7 +128,8 @@ void RunAction::BeginOfRunAction(const G4Run*){
 	if (fParameterMap["Mag"]) OutputFilename.append("_Mag" + to_string((G4int)(fParameterMap["Mag"])));
 	if (fParameterMap["NoCryst"]) OutputFilename.append("_NoCryst");
 	if (fParameterMap["NoDet"]) OutputFilename.append("_NoDet");
-	
+	if (fParameterMap["SecondX"]) OutputFilename.append("_SecondX");
+
 	if (fParameterMap["Det0Z"])	OutputFilename.append("_Det0Z" + to_string((G4int)fParameterMap["Det0Z"]*100));
 	if (fParameterMap["Det1Z"]) OutputFilename.append("_Det1Z" + to_string((G4int)fParameterMap["Det1Z"]*100));
 	if (fParameterMap["Det2Z"]) OutputFilename.append("_Det2Z" + to_string((G4int)fParameterMap["Det2Z"]*100));
@@ -156,6 +157,23 @@ void RunAction::EndOfRunAction(const G4Run*)
 	for (int ii=0; ii<G4Threading::G4GetNumberOfCores() - 2; ii++) G4cout<<OutputFilename<<"_t"<<ii<<".root ";
 	
 	G4cout<<G4endl<<G4endl<<G4endl;
+	
+	
+#if 0
+	// Manually merge root files at the end (and delete temporary root files) since the automatic G4 way fails to merge vectors
+	if (G4Threading::G4GetThreadId()==0) {
+	G4cout<<"hadd -f "<< OutputFilename<<".root ";
+	G4String tempFileList="";
+	for (int iThread=0; iThread<G4Threading::G4GetNumberOfCores() - 2; iThread++) {
+		tempFileList.append(OutputFilename+ "_t"+to_string(iThread) + ".root ");
+	}
+	G4String comandoHadd="hadd -f  " + OutputFilename + ".root " + tempFileList;
+	G4String comandoRm="rm " + tempFileList;
+
+	system(comandoHadd);
+	system(comandoRm);
+	}
+#endif
 	
 }
 
