@@ -88,6 +88,14 @@ public:
 	G4ThreeVector GetSiDetSizes() {return fSiDetSizes;}
 	void SetSiDetSizes(G4ThreeVector a3vec) {fSiDetSizes = a3vec;}
 	
+	void SetSizes2(G4ThreeVector a3vec) {fSizes2 = a3vec;}
+	void SetBR2(G4ThreeVector a3vec) {fBR2 = a3vec;}
+	void SetAngles2(G4ThreeVector a3vec) {fAngles2 = a3vec;}
+	
+	void SetSizes3(G4ThreeVector a3vec) {fSizes3 = a3vec;}
+	void SetBR3(G4ThreeVector a3vec) {fBR3 = a3vec;}
+	void SetAngles3(G4ThreeVector a3vec) {fAngles3 = a3vec;}
+	
 private:
 	G4String fECfileName;
 	G4String fECOfileName;
@@ -99,4 +107,11 @@ private:
 	G4ThreeVector fSiDetSizes;
 	std::map<G4String,G4double>  fParameterMap;
 	
+	G4ThreeVector fSizes2;
+	G4ThreeVector fBR2;
+	G4ThreeVector fAngles2;
+	
+	G4ThreeVector fSizes3;
+	G4ThreeVector fBR3;
+	G4ThreeVector fAngles3;
 };
