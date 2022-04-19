@@ -65,6 +65,14 @@ private:
 	G4UIcmdWithADoubleAndUnit*  fSiDetThickCmd;
 	G4UIcmdWith3VectorAndUnit* fSiDetSizeCmd;
 	
+	G4UIcmdWith3VectorAndUnit* fXtal2SizeCmd;
+	G4UIcmdWith3VectorAndUnit* fXtal2BRCmd;
+	G4UIcmdWith3VectorAndUnit* fXtal2AngleCmd;
+	
+	G4UIcmdWith3VectorAndUnit* fXtal3SizeCmd;
+	G4UIcmdWith3VectorAndUnit* fXtal3BRCmd;
+	G4UIcmdWith3VectorAndUnit* fXtal3AngleCmd;
+	
 };
 
 #endif

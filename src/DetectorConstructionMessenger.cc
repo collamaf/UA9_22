@@ -98,6 +98,63 @@ DetectorConstructionMessenger(
 	fSiDetSizeCmd->SetDefaultValue(G4ThreeVector(38.,38.,0.64));
 	fSiDetSizeCmd->SetDefaultUnit("mm");
 	
+	fXtal2SizeCmd = new G4UIcmdWith3VectorAndUnit("/xtal2/setSize",this);
+	fXtal2SizeCmd->SetGuidance("Set crystal2 size.");
+	fXtal2SizeCmd->SetParameterName("xtal2SizeX",
+																 "xtal2SizeY",
+																 "xtal2SizeZ",
+																 true);
+	fXtal2SizeCmd->SetDefaultValue(G4ThreeVector(6.,2.,6.));
+	fXtal2SizeCmd->SetDefaultUnit("mm");
+	
+	fXtal2BRCmd = new G4UIcmdWith3VectorAndUnit("/xtal2/setBR",this);
+	fXtal2BRCmd->SetGuidance("Set crystal2 bending radius.");
+	fXtal2BRCmd->SetParameterName("xtal2BRX",
+															 "xtal2BRY",
+															 "xtal2BRZ",
+															 true);
+	fXtal2BRCmd->SetDefaultValue(G4ThreeVector(0.,0.,0.));
+	fXtal2BRCmd->SetDefaultUnit("m");
+	
+	fXtal2AngleCmd = new G4UIcmdWith3VectorAndUnit("/xtal2/setAngle",this);
+	fXtal2AngleCmd->SetGuidance("Set crystal2 angles.");
+	fXtal2AngleCmd->SetParameterName("xtal2AngleX",
+																	"xtal2AngleY",
+																	"xtal2AngleZ",
+																	true);
+	fXtal2AngleCmd->SetDefaultValue(G4ThreeVector(0.,0.,0.));
+	fXtal2AngleCmd->SetDefaultUnit("rad");
+	
+	
+	
+	
+	fXtal3SizeCmd = new G4UIcmdWith3VectorAndUnit("/xtal3/setSize",this);
+	fXtal3SizeCmd->SetGuidance("Set crystal3 size.");
+	fXtal3SizeCmd->SetParameterName("xtal3SizeX",
+																 "xtal3SizeY",
+																 "xtal3SizeZ",
+																 true);
+	fXtal3SizeCmd->SetDefaultValue(G4ThreeVector(6.,2.,6.));
+	fXtal3SizeCmd->SetDefaultUnit("mm");
+	
+	fXtal3BRCmd = new G4UIcmdWith3VectorAndUnit("/xtal3/setBR",this);
+	fXtal3BRCmd->SetGuidance("Set crystal3 bending radius.");
+	fXtal3BRCmd->SetParameterName("xtal3BRX",
+															 "xtal3BRY",
+															 "xtal3BRZ",
+															 true);
+	fXtal3BRCmd->SetDefaultValue(G4ThreeVector(0.,0.,0.));
+	fXtal3BRCmd->SetDefaultUnit("m");
+	
+	fXtal3AngleCmd = new G4UIcmdWith3VectorAndUnit("/xtal3/setAngle",this);
+	fXtal3AngleCmd->SetGuidance("Set crystal3 angles.");
+	fXtal3AngleCmd->SetParameterName("xtal3AngleX",
+																	"xtal3AngleY",
+																	"xtal3AngleZ",
+																	true);
+	fXtal3AngleCmd->SetDefaultValue(G4ThreeVector(0.,0.,0.));
+	fXtal3AngleCmd->SetDefaultUnit("rad");
+	
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -111,6 +168,14 @@ DetectorConstructionMessenger::
 	delete fXtalBRCmd;
 	delete fSiDetThickCmd;
 	delete fSiDetSizeCmd;
+	
+	delete fXtal2SizeCmd;
+	delete fXtal2AngleCmd;
+	delete fXtal2BRCmd;
+	
+	delete fXtal3SizeCmd;
+	delete fXtal3AngleCmd;
+	delete fXtal3BRCmd;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -138,6 +203,24 @@ void DetectorConstructionMessenger::SetNewValue(
 	}
 	if(command==fSiDetSizeCmd ){
 		fTarget->SetSiDetSizes(fSiDetSizeCmd->GetNew3VectorValue(newValue));
+	}
+	if(command==fXtal2SizeCmd ){
+		fTarget->SetSizes2(fXtal2SizeCmd->GetNew3VectorValue(newValue));
+	}
+	if(command==fXtal2BRCmd ){
+		fTarget->SetBR2(fXtal2BRCmd->GetNew3VectorValue(newValue));
+	}
+	if(command==fXtal2AngleCmd ){
+		fTarget->SetAngles2(fXtal2AngleCmd->GetNew3VectorValue(newValue));
+	}
+	if(command==fXtal3SizeCmd ){
+		fTarget->SetSizes3(fXtal3SizeCmd->GetNew3VectorValue(newValue));
+	}
+	if(command==fXtal3BRCmd ){
+		fTarget->SetBR3(fXtal3BRCmd->GetNew3VectorValue(newValue));
+	}
+	if(command==fXtal3AngleCmd ){
+		fTarget->SetAngles3(fXtal3AngleCmd->GetNew3VectorValue(newValue));
 	}
 }
 
