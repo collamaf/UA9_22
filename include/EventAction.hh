@@ -46,11 +46,14 @@ public:
 	virtual void BeginOfEventAction(const G4Event*);
 	virtual void EndOfEventAction(const G4Event*);
 	std::map<G4String,G4double> GetParameterMap() { return fParameterMap; };
-	
+	virtual void AddHitX(void) {numHitX++;};
+	virtual G4int  GetHitX(void) {return numHitX;};
+
 private:
 	G4int fSDHT_ID;
 	RunAction* fRunAction;
 	std::map<G4String,G4double>  fParameterMap;
+	G4int numHitX;
 };
 
 #endif

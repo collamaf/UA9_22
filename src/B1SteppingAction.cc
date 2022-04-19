@@ -59,6 +59,19 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	G4VPhysicalVolume* ThisVol = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
 	G4VPhysicalVolume* NextVol = step->GetPostStepPoint()->GetTouchableHandle()->GetVolume();
 	
+	if (fEventAction->GetHitX()==0 && NextVol && NextVol->GetName()=="crystal.physic") {
+		fEventAction->AddHitX();
+//		G4cout<<"ENTRATO IN X1"<<G4endl;
+	}
+	if (fEventAction->GetHitX()==1 && NextVol && NextVol->GetName()=="crystal2.physic") {
+		fEventAction->AddHitX();
+//		G4cout<<"ENTRATO IN X2"<<G4endl;
+	}
+	if (fEventAction->GetHitX()==2 && NextVol && NextVol->GetName()=="crystal3.physic") {
+		fEventAction->AddHitX();
+//		G4cout<<"ENTRATO IN X3"<<G4endl;
+	}
+	
 	if (NextVol && NextVol->GetName()=="physDummyPlane") {
 		//G4cout<<"ENTRO NEL PIANO "<<NextVol->GetCopyNo()<<G4endl;
 		fRunAction->GetPlaneX().push_back(step->GetPostStepPoint()->GetPosition().x()/mm);

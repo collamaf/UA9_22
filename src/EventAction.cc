@@ -47,7 +47,7 @@
 
 
 EventAction::EventAction(RunAction* runAction, const std::map<G4String,G4double> & ParameterMap):
-fSDHT_ID(-1), fRunAction(runAction), fParameterMap(ParameterMap){
+fSDHT_ID(-1), fRunAction(runAction), fParameterMap(ParameterMap), numHitX(0){
 	G4cout<<"PROVA MAPPA EveAct: "<<fParameterMap["Ene"]<<G4endl;
 	
 }
@@ -85,6 +85,7 @@ void EventAction::BeginOfEventAction(const G4Event*){
 	fRunAction->GetSdAngX().clear();
 	fRunAction->GetSdAngY().clear();
 	fRunAction->GetSdAngId().clear();
+	numHitX=0;
 }
 
 
@@ -92,7 +93,10 @@ void EventAction::BeginOfEventAction(const G4Event*){
 
 void EventAction::EndOfEventAction(const G4Event* evt){
 	G4SDManager* SDman = G4SDManager::GetSDMpointer();
-	
+//	G4cout<<"FINISCE EVENTO CON numXhit: "<<numHitX<<G4endl;
+	if (numHitX==3) {
+		G4EventManager::GetEventManager()->GetNonconstCurrentEvent()->KeepTheEvent();
+	}
 	G4ThreeVector ssd[4];
 	ssd[0]= G4ThreeVector(0.,0.,0.);
 	ssd[1]= G4ThreeVector(0.,0.,0.);
