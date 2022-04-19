@@ -1,13 +1,22 @@
 #detector geometry
 /xtal/setMaterial G4_Si
-/xtal/setAngle 0. -0.25e-3 0. rad
 #/xtal/setAngle 0. 3.14184 0. rad #piu thetaB/2
 #/xtal/setAngle 0. -0.25e-5 0. rad
 #/xtal/setAngle 0. 3.14134 0 rad
 # /xtal/setAngle 0. -0.25e-3 1.5707 rad
-/xtal/setSize 1.0 70. 4 mm
-/xtal/setBR 8 0. 0. m
+/xtal/setAngle 0. -1e-3 0. rad
+/xtal/setSize 1.5 4 11 mm
+/xtal/setBR 5.5 0. 0. m
 /xtal/setEC data/Si220pl
+
+/xtal2/setAngle 0. 0 0. rad
+/xtal2/setSize 1.5 4 22 mm
+/xtal2/setBR -5.5 0. 0. m
+
+/xtal3/setAngle 0. 1e-3 0. rad
+/xtal3/setSize 1.5 4 11 mm
+/xtal3/setBR 5.5 0. 0. m
+
 # /tracking/verbose 2
 # /run/numberOfThreads 1
 #initialize run before stacking and primary generator actions
@@ -18,6 +27,11 @@
 /gps/particle proton
 
 /gps/pos/type Point
+/gps/pos/centre 0 0 -10.5 m
+# /gps/pos/type Plane
+# /gps/pos/shape Rectangle
+# /gps/pos/halfx 0.5 mm
+# /gps/pos/halfy 0.5 mm
 /gps/pos/centre 0 0 -10.5 m
 
 /gps/ang/type beam2d
