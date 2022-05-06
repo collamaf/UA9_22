@@ -137,6 +137,10 @@ int main(int argc,char** argv)
 			{
 				ParameterMap["NoCryst"]=strtod (argv[++i], NULL);;
 			}
+			else if(option.compare("-NoCryst2")==0)
+			{
+				ParameterMap["NoCryst2"]=strtod (argv[++i], NULL);;
+			}
 			else if(option.compare("-Mag")==0)
 			{
 				ParameterMap["Mag"]=strtod (argv[++i], NULL);;
@@ -172,6 +176,10 @@ int main(int argc,char** argv)
 			else if(option.compare("-Det3Z")==0)
 			{
 				ParameterMap["Det3Z"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-Telescope")==0)
+			{
+				ParameterMap["Telescope"]=strtod (argv[++i], NULL);;
 			}
 			else if(option.compare("-Vis")==0)
 			{

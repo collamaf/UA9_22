@@ -127,6 +127,8 @@ void RunAction::BeginOfRunAction(const G4Run*){
 	if (fParameterMap["BR"]) OutputFilename.append("_BR" + to_string((G4int)(fParameterMap["BR"])));
 	if (fParameterMap["Mag"]) OutputFilename.append("_Mag" + to_string((G4int)(fParameterMap["Mag"])));
 	if (fParameterMap["NoCryst"]) OutputFilename.append("_NoCryst");
+	if (fParameterMap["NoCryst2"]) OutputFilename.append("_NoCryst2");
+	if (fParameterMap["Telescope"]) OutputFilename.append("_Tel");
 	if (fParameterMap["NoDet"]) OutputFilename.append("_NoDet");
 	if (fParameterMap["SecondX"]) OutputFilename.append("_SecondX");
 

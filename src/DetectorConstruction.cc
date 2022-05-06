@@ -136,7 +136,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 //		-0.320 * CLHEP::m,
 //		+0.320 * CLHEP::m,
 //		+10.32 * CLHEP::m};
-	G4double fDetectorDistance[4] = {
+	std::vector<G4double> fDetectorDistance = {
+//	G4double fDetectorDistance[4] = {
 		fParameterMap["Det0Z"]?fParameterMap["Det0Z"] * CLHEP::m : -1.320 * CLHEP::m,
 		fParameterMap["Det1Z"]?fParameterMap["Det1Z"] * CLHEP::m : -0.320 * CLHEP::m,
 		fParameterMap["Det2Z"]?fParameterMap["Det2Z"] * CLHEP::m : +0.320 * CLHEP::m,
@@ -148,13 +149,22 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 		fDetectorDistance[0]= -9.5*CLHEP::m;
 		fDetectorDistance[1]= -0.32*CLHEP::m;
 		fDetectorDistance[2]= 0.32*CLHEP::m;
-		fDetectorDistance[3]= 9.5*CLHEP::m;
+		fDetectorDistance[3]= 1.5*CLHEP::m;
+		fDetectorDistance.push_back(11*CLHEP::m);
+		fDetectorSizes.setZ(0.7*CLHEP::mm);
 	}
 	
 	G4cout<<"POS DET " <<fDetectorDistance[0] / CLHEP::m<<G4endl;
 	G4cout<<"POS DET " <<fDetectorDistance[1] / CLHEP::m<<G4endl;
 	G4cout<<"POS DET " <<fDetectorDistance[2] / CLHEP::m<<G4endl;
 	G4cout<<"POS DET " <<fDetectorDistance[3] / CLHEP::m<<G4endl;
+	if (fParameterMap["Setup"]==3) G4cout<<"POS DET " <<fDetectorDistance[4] / CLHEP::m<<G4endl;
+	
+	if (fParameterMap["Telescope"]) {
+		fDetectorDistance.clear();
+		fDetectorDistance.push_back(10.4*CLHEP::m);
+		fDetectorDistance.push_back(19.9*CLHEP::m);
+	}
 	
 	G4Box* ssdSolid = new G4Box("ssd.solid",
 															fDetectorSizes.x()/2.,
@@ -169,11 +179,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 											detectorMaterial,
 											"ssd.logic");
 	
-	for(size_t i1=0;i1<4;i1++){
+	for(size_t i1=0;i1<fDetectorDistance.size();i1++){
 		new G4PVPlacement(0,
-											G4ThreeVector(0.,
-																		0.,
-																		fDetectorDistance[i1]),
+											G4ThreeVector(0.,0.,fDetectorDistance[i1]),
 											ssdLogic,
 											"ssd.physic",
 											worldLogic,
@@ -430,15 +438,25 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	}
 	
 	if(fParameterMap["Setup"]==3){
-	
-		new G4PVPlacement(rot2,
-//											G4ThreeVector(-fSizes.z()*sin(fAngles.y()),0,fSizes.z()+0*CLHEP::mm),
-											posX2,
-											crystalLogic2, /***/
-											"crystal2.physic",
-											worldLogic,
-											false,
-											0);
+		
+		if(fParameterMap["NoCryst2"]){
+			new G4PVPlacement(rot2,
+												posX2,
+												dummyCrystalLogic, /***/
+												"crystal2.physic",
+												worldLogic,
+												false,
+												0);
+		} else {
+			new G4PVPlacement(rot2,
+												//											G4ThreeVector(-fSizes.z()*sin(fAngles.y()),0,fSizes.z()+0*CLHEP::mm),
+												posX2,
+												crystalLogic2, /***/
+												"crystal2.physic",
+												worldLogic,
+												false,
+												0);
+		}
 		new G4PVPlacement(rot3,
 //											G4ThreeVector(-fSizes.z()*sin(fAngles.y()),0,fSizes.z()+0*CLHEP::mm),
 											posX3,
@@ -492,8 +510,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	G4double dummyPlane3_Z=fParameterMap["Plane3Z"] ?fParameterMap["Plane3Z"] *m :-dummyPlane0_Z; // symmetrical
 	G4double dummyPlane4_Z=posX2.z()-fSizes2.z()/2.-delta-dummyPlane_DZ/2.; // right before crystal2
 	G4double dummyPlane5_Z=posX2.z()+fSizes2.z()/2.+delta+dummyPlane_DZ/2.; // right after crystal2
-	G4double dummyPlane6_Z=posX3.z()-fSizes3.z()/2.-delta-dummyPlane_DZ/2.;
+	G4double dummyPlane6_Z=posX3.z()-fSizes3.z()/2.-delta-dummyPlane_DZ/2.; // right before crystal3
+	G4double dummyPlane7_Z=20*m; // at the very end
 	
+	if (fParameterMap["Telescope"]) {
+		dummyPlane3_Z=fDetectorDistance[0]+fDetectorSizes.z()/2.+100*um;
+		dummyPlane7_Z=fDetectorDistance[1]+fDetectorSizes.z()/2.+100*um;
+	}
+
 	G4ThreeVector posDummyPlane0= G4ThreeVector(0, 0, dummyPlane0_Z);
 	G4ThreeVector posDummyPlane1= G4ThreeVector(0, 0, dummyPlane1_Z);
 	G4ThreeVector posDummyPlane2= G4ThreeVector(0, 0, dummyPlane2_Z);
@@ -501,14 +525,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	G4ThreeVector posDummyPlane4= G4ThreeVector(0, 0, dummyPlane4_Z);
 	G4ThreeVector posDummyPlane5= G4ThreeVector(0, 0, dummyPlane5_Z);
 	G4ThreeVector posDummyPlane6= G4ThreeVector(0, 0, dummyPlane6_Z);
+	G4ThreeVector posDummyPlane7= G4ThreeVector(0, 0, dummyPlane7_Z);
 
-	G4cout<<"POS PIANI " <<posDummyPlane0.z()/m <<G4endl;
-	G4cout<<"POS PIANI " <<posDummyPlane1.z()/m <<G4endl;
-	G4cout<<"POS PIANI " <<posDummyPlane2.z()/m <<G4endl;
-	G4cout<<"POS PIANI " <<posDummyPlane3.z()/m <<G4endl;
-	G4cout<<"POS PIANI " <<posDummyPlane4.z()/m <<G4endl;
-	G4cout<<"POS PIANI " <<posDummyPlane5.z()/m <<G4endl;
-	G4cout<<"POS PIANI " <<posDummyPlane6.z()/m <<G4endl;
+	G4cout<<"POS PIANI 0 " <<posDummyPlane0.z()/m <<G4endl;
+	G4cout<<"POS PIANI 1 " <<posDummyPlane1.z()/m <<G4endl;
+	G4cout<<"POS PIANI 2 " <<posDummyPlane2.z()/m <<G4endl;
+	G4cout<<"POS PIANI 3 " <<posDummyPlane3.z()/m <<G4endl;
+	G4cout<<"POS PIANI 4 " <<posDummyPlane4.z()/m <<G4endl;
+	G4cout<<"POS PIANI 5 " <<posDummyPlane5.z()/m <<G4endl;
+	G4cout<<"POS PIANI 6 " <<posDummyPlane6.z()/m <<G4endl;
+	G4cout<<"POS PIANI 7 " <<posDummyPlane7.z()/m <<G4endl;
 
 	G4Box* geoDummyPlane = new G4Box("geoDummyPlane", dummyPlane_DX/2, dummyPlane_DY/2, dummyPlane_DZ/2);
 	G4LogicalVolume* logicDummyPlane = new G4LogicalVolume(geoDummyPlane, worldMaterial, "logicDummyPlane");
@@ -521,6 +547,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 		new G4PVPlacement(0,posDummyPlane4,logicDummyPlane,"physDummyPlane",worldLogic,false,4,checkOverlaps);
 		new G4PVPlacement(0,posDummyPlane5,logicDummyPlane,"physDummyPlane",worldLogic,false,5,checkOverlaps);
 		new G4PVPlacement(0,posDummyPlane6,logicDummyPlane,"physDummyPlane",worldLogic,false,6,checkOverlaps);
+		new G4PVPlacement(0,posDummyPlane7,logicDummyPlane,"physDummyPlane",worldLogic,false,7,checkOverlaps);
 
 	}
 	
