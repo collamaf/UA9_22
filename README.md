@@ -66,7 +66,10 @@ The macro `ua90_ref0.mac` is the reference macro for the UA9 setup, `10000` are 
 - Det?Z: Z position of detectors [m]
 - KeepSec: keep (and propagate) secondary particles (Default is off)
 - Vis: 1 for visualization
-- Setup: 1 is setup 1 of 2022 UA9 measurements
+- Setup: 1 is setup 1 of 2022 UA9 measurements, 3 for triangle beam recombination (adds othre 2 Xs and 4 scoring planes)
+- Telescope: places only two Si detectors after X3 and moves Planes 3 and 7 to their end
+- NoCryst2: removes (the material of) X2, needed to study triangle configuration
+- NoCh: turns off channeling in crystals (useful to study for example MS in Si)
 
 
 #### Geometry
@@ -110,6 +113,7 @@ Planes: contains info at dummy planes crossing
 - PlaneId: 0, 1, 2, 3
 
 ## Analyze simulations
+### Classic analysis python program
 Once you ran the simulation and have an output file such as `mUA9_N1000.root` you can run the following command
 ```
 python(3) Ana_mUA9.py --fileName mUA9_N1000.root --tree Planes
@@ -125,6 +129,21 @@ where `XXX` is the angle in the file name you like to process. Move the produced
 **Note:** The `dumpRootToCSV.py` script currently implements also the possibility to smear the angular resolution (x-coordinate) with a random gaussian smearing tuned by the parameter `smearSigmaX` inside the script itself. It's set to 0 by default but can be changed manually when needed.
 
 **Note:** In the simulated files the name contains the angle with the wrong sign so when producing the `.dat` file change that in the name (+50 should be named `min50`, -30 should be named `plus30`).
+
+### Triangle Analysis
+#### *AnaTriangle.C*
+Simple root macro that reads a root file and creates histograms of interest. Deprecated in favor of a looping macro, that instead allows also to ask for example if a given track has been channeled by X1 etc
+#### *AnaTriangleEvent.C/h*
+Root macro based on `MakeClass` that loops on each entry, allowing to create histos of interest following the track along each crystal.
+```
+root -l mUA9_Conf3_SigmaX1Y0Z0_N10000.root
+L ../analysis/AnaTriangleEvent.C
+c=new AnaTriangleEvent(Planes,"SigmaNoDet10k")
+c->Loop()
+```
+#### *Task1.C*
+- Simple root macro that reads 2 root files and analyzes the triangle beam recombination configuration, i.e. comparing runs w/ and w/o X2
+- File names are hardocoded, but can be choosen thanks to 2 flags: `caso=3,7`, chooses the plane to study (3 is after X3, 7 is at +10m), and `flagDet` chooses if consider the case w/ or w/o detectors.
 
 ## Backward engineering (April '21 - a year later)
 ## Process Data from UA9
@@ -230,6 +249,16 @@ This is reading the "Acceptances.txt" file so you need to check what is in there
 
 31-03-2022: by collamaf
 - Add possibility to pass from command line also the experimental setup: 1 loads `mua922_conf1.mac` 
+- ~~Automatic merge of multiple root files after run~~
+
+19-04-2022: by collamaf
+- Add possibility to disable from command line also channeling in first crystal (`NoCh`)
+- Add trigger logic: save events having hit all 3 crystals
+
+06-05-2022: by collamaf
+- Add possibility to remove from command line the presence of X2 (`NoCryst2`)
+- Add possibility to create a detector telescope after X3 (`Telescope`)
+
 
 ## TODOs
 - need to create a macro for digi/smearing of SiDet hits
