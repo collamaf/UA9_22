@@ -1,4 +1,4 @@
-# UA9_22
+e# UA9_22
 
 Geant4 simulation for Channeling in view of UA9 mu experiments **New 2022 Version**
 Last edit: 25-02-2022
@@ -258,6 +258,10 @@ This is reading the "Acceptances.txt" file so you need to check what is in there
 06-05-2022: by collamaf
 - Add possibility to remove from command line the presence of X2 (`NoCryst2`)
 - Add possibility to create a detector telescope after X3 (`Telescope`)
+
+22-09-2022: by collamaf
+- Add possibility to move in X plane the crystal (`CrystDX`)
+- Add 2 new Setups (2 and 2.5) for M2 possible measurements (Sept-22)
 
 
 ## TODOs

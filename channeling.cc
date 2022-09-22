@@ -177,6 +177,10 @@ int main(int argc,char** argv)
 			{
 				ParameterMap["Det3Z"]=strtod (argv[++i], NULL);;
 			}
+			else if(option.compare("-CrystDX")==0)
+			{
+				ParameterMap["CrystDX"]=strtod (argv[++i], NULL);;
+			}
 			else if(option.compare("-Telescope")==0)
 			{
 				ParameterMap["Telescope"]=strtod (argv[++i], NULL);;
@@ -188,7 +192,7 @@ int main(int argc,char** argv)
 			else if(option.compare("-Setup")==0)
 			{
 //				ExpSetup=stoi (argv[++i], NULL);;
-				ParameterMap["Setup"]=stoi (argv[++i], NULL);;
+				ParameterMap["Setup"]=strtod (argv[++i], NULL);;
 			}
 			else if(option.compare("-SecondX")==0)
 			{
@@ -214,9 +218,15 @@ int main(int argc,char** argv)
 		MacroName="mua922_conf1.mac";
 		OutputFilename.append("_Conf1");
 
-	}else if (ParameterMap["Setup"]==3) {
+	}else if (ParameterMap["Setup"]==2) {
+		MacroName="mua922_conf2.mac";
+		OutputFilename.append("_Conf2");
+	} else if (ParameterMap["Setup"]==3) {
 		MacroName="mua922_conf3.mac";
 		OutputFilename.append("_Conf3");
+	}else if (ParameterMap["Setup"]==2.5) {
+		MacroName="mua922_conf2b.mac";
+		OutputFilename.append("_Conf2b");
 	}
 	
 	

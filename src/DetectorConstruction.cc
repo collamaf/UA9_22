@@ -145,7 +145,20 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 		
 	};
 	
-	if (fParameterMap["Setup"]==3){
+	if (fParameterMap["Setup"]==2){ //MUonE case - Sept.22
+		fDetectorDistance[0]= -4*CLHEP::m;
+		fDetectorDistance[1]= -0.3*CLHEP::m;
+		fDetectorDistance[2]= 0.3*CLHEP::m;
+		fDetectorDistance[3]= 0.5*CLHEP::m;
+		fDetectorDistance.push_back(4*CLHEP::m);
+		fDetectorSizes.setZ(0.7*CLHEP::mm);
+	}else if (fParameterMap["Setup"]==2.5){
+		fDetectorDistance[0]= -3*CLHEP::m;
+		fDetectorDistance[1]= -0.32*CLHEP::m;
+		fDetectorDistance[2]= 0.3*CLHEP::m;
+		fDetectorDistance[3]= 0.5*CLHEP::m;
+		fDetectorDistance.push_back(5*CLHEP::m);
+	}else if (fParameterMap["Setup"]==3){
 		fDetectorDistance[0]= -9.5*CLHEP::m;
 		fDetectorDistance[1]= -0.32*CLHEP::m;
 		fDetectorDistance[2]= 0.32*CLHEP::m;
@@ -158,7 +171,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	G4cout<<"POS DET " <<fDetectorDistance[1] / CLHEP::m<<G4endl;
 	G4cout<<"POS DET " <<fDetectorDistance[2] / CLHEP::m<<G4endl;
 	G4cout<<"POS DET " <<fDetectorDistance[3] / CLHEP::m<<G4endl;
-	if (fParameterMap["Setup"]==3) G4cout<<"POS DET " <<fDetectorDistance[4] / CLHEP::m<<G4endl;
+	if (fParameterMap["Setup"]==2 || fParameterMap["Setup"]==3) G4cout<<"POS DET " <<fDetectorDistance[4] / CLHEP::m<<G4endl;
 	
 	if (fParameterMap["Telescope"]) {
 		fDetectorDistance.clear();
@@ -189,7 +202,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 											i1);
 	}
 	
-	G4ThreeVector posX=G4ThreeVector();
+	G4ThreeVector posX=G4ThreeVector(fParameterMap["CrystDX"]?fParameterMap["CrystDX"]*CLHEP::mm:0,0,0);
 	G4ThreeVector posX2=G4ThreeVector(20*CLHEP::mm,0,0);
 	G4ThreeVector posX3=G4ThreeVector(0,0,10*CLHEP::m);
 	
@@ -518,6 +531,19 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 		dummyPlane7_Z=fDetectorDistance[1]+fDetectorSizes.z()/2.+100*um;
 	}
 
+	if (fParameterMap["Setup"]==2){ //MUonE case - Sept.22
+		dummyPlane0_Z= -4*CLHEP::m+fDetectorSizes.z();
+		dummyPlane1_Z= -0.3*CLHEP::m+fDetectorSizes.z();
+		dummyPlane2_Z= 0.3*CLHEP::m+fDetectorSizes.z();
+		dummyPlane3_Z= 0.5*CLHEP::m+fDetectorSizes.z();
+		dummyPlane4_Z= 4*CLHEP::m+fDetectorSizes.z();
+	} else if (fParameterMap["Setup"]==2.5){ //MUonE case - Sept.22
+		dummyPlane0_Z= -3*CLHEP::m+fDetectorSizes.z();
+		dummyPlane1_Z= -0.32*CLHEP::m+fDetectorSizes.z();
+		dummyPlane2_Z= 0.3*CLHEP::m+fDetectorSizes.z();
+		dummyPlane3_Z= 0.5*CLHEP::m+fDetectorSizes.z();
+		dummyPlane4_Z= 5*CLHEP::m+fDetectorSizes.z();
+	}
 	G4ThreeVector posDummyPlane0= G4ThreeVector(0, 0, dummyPlane0_Z);
 	G4ThreeVector posDummyPlane1= G4ThreeVector(0, 0, dummyPlane1_Z);
 	G4ThreeVector posDummyPlane2= G4ThreeVector(0, 0, dummyPlane2_Z);
@@ -550,7 +576,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 		new G4PVPlacement(0,posDummyPlane7,logicDummyPlane,"physDummyPlane",worldLogic,false,7,checkOverlaps);
 
 	}
-	
+	if(fParameterMap["Setup"]==2||fParameterMap["Setup"]==2.5){
+		new G4PVPlacement(0,posDummyPlane4,logicDummyPlane,"physDummyPlane",worldLogic,false,4,checkOverlaps);
+	}
 	// ################## MAGNET VOLUME #####################
 	//Bending Magnet
 	G4double Mag_R = 100.*cm;
