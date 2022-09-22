@@ -48,12 +48,15 @@ public:
 	std::map<G4String,G4double> GetParameterMap() { return fParameterMap; };
 	virtual void AddHitX(void) {numHitX++;};
 	virtual G4int  GetHitX(void) {return numHitX;};
+	virtual void SetEntranceAngleInX(G4double angle) {entranceAngleInX=angle;};
+	virtual G4double GetEntranceAngleInX(void) {return entranceAngleInX;};
 
 private:
 	G4int fSDHT_ID;
 	RunAction* fRunAction;
 	std::map<G4String,G4double>  fParameterMap;
 	G4int numHitX;
+	G4double entranceAngleInX;
 };
 
 #endif

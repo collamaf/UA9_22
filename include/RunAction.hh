@@ -71,6 +71,8 @@ public:
 	std::vector<G4double>& GetSdAngY() {return fSdAngY; }
 	std::vector<G4double>& GetSdAngId() {return fSdAngId; }
 	
+	virtual void   AddKilledTrack(void){numKilledTracks++;};
+
 private:
 	std::vector<G4double> fPlaneX;
 	std::vector<G4double> fPlaneY;
@@ -104,6 +106,7 @@ private:
 	std::map<G4String,G4double>  fParameterMap;
 	
 	G4String OutputFilename;
+	G4int numKilledTracks;
 	
 };
 

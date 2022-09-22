@@ -47,7 +47,7 @@
 
 
 EventAction::EventAction(RunAction* runAction, const std::map<G4String,G4double> & ParameterMap):
-fSDHT_ID(-1), fRunAction(runAction), fParameterMap(ParameterMap), numHitX(0){
+fSDHT_ID(-1), fRunAction(runAction), fParameterMap(ParameterMap), numHitX(0), entranceAngleInX(-17){
 	G4cout<<"PROVA MAPPA EveAct: "<<fParameterMap["Ene"]<<G4endl;
 	
 }
@@ -86,6 +86,7 @@ void EventAction::BeginOfEventAction(const G4Event*){
 	fRunAction->GetSdAngY().clear();
 	fRunAction->GetSdAngId().clear();
 	numHitX=0;
+	entranceAngleInX=-17;
 }
 
 

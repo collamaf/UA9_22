@@ -73,6 +73,7 @@ int main(int argc,char** argv)
 	//	ParameterMap["Ene"]=17;
 	ParameterMap["NPrim"]=100;
 	ParameterMap["KeepSec"]=0;
+	ParameterMap["CutChan"]=0;
 	
 	G4bool VisFlag=false;
 	G4String MacroName="";
@@ -201,6 +202,10 @@ int main(int argc,char** argv)
 			else if(option.compare("-NoCh")==0)
 			{
 				ParameterMap["NoCh"]=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-CutChan")==0)
+			{
+				ParameterMap["CutChan"]=stoi (argv[++i], NULL);;
 			}
 			else if(option.compare("-Label")==0)
 			{

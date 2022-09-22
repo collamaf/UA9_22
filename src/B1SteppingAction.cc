@@ -43,13 +43,23 @@ B1SteppingAction::B1SteppingAction(EventAction* eventAction, RunAction* runActio
 : G4UserSteppingAction(),
 fEventAction(eventAction),
 fRunAction(runAction),
-fScoringVolume(0)
-{}
+fScoringVolume(0),
+thetaBending(-1),tempThetaIn(-1),tempThetaOut(-1),tempDeltaTheta(-1)
+{
+	const DetectorConstruction* detectorConstruction
+	= static_cast<const DetectorConstruction*>
+	(G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+	thetaBending=detectorConstruction->GetThetaBending();
+	G4cout<<"POKE "<<thetaBending<<G4endl;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 B1SteppingAction::~B1SteppingAction()
-{}
+{
+	
+
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -61,7 +71,11 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	if (fEventAction->GetHitX()==0 && NextVol && NextVol->GetName()=="crystal.physic") {
 		fEventAction->AddHitX();
-//		G4cout<<"ENTRATO IN X1"<<G4endl;
+		if (step->GetTrack()->GetParentID()==0){ //If it's a primary particle at the first entrance in X1, store its incoming angle
+			tempThetaIn=step->GetPostStepPoint()->GetMomentumDirection().x();
+			fEventAction->SetEntranceAngleInX(tempThetaIn);
+		}
+//		G4cout<<"ENTRATO IN X1"<<step->GetTrack()->GetParentID()<<G4endl;
 	}
 	if (fEventAction->GetHitX()==1 && NextVol && NextVol->GetName()=="crystal2.physic") {
 		fEventAction->AddHitX();
@@ -70,6 +84,22 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	if (fEventAction->GetHitX()==2 && NextVol && NextVol->GetName()=="crystal3.physic") {
 		fEventAction->AddHitX();
 //		G4cout<<"ENTRATO IN X3"<<G4endl;
+	}
+	
+	if (ThisVol->GetName()=="crystal.physic" && NextVol && NextVol->GetName()!="crystal.physic") { //exiting the X
+		tempThetaOut=step->GetPostStepPoint()->GetMomentumDirection().x()/1e-3;
+		tempDeltaTheta=tempThetaOut-tempThetaIn;
+//		G4cout<<"USCITO DA X1! AngIn: "<<fEventAction->GetEntranceAngleInX()/1e-3<<" AngOut: "<<tempThetaOut<<" DeltaAng: "<<tempThetaOut-(fEventAction->GetEntranceAngleInX()/1e-3)<<" DeltaAng: "<<tempThetaOut-tempThetaIn<<G4endl;
+		if (fEventAction->GetParameterMap()["CutChan"]==1 && tempDeltaTheta>=thetaBending*0.9) {//kill channeled particles
+//			G4cout<<"##### FATTO CHANNELING! Killo!"<<G4endl;
+			step->GetTrack()->SetTrackStatus(fKillTrackAndSecondaries);
+			fRunAction->AddKilledTrack();
+		} else if (fEventAction->GetParameterMap()["CutChan"]==-1 && tempDeltaTheta<thetaBending*0.9) {//kill NON-channeled particles
+//			G4cout<<"##### NON HA FATTO CHANNELING! Killo!"<<G4endl;
+			step->GetTrack()->SetTrackStatus(fKillTrackAndSecondaries);
+			fRunAction->AddKilledTrack();
+		}
+
 	}
 	
 	if (NextVol && NextVol->GetName()=="physDummyPlane") {

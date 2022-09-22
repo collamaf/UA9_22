@@ -96,6 +96,8 @@ public:
 	void SetBR3(G4ThreeVector a3vec) {fBR3 = a3vec;}
 	void SetAngles3(G4ThreeVector a3vec) {fAngles3 = a3vec;}
 	
+	G4double GetThetaBending(void) const {return thetaBending;};
+	
 private:
 	G4String fECfileName;
 	G4String fECOfileName;
@@ -114,4 +116,5 @@ private:
 	G4ThreeVector fSizes3;
 	G4ThreeVector fBR3;
 	G4ThreeVector fAngles3;
+	G4double thetaBending;
 };

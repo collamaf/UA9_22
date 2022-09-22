@@ -80,7 +80,8 @@ fSizes3(G4ThreeVector(1.*CLHEP::mm,
 										 70.*CLHEP::mm,
 										 1.94 * CLHEP::mm)),
 fBR3(G4ThreeVector(0.,0.,0.)),
-fAngles3(G4ThreeVector(0.,0.,0.)){
+fAngles3(G4ThreeVector(0.,0.,0.)),
+thetaBending(-1){
 	fMessenger = new DetectorConstructionMessenger(this);
 }
 
@@ -314,11 +315,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	
 	
 	G4ThreeVector temp;
-	G4cout<<"DetConst BendingRadius= "<< crystalChannelingData->GetBR(temp)/CLHEP::m<<" "<<temp.x()/CLHEP::m<<G4endl;
+	G4cout<<"DetConst BendingRadius= "<< crystalChannelingData->GetBR(temp)/CLHEP::m<<" "<<temp.x()/CLHEP::m<<" "<<crystalChannelingData->GetBR(temp).x()<<G4endl;
 	if (fParameterMap["Setup"]==3) {
 		G4cout<<"DetConst BendingRadius2= "<< crystalChannelingData2->GetBR(temp)/CLHEP::m<<" "<<temp.x()/CLHEP::m<<G4endl;
 		G4cout<<"DetConst BendingRadius3= "<< crystalChannelingData3->GetBR(temp)/CLHEP::m<<" "<<temp.x()/CLHEP::m<<G4endl;
 	}
+
+	thetaBending=(fSizes.z()*CLHEP::mm)/(crystalChannelingData->GetBR(temp).x()/CLHEP::m); // in mrad
+	G4cout<<"DetConst ThetaBending= "<< thetaBending<<" mrad"<<G4endl;
 
 #endif
 	G4LogicalVolume* dummyCrystalLogic = //Fake crystal (made of void) to be placed when a no-crystal run is needed

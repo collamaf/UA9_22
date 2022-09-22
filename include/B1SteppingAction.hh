@@ -55,6 +55,10 @@ private:
 	EventAction*  fEventAction;
 	RunAction*  fRunAction;
 	G4LogicalVolume* fScoringVolume;
+	G4double thetaBending;
+	G4double tempThetaIn;
+	G4double tempThetaOut;
+	G4double tempDeltaTheta;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -35,7 +35,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 using namespace std;
-RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap, G4String fileName): G4UserRunAction(), fParameterMap(ParameterMap), OutputFilename(fileName){
+RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap, G4String fileName): G4UserRunAction(), fParameterMap(ParameterMap), OutputFilename(fileName),numKilledTracks(0){
 	G4RunManager::GetRunManager()->SetPrintProgress(fParameterMap["NPrim"]/100);
 	
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
@@ -90,7 +90,7 @@ RunAction::RunAction(const std::map<G4String,G4double> & ParameterMap, G4String 
 	analysisManager->CreateNtupleDColumn(2, "crystAngX", fCrystAng);
 	analysisManager->FinishNtuple();
 	
-	
+	numKilledTracks=0;
 	//	G4cout<<"PROVA MAPPA RunAct: "<<fParameterMap["Ene"]<<G4endl;
 	
 	
@@ -139,7 +139,9 @@ void RunAction::BeginOfRunAction(const G4Run*){
 	if (fParameterMap["Det3Z"]) OutputFilename.append("_Det3Z" + to_string((G4int)fParameterMap["Det3Z"]*100));
 	
 	if (fParameterMap["KeepSec"]) OutputFilename.append("_Sec");
-	
+	if (fParameterMap["CutChan"]==-1) OutputFilename.append("_OnlyCh");
+	if (fParameterMap["CutChan"]==1) OutputFilename.append("_OnlyNotCh");
+
 	OutputFilename.append("_N" + to_string((G4int)fParameterMap["NPrim"]));
 	
 	analysisManager->OpenFile(OutputFilename + ".root");
@@ -160,6 +162,7 @@ void RunAction::EndOfRunAction(const G4Run*)
 	for (int ii=0; ii<G4Threading::G4GetNumberOfCores() - 2; ii++) G4cout<<OutputFilename<<"_t"<<ii<<".root ";
 	
 	G4cout<<G4endl<<G4endl<<G4endl;
+	G4cout<<"NUMBER OF KILLED TRACKS: "<<numKilledTracks<<G4endl;
 	
 	
 #if 0
