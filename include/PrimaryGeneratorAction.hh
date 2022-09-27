@@ -45,10 +45,15 @@ public:
 	virtual ~PrimaryGeneratorAction();
 	
 	void GeneratePrimaries(G4Event*);
-	
+//	virtual void SetSourceParticleEnergy (ene) {sourceParticleEnergy=ene;};
+	virtual G4double GetSourceParticleEnergy (void)const {return sourceParticleEnergy;};
+	virtual G4double GetChannelingCriticalAngle (void)const {return chCriticalAngle;};
+
 private:
 	G4GeneralParticleSource* fGPS;
 	std::map<G4String,G4double>  fParameterMap;
+	G4double sourceParticleEnergy;
+	G4double chCriticalAngle;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

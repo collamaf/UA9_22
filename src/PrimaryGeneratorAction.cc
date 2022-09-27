@@ -32,7 +32,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-PrimaryGeneratorAction::PrimaryGeneratorAction(const std::map<G4String,G4double> & ParameterMap):G4VUserPrimaryGeneratorAction() , fParameterMap(ParameterMap) {
+PrimaryGeneratorAction::PrimaryGeneratorAction(const std::map<G4String,G4double> & ParameterMap):G4VUserPrimaryGeneratorAction() , fParameterMap(ParameterMap),sourceParticleEnergy(-17) {
 	fGPS = new G4GeneralParticleSource();
 	G4cout<<"PROVA MAPPA PrimGen: "<<fParameterMap["Ene"]<<G4endl;
 	
@@ -48,8 +48,10 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction(){
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent){
 	fGPS->GeneratePrimaryVertex(anEvent);
+	sourceParticleEnergy=fGPS->GetParticleEnergy()/GeV;
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-	
+	chCriticalAngle=3*sqrt(4/sourceParticleEnergy)*100*1e-3*mrad; //ThetaC= sqrt((2*20ev/E[eV])) = sqrt(4/E[GeV])*100 -> [urad] + x3 for axial channeling
+//	G4cout<<"AAAA PrimEne: "<< sourceParticleEnergy<<" [GeV], CritAng: "<<chCriticalAngle/mrad<<" [mrad]"<<G4endl;
 	//G4cout<<"Genero primario con E= "<<fGPS->GetParticleEnergy()/GeV<<G4endl;
 	analysisManager->FillNtupleDColumn(1, 0, fGPS->GetParticlePosition().x()/mm);
 	analysisManager->FillNtupleDColumn(1, 1, fGPS->GetParticlePosition().y()/mm);

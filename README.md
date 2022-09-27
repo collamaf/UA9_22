@@ -262,7 +262,11 @@ This is reading the "Acceptances.txt" file so you need to check what is in there
 22-09-2022: by collamaf
 - Add possibility to move in X plane the crystal (`CrystDX`)
 - Add 2 new Setups (2 and 2.5) for M2 possible measurements (Sept-22)
+- Add biasing option to kill particles having/not having channeled
 
+27-09-2022: by collamaf
+- Add second version of kill particles option, this one at the entrance of the crystal, based on crytical angle
+- Add flag to choose if killing channeling/not channeling particles: `-CutChan`: 1/10 to kill ch. part., -1/-10 to kill not. ch. part (1 for old "after X" method, 10 for new "before X" one) 
 
 ## TODOs
 - need to create a macro for digi/smearing of SiDet hits

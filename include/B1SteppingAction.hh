@@ -38,6 +38,7 @@ class EventAction;
 class RunAction;
 
 class G4LogicalVolume;
+class PrimaryGeneratorAction;
 
 /// Stepping action class
 /// 
@@ -59,6 +60,8 @@ private:
 	G4double tempThetaIn;
 	G4double tempThetaOut;
 	G4double tempDeltaTheta;
+	const PrimaryGeneratorAction* primGenAct;
+	G4double killingFactor;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

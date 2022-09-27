@@ -139,8 +139,10 @@ void RunAction::BeginOfRunAction(const G4Run*){
 	if (fParameterMap["Det3Z"]) OutputFilename.append("_Det3Z" + to_string((G4int)fParameterMap["Det3Z"]*100));
 	
 	if (fParameterMap["KeepSec"]) OutputFilename.append("_Sec");
-	if (fParameterMap["CutChan"]==-1) OutputFilename.append("_OnlyCh");
-	if (fParameterMap["CutChan"]==1) OutputFilename.append("_OnlyNotCh");
+	if (fParameterMap["CutChan"]==-1) OutputFilename.append("_OnlyChPost");
+	if (fParameterMap["CutChan"]==1) OutputFilename.append("_OnlyNotChPost");
+	if (fParameterMap["CutChan"]==-10) OutputFilename.append("_OnlyChPre");
+	if (fParameterMap["CutChan"]==10) OutputFilename.append("_OnlyNotChPre");
 
 	OutputFilename.append("_N" + to_string((G4int)fParameterMap["NPrim"]));
 	
