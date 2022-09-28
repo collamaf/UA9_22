@@ -10,6 +10,7 @@ void AnaMuEvent::Loop()
 
 	double convFactor=1e3; //from rad to mrad
 	const int nbin=100;
+	const double thetaMax=8.1;
 	int nprim=10000;
 	double peakCenter=0;
 	double peakRight=2;
@@ -46,20 +47,20 @@ void AnaMuEvent::Loop()
 
 	THStack *histoXEndStack = new THStack("histoXEndStack","X pos at the end STACK");
 
-	TH1F* histoAnglEnd=new TH1F("histoAnglEnd","Angle at the End; #theta_{Fin} [mrad]",nbin,-1,2.1);
-	TH1F* histoAnglEndCh=new TH1F("histoAnglEndCh","Angle at the End if Channeled; #theta_{Fin} [mrad]",nbin,-1,2.1);
+	TH1F* histoAnglEnd=new TH1F("histoAnglEnd","Angle at the End; #theta_{Fin} [mrad]",nbin,-1,thetaMax);
+	TH1F* histoAnglEndCh=new TH1F("histoAnglEndCh","Angle at the End if Channeled; #theta_{Fin} [mrad]",nbin,-1,thetaMax);
 	
-	TH1F* histoDAnglEnd=new TH1F("histoDAnglEnd","Delta Angle at the End; #theta_{Fin}-#theta_{In} [mrad]",nbin,-1,2.1);
-	TH1F* histoDAnglEndCh=new TH1F("histoDAnglEndCh","Delta Angle at the End if Channeled; #theta_{Fin}-#theta_{In} [mrad]",nbin,-1,2.1);
+	TH1F* histoDAnglEnd=new TH1F("histoDAnglEnd","Delta Angle at the End; #theta_{Fin}-#theta_{In} [mrad]",nbin,-1,thetaMax);
+	TH1F* histoDAnglEndCh=new TH1F("histoDAnglEndCh","Delta Angle at the End if Channeled; #theta_{Fin}-#theta_{In} [mrad]",nbin,-1,thetaMax);
 	
 
 
 //	TH1F* histoExpAnglEnd=new TH1F("histoExpAnglEnd","Experimental Angle at the End; #theta [mrad]",nbin,1,-1);
 	
-	TH2F* histoXCosX=new TH2F("histoXCosX","X vs CosX at the end; x [mm]; #theta_{Fin} [mrad]",nbin,-80,80,nbin,-1,2.1);
-	TH2F* histoXDeltaCosX=new TH2F("histoXDeltaCosX","X vs DeltaCosX at the end; x [mm]; #theta_{Fin}-#theta_{In} [mrad]",nbin,-80,80,nbin,-1,2.1);
+	TH2F* histoXCosX=new TH2F("histoXCosX","X vs CosX at the end; x [mm]; #theta_{Fin} [mrad]",nbin,-80,80,nbin,-1,thetaMax);
+	TH2F* histoXDeltaCosX=new TH2F("histoXDeltaCosX","X vs DeltaCosX at the end; x [mm]; #theta_{Fin}-#theta_{In} [mrad]",nbin,-80,80,nbin,-1,thetaMax);
 
-	TH2F* histoCosXDeltaCosX=new TH2F("histoCosXDeltaCosX","CosX vs DeltaCosX at the end; #theta_{In} [mrad]; #theta_{Fin}-#theta_{In} [mrad]",nbin,-1,1,nbin,-1,2.1);
+	TH2F* histoCosXDeltaCosX=new TH2F("histoCosXDeltaCosX","CosX vs DeltaCosX at the end; #theta_{In} [mrad]; #theta_{Fin}-#theta_{In} [mrad]",nbin,-1,1,nbin,-1,thetaMax);
 
 	
 	bool flagCh1=false;
