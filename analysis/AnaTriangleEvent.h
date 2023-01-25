@@ -71,7 +71,10 @@ AnaTriangleEvent::AnaTriangleEvent(TTree *tree, TString theRunName) : fChain(0)
 {
 	// if parameter tree is not specified (or zero), connect the file
 	// used to generate this class and read the Tree.
-	runName="TrEv_"+theRunName;
+//	runName="TrEv_"+theRunName;
+    TString outFileName=gROOT->GetListOfFiles()->First()->GetName();
+    outFileName=outFileName.Remove(outFileName.Length()-5,outFileName.Length()); //remove ".root"
+    runName=outFileName;
 	cout<<"AAAAAA "<<runName.Data()<<endl;
 	if (tree == 0) {
 		TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../build/mUA9Pla_Conf3_SigmaX1Y0Z0_NoDet_N10000.root");
