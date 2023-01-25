@@ -9,7 +9,7 @@ void AnaTriangleEvent::Loop()
 	cout<<"Analizzo run: "<<runName.Data()<<endl;
 
 	double convFactor=1e3; //from rad to mrad
-	const int nbin=400;
+	const int nbin=800;
 	int nprim=10000;
 	double peakCenter=0;
 	double peakRight=2;
@@ -23,7 +23,9 @@ void AnaTriangleEvent::Loop()
 	double chCutoffAngle=1.5; //in mrad
 	
 	TH1F* histoSourceX=new TH1F("histoSourceX","Source X; x [mm];",nbin,1,-1);
-	TH1F* histoSourceCosX=new TH1F("histoSourceCosX","Source Angle; #theta [mrad]",100,1,-1);
+    TH1F* histoSourceCosX=new TH1F("histoSourceCosX","Source Angle Y; #theta [mrad]",100,1,-1);
+    TH1F* histoSourceY=new TH1F("histoSourceY","Source Y; y [mm];",nbin,1,-1);
+	TH1F* histoSourceCosY=new TH1F("histoSourceCosY","Source Angle Y; #theta [mrad]",100,1,-1);
 	
 	TH1F* histoAnglePostX1=new TH1F("histoAnglePostX1","Angle post X1; #theta [mrad]",nbin,1,-1);
 	TH1F* histoAnglePostX2=new TH1F("histoAnglePostX2","Angle post X2; #theta [mrad]",nbin,1,-1);
@@ -47,6 +49,21 @@ void AnaTriangleEvent::Loop()
 	Long64_t nentries = fChain->GetEntriesFast();
 	nprim=nentries;
 	Long64_t nbytes = 0, nb = 0;
+    
+    // Codifica piani per caso base
+//    int planeIdSource=0;
+//    int planeIdPostX1=2;
+//    int planeIdPostX2=5;
+//    int planeIdPostX3=3;
+//    int planeIdLast=7;
+    
+    // Codifica piani per caso 2023
+    int planeIdSource=0;
+    int planeIdPostX1=6;
+    int planeIdPostX2=3;
+    int planeIdPostX3=4;
+    int planeIdLast=5;
+    
 	for (Long64_t jentry=0; jentry<nentries;jentry++) {
 		Long64_t ientry = LoadTree(jentry);
 		flagCh1=false;
@@ -58,27 +75,29 @@ void AnaTriangleEvent::Loop()
 		double z3=0, z7=0, x3=0, x7=0, expTheta=0;
 		
 		for (int ii=0; ii<X->size();ii++) { //Loop on each info of a given entry
-			if (PlaneId->at(ii)==0) {
-				histoSourceX->Fill(X->at(ii));
-				histoSourceCosX->Fill(convFactor*CosX->at(ii));
+			if (PlaneId->at(ii)==planeIdSource) {
+                histoSourceX->Fill(X->at(ii));
+                histoSourceCosX->Fill(convFactor*CosX->at(ii));
+                histoSourceY->Fill(Y->at(ii));
+				histoSourceCosY->Fill(convFactor*CosY->at(ii));
 			}
 			
-			if (PlaneId->at(ii)==2) {
+			if (PlaneId->at(ii)==planeIdPostX1) {
 				histoAnglePostX1->Fill(convFactor*CosX->at(ii));
 				if (convFactor*CosX->at(ii)>chCutoffAngle) flagCh1=true;
 
 			}
-			if (PlaneId->at(ii)==5) {
+			if (PlaneId->at(ii)==planeIdPostX2) {
 				histoAnglePostX2->Fill(convFactor*CosX->at(ii));
 			}
-			if (PlaneId->at(ii)==3) {
+			if (PlaneId->at(ii)==planeIdPostX3) {
 				flagX3hit=true;
 				x3=X->at(ii);
 				z3=Z->at(ii);
 				histoAnglePostX3->Fill(convFactor*CosX->at(ii));
 				if (flagCh1) histoAnglePostX3ChChCh->Fill(convFactor*CosX->at(ii));
 			}
-			if (PlaneId->at(ii)==7) {
+			if (PlaneId->at(ii)==planeIdLast) {
 				flagX7hit=true;
 				x7=X->at(ii);
 				z7=Z->at(ii);
@@ -98,9 +117,13 @@ void AnaTriangleEvent::Loop()
 	TCanvas* canvBeam=new TCanvas("canvBeam","canvBeam",0,0,400,800);
 	canvBeam->Divide(1,2);
 	canvBeam->cd(1);
-	histoSourceX->Draw();
+    histoSourceX->Draw();
+    histoSourceY->SetLineColor(kRed);
+    histoSourceY->Draw("sames");
 	canvBeam->cd(2);
 	histoSourceCosX->Draw();
+    histoSourceCosY->SetLineColor(kRed);
+    histoSourceCosY->Draw("sames");
 	canvBeam->Write();
 	
 	TCanvas* canvXAll=new TCanvas("canvXAll","canvXAll");
@@ -299,8 +322,10 @@ void AnaTriangleEvent::Loop()
 	canvX3->SaveAs(Form("%s_X3.pdf",runName.Data()));
 	canvX3->Write();
 #endif
-	histoSourceX->Write();
-	histoSourceCosX->Write();
+    histoSourceX->Write();
+    histoSourceCosX->Write();
+    histoSourceY->Write();
+	histoSourceCosY->Write();
 	histoAnglePostX1->Write();
 	histoAnglePostX2->Write();
 	histoAnglePostX3->Write();
