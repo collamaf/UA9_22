@@ -61,18 +61,23 @@ private:
 	G4UIcmdWith3VectorAndUnit* fXtalSizeCmd;
 	G4UIcmdWith3VectorAndUnit* fXtalBRCmd;
 	G4UIcmdWith3VectorAndUnit* fXtalAngleCmd;
-	G4UIcmdWithAString*  fXtalECCmd;
+    G4UIcmdWithAString*  fXtalECCmd;
+    G4UIcmdWithADoubleAndUnit*  fXtalZ;
+    G4UIcmdWithADoubleAndUnit* fXtalThetaBending;
 	G4UIcmdWithADoubleAndUnit*  fSiDetThickCmd;
 	G4UIcmdWith3VectorAndUnit* fSiDetSizeCmd;
 	
 	G4UIcmdWith3VectorAndUnit* fXtal2SizeCmd;
 	G4UIcmdWith3VectorAndUnit* fXtal2BRCmd;
 	G4UIcmdWith3VectorAndUnit* fXtal2AngleCmd;
-	
+    G4UIcmdWithADoubleAndUnit*  fXtal2Z;
+    G4UIcmdWithADoubleAndUnit*  fXtal2XOffset;
+
 	G4UIcmdWith3VectorAndUnit* fXtal3SizeCmd;
 	G4UIcmdWith3VectorAndUnit* fXtal3BRCmd;
 	G4UIcmdWith3VectorAndUnit* fXtal3AngleCmd;
-	
+    G4UIcmdWithADoubleAndUnit*  fXtal3Z;
+
 };
 
 #endif

@@ -82,6 +82,20 @@ DetectorConstructionMessenger(
 	fXtalECCmd->SetGuidance("Set crystal EC.");
 	fXtalECCmd->SetParameterName("xEC",true);
 	fXtalECCmd->SetDefaultValue("data/Si220pl");
+    
+    
+    fXtalZ = new G4UIcmdWithADoubleAndUnit("/xtal/setZ",this);
+    fXtalZ->SetGuidance("Set crystal Z.");
+    fXtalZ->SetParameterName("X1Z",true);
+    fXtalZ->SetDefaultValue(-8);
+    fXtalZ->SetDefaultUnit("m");
+    
+    
+    fXtalThetaBending = new G4UIcmdWithADoubleAndUnit("/xtal/setThetaBending",this);
+    fXtalThetaBending->SetGuidance("Set crystal Theta Bending.");
+    fXtalThetaBending->SetParameterName("XThetaB",true);
+    fXtalThetaBending->SetDefaultValue(2e-3);
+    fXtalThetaBending->SetDefaultUnit("rad");
 	
 	fSiDetThickCmd = new G4UIcmdWithADoubleAndUnit("/sidet/thick",this);
 	fSiDetThickCmd->SetGuidance("Set Silicon Detector thickness");
@@ -126,8 +140,20 @@ DetectorConstructionMessenger(
 	fXtal2AngleCmd->SetDefaultUnit("rad");
 	
 	
-	
-	
+    
+    fXtal2Z = new G4UIcmdWithADoubleAndUnit("/xtal2/setZ",this);
+    fXtal2Z->SetGuidance("Set crystal2 Z.");
+    fXtal2Z->SetParameterName("X2Z",true);
+    fXtal2Z->SetDefaultValue(0);
+    fXtal2Z->SetDefaultUnit("m");
+    
+    
+    fXtal2XOffset = new G4UIcmdWithADoubleAndUnit("/xtal2/setXOffset",this);
+    fXtal2XOffset->SetGuidance("Set crystal2 XOffset.");
+    fXtal2XOffset->SetParameterName("X2XOffset",true);
+    fXtal2XOffset->SetDefaultValue(0);
+    fXtal2XOffset->SetDefaultUnit("mm");
+    
 	fXtal3SizeCmd = new G4UIcmdWith3VectorAndUnit("/xtal3/setSize",this);
 	fXtal3SizeCmd->SetGuidance("Set crystal3 size.");
 	fXtal3SizeCmd->SetParameterName("xtal3SizeX",
@@ -155,6 +181,12 @@ DetectorConstructionMessenger(
 	fXtal3AngleCmd->SetDefaultValue(G4ThreeVector(0.,0.,0.));
 	fXtal3AngleCmd->SetDefaultUnit("rad");
 	
+    
+    fXtal3Z = new G4UIcmdWithADoubleAndUnit("/xtal3/setZ",this);
+    fXtal3Z->SetGuidance("Set crystal3 Z.");
+    fXtal3Z->SetParameterName("X3Z",true);
+    fXtal3Z->SetDefaultValue(10);
+    fXtal3Z->SetDefaultUnit("m");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -164,7 +196,9 @@ DetectorConstructionMessenger::
 	delete fXtalMaterialCmd;
 	delete fXtalSizeCmd;
 	delete fXtalAngleCmd;
-	delete fXtalECCmd;
+    delete fXtalECCmd;
+    delete fXtalZ;
+    delete fXtalThetaBending;
 	delete fXtalBRCmd;
 	delete fSiDetThickCmd;
 	delete fSiDetSizeCmd;
@@ -172,10 +206,12 @@ DetectorConstructionMessenger::
 	delete fXtal2SizeCmd;
 	delete fXtal2AngleCmd;
 	delete fXtal2BRCmd;
-	
+    delete fXtal2Z;
+
 	delete fXtal3SizeCmd;
 	delete fXtal3AngleCmd;
 	delete fXtal3BRCmd;
+    delete fXtal3Z;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -198,7 +234,13 @@ void DetectorConstructionMessenger::SetNewValue(
 	if(command==fXtalECCmd ){
 		fTarget->SetEC(newValue);
 	}
-	if(command==fSiDetThickCmd ){
+    if(command==fXtalZ ){
+        fTarget->SetZ(fXtalZ->GetNewDoubleValue(newValue));
+    }
+    if(command==fXtalThetaBending ){
+        fTarget->SetThetaBending(fXtalThetaBending->GetNewDoubleValue(newValue));
+    }
+    if(command==fSiDetThickCmd ){
 		fTarget->SetSiDetThickness(fSiDetThickCmd->GetNewDoubleValue(newValue));
 	}
 	if(command==fSiDetSizeCmd ){
@@ -213,7 +255,10 @@ void DetectorConstructionMessenger::SetNewValue(
 	if(command==fXtal2AngleCmd ){
 		fTarget->SetAngles2(fXtal2AngleCmd->GetNew3VectorValue(newValue));
 	}
-	if(command==fXtal3SizeCmd ){
+    if(command==fXtal2Z ){
+        fTarget->SetZ2(fXtal2Z->GetNewDoubleValue(newValue));
+    }
+    if(command==fXtal3SizeCmd ){
 		fTarget->SetSizes3(fXtal3SizeCmd->GetNew3VectorValue(newValue));
 	}
 	if(command==fXtal3BRCmd ){
@@ -222,6 +267,9 @@ void DetectorConstructionMessenger::SetNewValue(
 	if(command==fXtal3AngleCmd ){
 		fTarget->SetAngles3(fXtal3AngleCmd->GetNew3VectorValue(newValue));
 	}
+    if(command==fXtal3Z ){
+        fTarget->SetZ3(fXtal3Z->GetNewDoubleValue(newValue));
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....

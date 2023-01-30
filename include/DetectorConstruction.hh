@@ -81,6 +81,10 @@ public:
 	
 	G4ThreeVector GetAngles() {return fAngles;}
 	void SetAngles(G4ThreeVector a3vec) {fAngles = a3vec;}
+    
+    void SetZ(G4double z1) {fZ = z1;}
+    void SetThetaBending(G4double _thetaBending) {thetaBending = _thetaBending;}
+
 	
 	G4double GetSiDetThickness() {return fSiDetThickness;}
 	void SetSiDetThickness(G4double thick) {fSiDetThickness = thick;}
@@ -91,11 +95,14 @@ public:
 	void SetSizes2(G4ThreeVector a3vec) {fSizes2 = a3vec;}
 	void SetBR2(G4ThreeVector a3vec) {fBR2 = a3vec;}
 	void SetAngles2(G4ThreeVector a3vec) {fAngles2 = a3vec;}
-	
+    void SetZ2(G4double z2) {fZ2 = z2;}
+    void SetX2Offset(G4double x2Offset) {fX2Offset = x2Offset;}
+
 	void SetSizes3(G4ThreeVector a3vec) {fSizes3 = a3vec;}
 	void SetBR3(G4ThreeVector a3vec) {fBR3 = a3vec;}
 	void SetAngles3(G4ThreeVector a3vec) {fAngles3 = a3vec;}
-	
+    void SetZ3(G4double z3) {fZ3 = z3;}
+
 	G4double GetThetaBending(void) const {return thetaBending;};
 	
 private:
@@ -105,6 +112,7 @@ private:
 	G4ThreeVector fSizes;
 	G4ThreeVector fBR;
 	G4ThreeVector fAngles;
+    G4double  fZ;
 	G4double  fSiDetThickness;
 	G4ThreeVector fSiDetSizes;
 	std::map<G4String,G4double>  fParameterMap;
@@ -112,9 +120,12 @@ private:
 	G4ThreeVector fSizes2;
 	G4ThreeVector fBR2;
 	G4ThreeVector fAngles2;
-	
+    G4double  fZ2;
+    G4double  fX2Offset;
+
 	G4ThreeVector fSizes3;
 	G4ThreeVector fBR3;
 	G4ThreeVector fAngles3;
 	G4double thetaBending;
+    G4double  fZ3;
 };
