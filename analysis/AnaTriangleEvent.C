@@ -30,14 +30,22 @@ void AnaTriangleEvent::Loop()
 	TH1F* histoAnglePostX1=new TH1F("histoAnglePostX1","Angle post X1; #theta [mrad]",nbin,1,-1);
 	TH1F* histoAnglePostX2=new TH1F("histoAnglePostX2","Angle post X2; #theta [mrad]",nbin,1,-1);
 	TH1F* histoAnglePostX3=new TH1F("histoAnglePostX3","Angle post X3; #theta [mrad]",nbin,1,-1);
-	TH1F* histoAnglePostX3ChChCh=new TH1F("histoAnglePostX3ChChCh","Angle post X3 only ChChCh; #theta [mrad]",nbin,1,-1);
+    TH1F* histoAnglePostX3Ch=new TH1F("histoAnglePostX3Ch","Angle post X3 if Ch; #theta [mrad]",nbin,1,-1);
+    TH1F* histoAnglePostX3ChCh=new TH1F("histoAnglePostX3ChCh","Angle post X3 if ChCh; #theta [mrad]",nbin,1,-1);
+    TH1F* histoAnglePostX3ChChCh=new TH1F("histoAnglePostX3ChChCh","Angle post X3 if ChChCh; #theta [mrad]",nbin,1,-1);
 	histoAnglePostX3ChChCh->SetLineColor(kMagenta);
+    TH1F* histoAnglePostX3OCh=new TH1F("histoAnglePostX3OCh","Angle post X3 only Ch; #theta [mrad]",nbin,1,-1);
+    TH1F* histoAnglePostX3OChCh=new TH1F("histoAnglePostX3OChCh","Angle post X3 only ChCh; #theta [mrad]",nbin,1,-1);
+    TH1F* histoAnglePostX3OChChCh=new TH1F("histoAnglePostX3OChChCh","Angle post X3 only ChChCh; #theta [mrad]",nbin,1,-1);
 
     TH1F* histoXPostX1=new TH1F("histoXPostX1","X post X1; #x [mm]",nbin,1,-1);
     TH1F* histoXPreX2=new TH1F("histoXPreX2","X pre X2; #x [mm]",nbin,1,-1);
     TH1F* histoXPostX2=new TH1F("histoXPostX2","X post X2; #x [mm]",nbin,1,-1);
     TH1F* histoXPreX3=new TH1F("histoXPreX3","X pre X3; #x [mm]",nbin,1,-1);
     TH1F* histoXPostX3=new TH1F("histoXPostX3","X post X3; #x [mm]",nbin,1,-1);
+    TH1F* histoXPostX3Ch=new TH1F("histoXPostX3Ch","X post X3 only Ch; #x [mm]",nbin,1,-1);
+    TH1F* histoXPostX3ChCh=new TH1F("histoXPostX3ChCh","X post X3 only ChCh; #x [mm]",nbin,1,-1);
+    TH1F* histoXPostX3ChChCh=new TH1F("histoXPostX3ChChCh","X post X3 only ChChCh; #x [mm]",nbin,1,-1);
     TH1F* histoXEnd=new TH1F("histoXEnd","X pos at the end; X [mm]",nbin,1,-1);
 	TH1F* histoXEndChChCh=new TH1F("histoXEndChChCh","X pos at the end only ChChCh; X [mm]",nbin,1,-1);
 	histoXEndChChCh->SetLineColor(kMagenta);
@@ -45,7 +53,9 @@ void AnaTriangleEvent::Loop()
 	TH1F* histoExpAnglEnd=new TH1F("histoExpAnglEnd","Experimental Angle at the End; #theta [mrad]",nbin,1,-1);
 
 	
-	bool flagCh1=false;
+    bool flagCh1=false;
+    bool flagCh2=false;
+	bool flagCh3=false;
 	bool flagX3hit=false;
 	bool flagX7hit=false;
 
@@ -64,6 +74,7 @@ void AnaTriangleEvent::Loop()
     
     // Codifica piani per caso 2023
     int planeIdSource=0;
+    int planeIdPreX1=1;
     int planeIdPostX1=6;
     int planeIdPreX2=2;
     int planeIdPostX2=3;
@@ -71,9 +82,19 @@ void AnaTriangleEvent::Loop()
     int planeIdPostX3=4;
     int planeIdLast=5;
     
+    double thetaX1In;
+    double thetaX1Out;
+    double thetaX2In;
+    double thetaX2Out;
+    double thetaX3In;
+    double thetaX3Out;
+    
+    
 	for (Long64_t jentry=0; jentry<nentries;jentry++) {
 		Long64_t ientry = LoadTree(jentry);
-		flagCh1=false;
+        flagCh1=false;
+        flagCh2=false;
+		flagCh3=false;
 		flagX3hit=false;
 		flagX7hit=false;
 		if (ientry < 0) break;
@@ -88,30 +109,81 @@ void AnaTriangleEvent::Loop()
                 histoSourceY->Fill(Y->at(ii));
 				histoSourceCosY->Fill(convFactor*CosY->at(ii));
 			}
-			if (PlaneId->at(ii)==planeIdPostX1) {
+            // CR 1
+            if (PlaneId->at(ii)==planeIdPreX1) {
+                thetaX1In=convFactor*CosX->at(ii);
+            }
+            if (PlaneId->at(ii)==planeIdPostX1) {
                 histoAnglePostX1->Fill(convFactor*CosX->at(ii));
-				if (convFactor*CosX->at(ii)>chCutoffAngle) flagCh1=true;
                 histoXPostX1->Fill(X->at(ii));
-			}
+                thetaX1Out=convFactor*CosX->at(ii);
+                if (thetaX1Out-thetaX1In>chCutoffAngle) flagCh1=true;
+            }
+
+            // CR 2
             if (PlaneId->at(ii)==planeIdPreX2) {
                 histoXPreX2->Fill(X->at(ii));
+                thetaX2In=convFactor*CosX->at(ii);
             }
 			if (PlaneId->at(ii)==planeIdPostX2) {
 				histoAnglePostX2->Fill(convFactor*CosX->at(ii));
                 histoXPostX2->Fill(X->at(ii));
+                thetaX2Out=convFactor*CosX->at(ii);
+                if (thetaX2Out-thetaX2In<-2*chCutoffAngle) flagCh2=true;
 			}
+            
+            // CR 3
             if (PlaneId->at(ii)==planeIdPreX3) {
                 histoXPreX3->Fill(X->at(ii));
+                thetaX3In=convFactor*CosX->at(ii);
             }
 			if (PlaneId->at(ii)==planeIdPostX3) {
 				flagX3hit=true;
 				x3=X->at(ii);
 				z3=Z->at(ii);
 				histoAnglePostX3->Fill(convFactor*CosX->at(ii));
-				if (flagCh1) histoAnglePostX3ChChCh->Fill(convFactor*CosX->at(ii));
+                thetaX3Out=convFactor*CosX->at(ii);
+                if (thetaX3Out-thetaX3In>chCutoffAngle) {
+                    flagCh3=true;
+                
+                }
+                if (thetaX3Out-thetaX3In!=0) {
+                    printf("X3##, AngIn:\t%.2e\tAngOut:\t%.2e\tDiff:\t%.2e\n", thetaX3In,thetaX3Out, thetaX3Out-thetaX3In);
+                } else {
+                    printf("X3, AngIn:\t%.2e\tAngOut:\t%.2e\tDiff:\t%.2e\n", thetaX3In,thetaX3Out, thetaX3Out-thetaX3In);
+                }
+
+//                    cout<<"ThetaX3Out: "<<thetaX3Out<<" In: "<<thetaX3In<<", Diff: "<<thetaX3Out-thetaX3In<<endl;
+                
+                if (flagCh1)  {
+                    histoXPostX3Ch->Fill(X->at(ii));
+                    histoAnglePostX3Ch->Fill(convFactor*CosX->at(ii));
+                }
+                if (flagCh1&&flagCh2)  {
+                    histoXPostX3ChCh->Fill(X->at(ii));
+                    histoAnglePostX3ChCh->Fill(convFactor*CosX->at(ii));
+                }
+                if (flagCh1&&flagCh2&&flagCh3)  {
+                    histoXPostX3ChChCh->Fill(X->at(ii));
+                    histoAnglePostX3ChChCh->Fill(convFactor*CosX->at(ii));
+                }
+                
+                
+                if (flagCh1&&flagCh2&&flagCh3)  {
+//                    histoXPostX3ChChCh->Fill(X->at(ii));
+                    histoAnglePostX3OChChCh->Fill(convFactor*CosX->at(ii));
+                } else if (flagCh1&&flagCh2)  {
+//                    histoXPostX3ChCh->Fill(X->at(ii));
+                    histoAnglePostX3OChCh->Fill(convFactor*CosX->at(ii));
+                } else if (flagCh1)  {
+//                    histoXPostX3Ch->Fill(X->at(ii));
+                    histoAnglePostX3OCh->Fill(convFactor*CosX->at(ii));
+                }
                 histoXPostX3->Fill(X->at(ii));
 			}
-			if (PlaneId->at(ii)==planeIdLast) {
+			
+            // LAST PLANE
+            if (PlaneId->at(ii)==planeIdLast) {
 				flagX7hit=true;
 				x7=X->at(ii);
 				z7=Z->at(ii);
@@ -122,7 +194,7 @@ void AnaTriangleEvent::Loop()
 		}
 		expTheta=convFactor*TMath::ATan((x7-x3)/(z7-z3));
 		if (flagX3hit&&flagX7hit) histoExpAnglEnd->Fill(expTheta);
-		printf("x3=%f\tz3=%f\tx7=%f\tz7=%f\texpTheta=%f\n",x3, z3, x7, z7, expTheta);
+//		printf("x3=%f\tz3=%f\tx7=%f\tz7=%f\texpTheta=%f\n",x3, z3, x7, z7, expTheta);
 		
 		// if (Cut(ientry) < 0) continue;
 	}
@@ -151,7 +223,8 @@ void AnaTriangleEvent::Loop()
     TCanvas* canvXAll=new TCanvas("canvXAll","canvXAll");
 //    histoXPostX3->SetLineColor(kRed);
     histoXPostX3->Draw();
-//    histoXPostX2->SetLineColor(kGreen);
+    histoXPostX3ChChCh->SetLineColor(kRed);
+    histoXPostX3ChChCh->Draw("sames");
     histoXPreX3->Draw("samesPLC");
     histoXPostX2->Draw("samesPLC");
     histoXPreX2->Draw("samesPLC");
@@ -161,7 +234,52 @@ void AnaTriangleEvent::Loop()
     canvXAll->BuildLegend();
     canvXAll->SaveAs(Form("%s_XAll.pdf",runName.Data()));
     canvXAll->Write();
+    
+    
+    TCanvas* canvXCh=new TCanvas("canvXCh","canvXCh");
+//    histoXPostX3->SetLineColor(kRed);
+    histoXPostX3->Draw();
+    histoXPostX3ChChCh->SetLineColor(kRed);
+    histoXPostX3ChChCh->Draw("sames");
+    histoXPostX3ChCh->SetLineColor(kGreen);
+    histoXPostX3ChCh->Draw("sames");
+    histoXPostX3Ch->SetLineColor(kCyan);
+    histoXPostX3Ch->Draw("sames");
+    canvXCh->SetLogy(1);
+    canvXCh->BuildLegend();
+    canvXCh->SaveAs(Form("%s_XCh.pdf",runName.Data()));
+    canvXCh->Write();
 	
+    
+    TCanvas* canvAngCh=new TCanvas("canvAngCh","canvAngCh");
+//    histoXPostX3->SetLineColor(kRed);
+    histoAnglePostX3->Draw();
+    histoAnglePostX3ChChCh->SetLineColor(kRed);
+    histoAnglePostX3ChChCh->Draw("sames");
+    histoAnglePostX3ChCh->SetLineColor(kGreen);
+    histoAnglePostX3ChCh->Draw("sames");
+    histoAnglePostX3Ch->SetLineColor(kCyan);
+    histoAnglePostX3Ch->Draw("sames");
+    canvAngCh->SetLogy(1);
+    canvAngCh->BuildLegend();
+    canvAngCh->SaveAs(Form("%s_AngCh.pdf",runName.Data()));
+    canvAngCh->Write();
+    
+    
+    TCanvas* canvAngOCh=new TCanvas("canvAngOCh","canvAngOCh");
+//    histoXPostX3->SetLineColor(kRed);
+    histoAnglePostX3->Draw();
+    histoAnglePostX3OChChCh->SetLineColor(kRed);
+    histoAnglePostX3OChChCh->Draw("sames");
+    histoAnglePostX3OChCh->SetLineColor(kGreen);
+    histoAnglePostX3OChCh->Draw("sames");
+    histoAnglePostX3OCh->SetLineColor(kCyan);
+    histoAnglePostX3OCh->Draw("sames");
+    canvAngOCh->SetLogy(1);
+    canvAngOCh->BuildLegend();
+    canvAngOCh->SaveAs(Form("%s_AngOCh.pdf",runName.Data()));
+    canvAngOCh->Write();
+    
 	
 	double myArea0=0;
 	double myArea0ChCh=0;
@@ -357,10 +475,22 @@ void AnaTriangleEvent::Loop()
     histoXPostX1->Write();
     histoXPostX2->Write();
     histoXPostX3->Write();
+    histoXPreX2->Write();
+    histoXPreX3->Write();
     histoAnglePostX1->Write();
     histoAnglePostX2->Write();
     histoAnglePostX3->Write();
-	
+    histoXPostX3ChChCh->Write();
+    histoXPostX3ChCh->Write();
+    histoXPostX3Ch->Write();
+    histoAnglePostX3ChChCh->Write();
+    histoAnglePostX3ChCh->Write();
+    histoAnglePostX3Ch->Write();
+    histoAnglePostX3OChChCh->Write();
+    histoAnglePostX3OChCh->Write();
+    histoAnglePostX3OCh->Write();
+    
+    
 	TCanvas* canvCum=new TCanvas("canvCum","canvCum",0,0,400,1200);
 	canvCum->Divide(1,3);
 	TH1F* histoAnglePostX1Cum=(TH1F*)histoAnglePostX1->GetCumulative(1);
