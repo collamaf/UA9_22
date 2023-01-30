@@ -207,7 +207,11 @@ int main(int argc,char** argv)
 			{
 				ParameterMap["CutChan"]=stoi (argv[++i], NULL);;
 			}
-			else if(option.compare("-Label")==0)
+            else if(option.compare("-X2Offset")==0)
+            {
+                ParameterMap["X2Offset"]=strtod (argv[++i], NULL);;
+            }
+            else if(option.compare("-Label")==0)
 			{
 				OutputFilename.append(argv[++i]);
 				G4cout<<"Filename: "<<OutputFilename<<G4endl;
@@ -232,7 +236,10 @@ int main(int argc,char** argv)
 	}else if (ParameterMap["Setup"]==2.5) {
 		MacroName="mua922_conf2b.mac";
 		OutputFilename.append("_Conf2b");
-	}
+	}else if (ParameterMap["Setup"]==3.5) {
+        MacroName="mua922_conf3b.mac";
+        OutputFilename.append("_Conf3b");
+    }
 	
 	
 	// Construct the default run manager

@@ -209,7 +209,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	
 	if (fParameterMap["Setup"]==3){
 		posX=G4ThreeVector(0,0,-10*CLHEP::m);
-	}
+	} else if (fParameterMap["Setup"]==3.5){
+        posX=G4ThreeVector(0,0,-8*CLHEP::m);
+        double posX2_x=16*CLHEP::mm;
+        if (fParameterMap["X2Offset"]) posX2_x+=fParameterMap["X2Offset"];
+        posX2=G4ThreeVector(posX2_x,0,0*CLHEP::m);
+        posX3=G4ThreeVector(0,0,10*CLHEP::m);
+    }
 	
 	//#####################################
 //	G4cout << "MYDEBUG " << __FILE__<< " " << __LINE__<< " " << __FUNCTION__<<G4endl;
@@ -228,7 +234,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	G4Box* crystalSolid2;
 	G4Box* crystalSolid3;
 
-	if (fParameterMap["Setup"]==3) {
+	if (fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ) {
 		crystalSolid2 = new G4Box("crystal2.solid",
 																		fSizes2.x()/2.,
 																		fSizes2.y()/2.,
@@ -316,7 +322,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	
 	G4ThreeVector temp;
 	G4cout<<"DetConst BendingRadius= "<< crystalChannelingData->GetBR(temp)/CLHEP::m<<" "<<temp.x()/CLHEP::m<<" "<<crystalChannelingData->GetBR(temp).x()<<G4endl;
-	if (fParameterMap["Setup"]==3) {
+	if (fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ) {
 		G4cout<<"DetConst BendingRadius2= "<< crystalChannelingData2->GetBR(temp)/CLHEP::m<<" "<<temp.x()/CLHEP::m<<G4endl;
 		G4cout<<"DetConst BendingRadius3= "<< crystalChannelingData3->GetBR(temp)/CLHEP::m<<" "<<temp.x()/CLHEP::m<<G4endl;
 	}
@@ -347,7 +353,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	G4LogicalCrystalVolume* crystalLogic2;
 	G4LogicalCrystalVolume* crystalLogic3;
 
-	if (fParameterMap["Setup"]==3) {
+	if (fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ) {
 		crystalLogic2 =
 		new G4LogicalCrystalVolume(crystalSolid2,
 															 Crystal2, // creiamo il cristallo con il materiale "esteso"
@@ -454,7 +460,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 																	 0);
 	}
 	
-	if(fParameterMap["Setup"]==3){
+	if(fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ){
 		
 		if(fParameterMap["NoCryst2"]){
 			new G4PVPlacement(rot2,
@@ -494,7 +500,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	<< " to logical volume " << crystalLogic->GetName()
 	<< G4endl;
 	
-	if(fParameterMap["Setup"]==3){
+	if(fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ){
 		testMany->AttachTo(crystalLogic2);
 		G4cout << " Attaching biasing operator " << testMany->GetName()
 		<< " to logical volume " << crystalLogic2->GetName()
@@ -547,7 +553,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 		dummyPlane2_Z= 0.3*CLHEP::m+fDetectorSizes.z();
 		dummyPlane3_Z= 0.5*CLHEP::m+fDetectorSizes.z();
 		dummyPlane4_Z= 5*CLHEP::m+fDetectorSizes.z();
-	}
+	}else if (fParameterMap["Setup"]==3.5){ //3X case with real distances - Jan23
+        dummyPlane0_Z= -13.1*CLHEP::m+fDetectorSizes.z();
+        dummyPlane1_Z= -8.1*CLHEP::m+fDetectorSizes.z();
+        dummyPlane2_Z= -0.5*CLHEP::m+fDetectorSizes.z();
+        dummyPlane3_Z= 0.5*CLHEP::m+fDetectorSizes.z();
+        dummyPlane4_Z= 10.1*CLHEP::m+fDetectorSizes.z();
+        dummyPlane5_Z= 19.1*CLHEP::m+fDetectorSizes.z();
+        dummyPlane6_Z= -7.9*CLHEP::m+fDetectorSizes.z();
+        dummyPlane7_Z= 9.9*CLHEP::m+fDetectorSizes.z();
+    }
 	G4ThreeVector posDummyPlane0= G4ThreeVector(0, 0, dummyPlane0_Z);
 	G4ThreeVector posDummyPlane1= G4ThreeVector(0, 0, dummyPlane1_Z);
 	G4ThreeVector posDummyPlane2= G4ThreeVector(0, 0, dummyPlane2_Z);
@@ -573,7 +588,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	new G4PVPlacement(0,posDummyPlane1,logicDummyPlane,"physDummyPlane",worldLogic,false,1,checkOverlaps);
 	new G4PVPlacement(0,posDummyPlane2,logicDummyPlane,"physDummyPlane",worldLogic,false,2,checkOverlaps);
 	new G4PVPlacement(0,posDummyPlane3,logicDummyPlane,"physDummyPlane",worldLogic,false,3,checkOverlaps);
-	if(fParameterMap["Setup"]==3){
+	if(fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ){
 		new G4PVPlacement(0,posDummyPlane4,logicDummyPlane,"physDummyPlane",worldLogic,false,4,checkOverlaps);
 		new G4PVPlacement(0,posDummyPlane5,logicDummyPlane,"physDummyPlane",worldLogic,false,5,checkOverlaps);
 		new G4PVPlacement(0,posDummyPlane6,logicDummyPlane,"physDummyPlane",worldLogic,false,6,checkOverlaps);
@@ -614,7 +629,7 @@ void DetectorConstruction::ConstructSDandField(){
 	<< " to logical volume " << crystalLogic->GetName()
 	<< G4endl;
 	
-	if(fParameterMap["Setup"]==3){
+	if(fParameterMap["Setup"]==3|| fParameterMap["Setup"]==3.5 ){
 		G4LogicalVolume* crystalLogic2 =
 		G4LogicalVolumeStore::GetInstance()->GetVolume("crystal2.logic");
 		testMany->AttachTo(crystalLogic2);

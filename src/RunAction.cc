@@ -133,11 +133,12 @@ void RunAction::BeginOfRunAction(const G4Run*){
 	if (fParameterMap["NoDet"]) OutputFilename.append("_NoDet");
 	if (fParameterMap["SecondX"]) OutputFilename.append("_SecondX");
 
-	if (fParameterMap["Det0Z"])	OutputFilename.append("_Det0Z" + to_string((G4int)fParameterMap["Det0Z"]*100));
+    if (fParameterMap["Det0Z"])    OutputFilename.append("_Det0Z" + to_string((G4int)fParameterMap["Det0Z"]*100));
 	if (fParameterMap["Det1Z"]) OutputFilename.append("_Det1Z" + to_string((G4int)fParameterMap["Det1Z"]*100));
 	if (fParameterMap["Det2Z"]) OutputFilename.append("_Det2Z" + to_string((G4int)fParameterMap["Det2Z"]*100));
 	if (fParameterMap["Det3Z"]) OutputFilename.append("_Det3Z" + to_string((G4int)fParameterMap["Det3Z"]*100));
-	
+    if (fParameterMap["X2Offset"])    OutputFilename.append("_X2Offset" + to_string((G4int)(fParameterMap["X2Offset"]*1000)));
+    
 	if (fParameterMap["KeepSec"]) OutputFilename.append("_Sec");
 	if (fParameterMap["CutChan"]==-1) OutputFilename.append("_OnlyChPost");
 	if (fParameterMap["CutChan"]==1) OutputFilename.append("_OnlyNotChPost");
