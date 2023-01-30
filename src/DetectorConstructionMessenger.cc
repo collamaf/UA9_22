@@ -258,6 +258,9 @@ void DetectorConstructionMessenger::SetNewValue(
     if(command==fXtal2Z ){
         fTarget->SetZ2(fXtal2Z->GetNewDoubleValue(newValue));
     }
+    if(command==fXtal2XOffset ){
+        fTarget->SetX2Offset(fXtal2XOffset->GetNewDoubleValue(newValue));
+    }
     if(command==fXtal3SizeCmd ){
 		fTarget->SetSizes3(fXtal3SizeCmd->GetNew3VectorValue(newValue));
 	}

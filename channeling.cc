@@ -239,7 +239,6 @@ int main(int argc,char** argv)
 	}else if (ParameterMap["Setup"]==3.5) {
         MacroName="mua922_conf3b.mac";
         OutputFilename.append("_Conf3b");
-//        ParameterMap[""]
     }
 	
 	
@@ -320,6 +319,8 @@ int main(int argc,char** argv)
 	if (ParameterMap["SigmaX"]) UImanager->ApplyCommand("/gps/ang/sigma_x "+std::to_string(ParameterMap["SigmaX"]) + " rad");
 	if (ParameterMap["SigmaY"]) UImanager->ApplyCommand("/gps/ang/sigma_y "+std::to_string(ParameterMap["SigmaY"]) + " rad");
 	if (ParameterMap["CrystX"]) UImanager->ApplyCommand("/xtal/setSize "+std::to_string(ParameterMap["CrystX"]) +" "+ std::to_string(ParameterMap["CrystY"]) + " " +std::to_string(ParameterMap["CrystZ"]) + " rad");
+    if (ParameterMap["X2Offset"])  UImanager->ApplyCommand("/xtal2/setXOffset "+std::to_string(ParameterMap["X2Offset"]) + " mm");
+
 	
 	// Ora che ho caricato tutti i parametri necessari, decido se lanciare in batch o in interattivo
 	if (!ui) { //se batch mode mando NPrim

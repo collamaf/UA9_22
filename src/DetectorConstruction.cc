@@ -78,6 +78,7 @@ fSizes2(G4ThreeVector(1.*CLHEP::mm,
 fBR2(G4ThreeVector(0.,0.,0.)),
 fAngles2(G4ThreeVector(0.,0.,0.)),
 fZ2(0*CLHEP::m),
+fX2Offset(0*CLHEP::m),
 fSizes3(G4ThreeVector(1.*CLHEP::mm,
 										 70.*CLHEP::mm,
 										 1.94 * CLHEP::mm)),
@@ -330,6 +331,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	
 	G4ThreeVector temp;
     crystalChannelingData->GetBR(temp)/CLHEP::m;
+    G4double thetaBending2=0;
+    G4double thetaBending3=0;
+    G4double posX2_x=0;
 //	G4cout<<"DetConst BendingRadius= "<< crystalChannelingData->GetBR(temp)/CLHEP::m<<G4endl;
 
     if (thetaBending==0) { //if thetaBending was not manually set in macro, retrieve it from size and BR
@@ -337,15 +341,38 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
         thetaBending=(fSizes.z()*CLHEP::mm)/(crystalChannelingData->GetBR(temp).x()/CLHEP::m); // in mrad
         G4cout<<"DetConst ThetaBending= "<< thetaBending<<" mrad"<<G4endl;
     } else { //otherwise use it to define BR
-        G4cout<<"thetaBening set via macro: "<<thetaBending<<G4endl;
+        G4cout<<"thetaBending set via macro: "<<thetaBending<<G4endl;
+        thetaBending2=-(1+fabs(fZ/fZ3))*thetaBending;
+        thetaBending3=fabs(fZ/fZ3)*thetaBending;
+
         crystalChannelingData->SetBR((fSizes.z()*CLHEP::mm)/(thetaBending/CLHEP::rad)); //in m
         fAngles.setY(-thetaBending/2.);
+
+        crystalChannelingData2->SetBR((fSizes2.z()*CLHEP::mm)/(thetaBending2/CLHEP::rad)); //in m
+        fAngles2.setY(-(fabs(thetaBending)-fabs(thetaBending2)/2.));
+        posX2_x=fabs(fZ)*thetaBending;
+        if (fParameterMap["X2Offset"]) posX2_x+=fParameterMap["X2Offset"];
+        posX2.setX(posX2_x+fX2Offset);
+        
+        
+        crystalChannelingData3->SetBR((fSizes3.z()*CLHEP::mm)/(thetaBending3/CLHEP::rad)); //in m
+        fAngles3.setY(thetaBending3/2.);
     }
     G4cout<<"DetConst BendingRadius= "<< crystalChannelingData->GetBR(temp)/CLHEP::m<<G4endl;
+    
 
     if (fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ) {
-		G4cout<<"DetConst BendingRadius2= "<< crystalChannelingData2->GetBR(temp)/CLHEP::m<<" "<<temp.x()/CLHEP::m<<G4endl;
-		G4cout<<"DetConst BendingRadius3= "<< crystalChannelingData3->GetBR(temp)/CLHEP::m<<" "<<temp.x()/CLHEP::m<<G4endl;
+        G4cout<<"DATI TRIANGOLO:"<<G4endl;
+        G4cout<<"## ThetaBending1: "<<thetaBending <<" mrad"<<G4endl;
+        G4cout<<"RotX1: "<<fAngles.y() <<" mrad"<<G4endl;
+        G4cout<<"DetConst BendingRadius1= "<< crystalChannelingData->GetBR(temp)/CLHEP::m<<G4endl;
+        G4cout<<"## ThetaBending2: "<<thetaBending2<<" mrad"<<G4endl;
+        G4cout<<"RotX2: "<<fAngles2.y() <<" mrad"<<G4endl;
+        G4cout<<"ShiftX2x: "<<posX2.x()/CLHEP::mm <<" mm"<<G4endl;
+        G4cout<<"DetConst BendingRadius2= "<< crystalChannelingData2->GetBR(temp)/CLHEP::m<<G4endl;
+        G4cout<<"## ThetaBending3: "<<thetaBending3<<" mrad"<<G4endl;
+        G4cout<<"RotX3: "<<fAngles3.y() <<" mrad"<<G4endl;
+        G4cout<<"DetConst BendingRadius3= "<< crystalChannelingData3->GetBR(temp)/CLHEP::m<<G4endl;
 	}
 
 

@@ -103,6 +103,8 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	if (fEventAction->GetHitX()==1 && NextVol && NextVol->GetName()=="crystal2.physic") {
 		fEventAction->AddHitX();
 //		G4cout<<"ENTRATO IN X2"<<G4endl;
+        G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
+        evt->KeepTheEvent();
 	}
 	if (fEventAction->GetHitX()==2 && NextVol && NextVol->GetName()=="crystal3.physic") {
 		fEventAction->AddHitX();
