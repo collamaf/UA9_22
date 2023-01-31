@@ -9,7 +9,7 @@ void AnaTriangleEvent::Loop()
 	cout<<"Analizzo run: "<<runName.Data()<<endl;
 
 	double convFactor=1e3; //from rad to mrad
-	const int nbin=800;
+	const int nbin=200;
 	int nprim=10000;
 	double peakCenter=0;
 	double peakRight=2;
@@ -20,8 +20,11 @@ void AnaTriangleEvent::Loop()
 	double widthLeft=-2;
 	double funcGausWidth=0.2;
 	
-	double chCutoffAngle=1.5; //in mrad
-	
+	double chCutoffAngle=0.8; //fraction
+    double thetaBending1=2; //in mrad
+    double thetaBending2=3.6; //in mrad
+    double thetaBending3=1.6; //in mrad
+    
 	TH1F* histoSourceX=new TH1F("histoSourceX","Source X; x [mm];",nbin,1,-1);
     TH1F* histoSourceCosX=new TH1F("histoSourceCosX","Source Angle Y; #theta [mrad]",100,1,-1);
     TH1F* histoSourceY=new TH1F("histoSourceY","Source Y; y [mm];",nbin,1,-1);
@@ -43,9 +46,9 @@ void AnaTriangleEvent::Loop()
     TH1F* histoXPostX2=new TH1F("histoXPostX2","X post X2; #x [mm]",nbin,1,-1);
     TH1F* histoXPreX3=new TH1F("histoXPreX3","X pre X3; #x [mm]",nbin,1,-1);
     TH1F* histoXPostX3=new TH1F("histoXPostX3","X post X3; #x [mm]",nbin,1,-1);
-    TH1F* histoXPostX3Ch=new TH1F("histoXPostX3Ch","X post X3 only Ch; #x [mm]",nbin,1,-1);
-    TH1F* histoXPostX3ChCh=new TH1F("histoXPostX3ChCh","X post X3 only ChCh; #x [mm]",nbin,1,-1);
-    TH1F* histoXPostX3ChChCh=new TH1F("histoXPostX3ChChCh","X post X3 only ChChCh; #x [mm]",nbin,1,-1);
+    TH1F* histoXPostX3Ch=new TH1F("histoXPostX3Ch","X post X3 if Ch; #x [mm]",nbin,1,-1);
+    TH1F* histoXPostX3ChCh=new TH1F("histoXPostX3ChCh","X post X3 if ChCh; #x [mm]",nbin,1,-1);
+    TH1F* histoXPostX3ChChCh=new TH1F("histoXPostX3ChChCh","X post X3 if ChChCh; #x [mm]",nbin,1,-1);
     TH1F* histoXEnd=new TH1F("histoXEnd","X pos at the end; X [mm]",nbin,1,-1);
 	TH1F* histoXEndChChCh=new TH1F("histoXEndChChCh","X pos at the end only ChChCh; X [mm]",nbin,1,-1);
 	histoXEndChChCh->SetLineColor(kMagenta);
@@ -117,7 +120,7 @@ void AnaTriangleEvent::Loop()
                 histoAnglePostX1->Fill(convFactor*CosX->at(ii));
                 histoXPostX1->Fill(X->at(ii));
                 thetaX1Out=convFactor*CosX->at(ii);
-                if (thetaX1Out-thetaX1In>chCutoffAngle) flagCh1=true;
+                if (thetaX1Out-thetaX1In>chCutoffAngle*thetaBending1) flagCh1=true;
             }
 
             // CR 2
@@ -129,7 +132,7 @@ void AnaTriangleEvent::Loop()
 				histoAnglePostX2->Fill(convFactor*CosX->at(ii));
                 histoXPostX2->Fill(X->at(ii));
                 thetaX2Out=convFactor*CosX->at(ii);
-                if (thetaX2Out-thetaX2In<-2*chCutoffAngle) flagCh2=true;
+                if (thetaX2Out-thetaX2In<chCutoffAngle*thetaBending2) flagCh2=true;
 			}
             
             // CR 3
@@ -143,7 +146,7 @@ void AnaTriangleEvent::Loop()
 				z3=Z->at(ii);
 				histoAnglePostX3->Fill(convFactor*CosX->at(ii));
                 thetaX3Out=convFactor*CosX->at(ii);
-                if (thetaX3Out-thetaX3In>chCutoffAngle) {
+                if (thetaX3Out-thetaX3In>chCutoffAngle*thetaBending3) {
                     flagCh3=true;
                 
                 }
@@ -213,16 +216,17 @@ void AnaTriangleEvent::Loop()
 	canvBeam->Write();
 	
 	TCanvas* canvAngAll=new TCanvas("canvAngAll","canvAngAll");
-	histoAnglePostX3->Draw();
+	histoAnglePostX3->Draw("PLC");
 	histoAnglePostX2->Draw("samesPLC");
 	histoAnglePostX1->Draw("samesPLC");
+    canvAngAll->BuildLegend();
     canvAngAll->SetLogy(1);
     canvAngAll->SaveAs(Form("%s_AngAll.pdf",runName.Data()));
     canvAngAll->Write();
     
     TCanvas* canvXAll=new TCanvas("canvXAll","canvXAll");
 //    histoXPostX3->SetLineColor(kRed);
-    histoXPostX3->Draw();
+    histoXPostX3->Draw("PLC");
     histoXPostX3ChChCh->SetLineColor(kRed);
     histoXPostX3ChChCh->Draw("sames");
     histoXPreX3->Draw("samesPLC");
@@ -236,38 +240,43 @@ void AnaTriangleEvent::Loop()
     canvXAll->Write();
     
     
-    TCanvas* canvXCh=new TCanvas("canvXCh","canvXCh");
+    TCanvas* canvX3IfCh=new TCanvas("canvX3IfCh","canvX3IfCh"); //Posizione post X3 se ha fatto ch, chch o chchch
 //    histoXPostX3->SetLineColor(kRed);
-    histoXPostX3->Draw();
+    histoXPostX3->Draw("PLC");
     histoXPostX3ChChCh->SetLineColor(kRed);
     histoXPostX3ChChCh->Draw("sames");
-    histoXPostX3ChCh->SetLineColor(kGreen);
-    histoXPostX3ChCh->Draw("sames");
-    histoXPostX3Ch->SetLineColor(kCyan);
-    histoXPostX3Ch->Draw("sames");
-    canvXCh->SetLogy(1);
-    canvXCh->BuildLegend();
-    canvXCh->SaveAs(Form("%s_XCh.pdf",runName.Data()));
-    canvXCh->Write();
+//    histoXPostX3ChCh->SetLineColor(kGreen);
+    histoXPostX3ChCh->Draw("samesPLC");
+//    histoXPostX3Ch->SetLineColor(kCyan);
+    histoXPostX3Ch->Draw("samesPLC");
+    canvX3IfCh->SetLogy(1);
+    canvX3IfCh->BuildLegend();
+    canvX3IfCh->SaveAs(Form("%s_XIfCh.pdf",runName.Data()));
+    canvX3IfCh->Write();
 	
     
-    TCanvas* canvAngCh=new TCanvas("canvAngCh","canvAngCh");
+    TCanvas* canvAngX3IfCh=new TCanvas("canvAngX3IfCh","canvAngX3IfCh");
+    canvAngX3IfCh->Divide(1,2);
+    
+    TVirtualPad* padAngIfCh = canvAngX3IfCh->cd(1);
+//    TCanvas* canvAngIfCh=new TCanvas("canvAngIfCh","canvAngIfCh");
 //    histoXPostX3->SetLineColor(kRed);
-    histoAnglePostX3->Draw();
+    histoAnglePostX3->Draw("PLC");
     histoAnglePostX3ChChCh->SetLineColor(kRed);
     histoAnglePostX3ChChCh->Draw("sames");
-    histoAnglePostX3ChCh->SetLineColor(kGreen);
-    histoAnglePostX3ChCh->Draw("sames");
-    histoAnglePostX3Ch->SetLineColor(kCyan);
-    histoAnglePostX3Ch->Draw("sames");
-    canvAngCh->SetLogy(1);
-    canvAngCh->BuildLegend();
-    canvAngCh->SaveAs(Form("%s_AngCh.pdf",runName.Data()));
-    canvAngCh->Write();
+//    histoAnglePostX3ChCh->SetLineColor(kGreen);
+    histoAnglePostX3ChCh->Draw("samesPLC");
+//    histoAnglePostX3Ch->SetLineColor(kCyan);
+    histoAnglePostX3Ch->Draw("samesPLC");
+    padAngIfCh->SetLogy(1);
+    padAngIfCh->BuildLegend();
+    padAngIfCh->SaveAs(Form("%s_AngX3IfCh.pdf",runName.Data()));
+    padAngIfCh->Write();
     
     
-    TCanvas* canvAngOCh=new TCanvas("canvAngOCh","canvAngOCh");
+//    TCanvas* canvAngOCh=new TCanvas("canvAngOCh","canvAngOCh"); //Posizione post X3 se ha fatto SOLO ch, SOLO chch o SOLO chchch
 //    histoXPostX3->SetLineColor(kRed);
+    TVirtualPad* padAngOCh = canvAngX3IfCh->cd(2);
     histoAnglePostX3->Draw();
     histoAnglePostX3OChChCh->SetLineColor(kRed);
     histoAnglePostX3OChChCh->Draw("sames");
@@ -275,10 +284,10 @@ void AnaTriangleEvent::Loop()
     histoAnglePostX3OChCh->Draw("sames");
     histoAnglePostX3OCh->SetLineColor(kCyan);
     histoAnglePostX3OCh->Draw("sames");
-    canvAngOCh->SetLogy(1);
-    canvAngOCh->BuildLegend();
-    canvAngOCh->SaveAs(Form("%s_AngOCh.pdf",runName.Data()));
-    canvAngOCh->Write();
+    padAngOCh->SetLogy(1);
+    padAngOCh->BuildLegend();
+    padAngOCh->SaveAs(Form("%s_AngOCh.pdf",runName.Data()));
+    padAngOCh->Write();
     
 	
 	double myArea0=0;
@@ -322,10 +331,15 @@ void AnaTriangleEvent::Loop()
 
 	cout<<"#######################\nFITTING X1\n####################"<<endl;
 	fprintf(textOut,"\n####### After X1\n");
-	
-	TCanvas* canvX1=new TCanvas("canvX1","canvX1");
+
+    TCanvas* canvXAllSingle=new TCanvas("canvXAllSingle","canvXAllSingle");
+    canvXAllSingle->Divide(1,3);
+    canvXAllSingle->cd(1);
+
+//    TCanvas* canvX1=new TCanvas("canvX1","canvX1");
 	histoAnglePostX1->Draw();
-	canvX1->SetLogy(1);
+    TVirtualPad* padX1 = canvXAllSingle->cd(1);
+    padX1->SetLogy(1);
 	histoAnglePostX1->Fit(funcGaus1_0,"N","",-0.05,0.05);
 	histoAnglePostX1->Fit(funcGaus1_20,"N","",peakRight-0.03,peakRight+0.03);
 	funcGaus1_0->Draw("same");
@@ -340,8 +354,8 @@ void AnaTriangleEvent::Loop()
 	printf("Frac. Ch1:\t%.1f %% (%.2f [mrad], sigma: %.1e [mrad]))\n\n", myArea20/nprim*100, funcGaus1_20->GetParameter(1),funcGaus1_20->GetParameter(2));
 	fprintf(textOut,"Frac. Am1:\t%.1f %% (%.2f [mrad], sigma: %.1e [mrad]))\n", myArea0/nprim*100, funcGaus1_0->GetParameter(1),funcGaus1_0->GetParameter(2));
 	fprintf(textOut,"Frac. Ch1:\t%.1f %% (%.2f [mrad], sigma: %.1e [mrad]))\n\n", myArea20/nprim*100, funcGaus1_20->GetParameter(1),funcGaus1_20->GetParameter(2));
-	canvX1->SaveAs(Form("%s_X1.pdf",runName.Data()));
-	canvX1->Write();
+//	canvX1->SaveAs(Form("%s_X1.pdf",runName.Data()));
+//	canvX1->Write();
 #if 1
 	
 	funcGaus2_0->SetParameter(0,histoAnglePostX2->GetBinContent(histoAnglePostX2->FindBin(widthCenter)));
@@ -368,11 +382,12 @@ void AnaTriangleEvent::Loop()
 
 	cout<<"#######################\nFITTING X2\n####################"<<endl;
 	fprintf(textOut,"\n####### After X2\n");
-	TCanvas* canvX2=new TCanvas("canvX2","canvX2");
+//	TCanvas* canvX2=new TCanvas("canvX2","canvX2");
+    TVirtualPad* padX2 = canvXAllSingle->cd(2);
 	//	TF1* funcGaus0=new TF1("funcGaus0","gaus",-0.05,0.05);
 	//	TF1* funcGaus20=new TF1("funcGaus20","gaus",2-0.05,2+0.05);
 	histoAnglePostX2->Draw();
-	canvX2->SetLogy(1);
+    padX2->SetLogy(1);
 	histoAnglePostX2->Fit(funcGaus2_0,"N","",-0.05,0.05);
 	histoAnglePostX2->Fit(funcGaus2_20,"N","",peakRight-0.05,peakRight+0.05);
 	//	histoAnglePostX2->Fit(funcGausM20,"N","",-2.04,-1.96);
@@ -396,8 +411,8 @@ void AnaTriangleEvent::Loop()
 	fprintf(textOut,"Frac. Am1:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0/nprim*100, funcGaus2_0->GetParameter(1),funcGaus2_0->GetParameter(2));
 	fprintf(textOut,"Frac. Ch1+Am2:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea20/nprim*100, funcGaus2_20->GetParameter(1),funcGaus2_20->GetParameter(2));
 	fprintf(textOut,"Frac. Ch1+Ch2:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n\n", myAreaM20/nprim*100, funcGaus2_M20->GetParameter(1),funcGaus2_M20->GetParameter(2));
-	canvX2->SaveAs(Form("%s_X2.pdf",runName.Data()));
-	canvX2->Write();
+//	canvX2->SaveAs(Form("%s_X2.pdf",runName.Data()));
+//	canvX2->Write();
 #endif
 	
 #if 1
@@ -432,10 +447,11 @@ void AnaTriangleEvent::Loop()
 	
 	cout<<"#######################\nFITTING X3\n####################"<<endl;
 	fprintf(textOut,"\n####### After X3\n");
-	TCanvas* canvX3=new TCanvas("canvX3","canvX3");
+//	TCanvas* canvX3=new TCanvas("canvX3","canvX3");
+    TVirtualPad* padX3 = canvXAllSingle->cd(3);
 	histoAnglePostX3->Draw();
 	histoAnglePostX3ChChCh->Draw("sames");
-	canvX3->SetLogy(1);
+    padX3->SetLogy(1);
 	histoAnglePostX3->Fit(funcGaus3_0,"N","",-0.05,0.05);
 	histoAnglePostX3ChChCh->Fit(funcGaus3_0ChCh,"N","",-0.05,0.05);
 	histoAnglePostX3->Fit(funcGaus3_20,"N","",peakRight-0.05,peakRight+0.05);
@@ -465,8 +481,10 @@ void AnaTriangleEvent::Loop()
 	fprintf(textOut,"Frac. Ch1+Ch2+Ch3:\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0ChCh/nprim*100, funcGaus3_0ChCh->GetParameter(1), funcGaus3_0ChCh->GetParameter(2));
 	fprintf(textOut,"Frac. Ch1+Am2:\t\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea20/nprim*100, funcGaus3_20->GetParameter(1), funcGaus3_20->GetParameter(2));
 	fprintf(textOut,"Frac. Ch1+Ch2+Am3:\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n\n", myAreaM20/nprim*100, funcGaus3_M20->GetParameter(1), funcGaus3_M20->GetParameter(2));
-	canvX3->SaveAs(Form("%s_X3.pdf",runName.Data()));
-	canvX3->Write();
+//	canvX3->SaveAs(Form("%s_X3.pdf",runName.Data()));
+//	canvX3->Write();
+    canvXAllSingle->Write();
+
 #endif
     histoSourceX->Write();
     histoSourceCosX->Write();
@@ -523,28 +541,35 @@ void AnaTriangleEvent::Loop()
 	canvCum->SaveAs(Form("%s_Cum.pdf",runName.Data()));
 	canvCum->Write();
 	
+    TCanvas* canvExpTheta=new TCanvas("canvExpTheta","canvExpTheta");
+    histoExpAnglEnd->Draw();
+    histoExpAnglEnd->Write();
+    canvExpTheta->SetLogy(1);
+    canvExpTheta->SaveAs(Form("%s_ExpTheta.pdf",runName.Data()));
+    canvExpTheta->Write();
 	
-	TCanvas* canvX3ChChCh=new TCanvas("canvX3ChChCh","canvX3ChChCh");
+    TCanvas* canvFinal=new TCanvas("canvFinal","canvFinal");
+    canvFinal->Divide(1,2);
+    TVirtualPad* padEndX = canvFinal->cd(1);
+
+//	TCanvas* canvX3ChChCh=new TCanvas("canvX3ChChCh","canvX3ChChCh");
 	histoAnglePostX3->Draw();
 	histoAnglePostX3ChChCh->Draw("sames");
-	canvX3ChChCh->BuildLegend();
-	canvX3ChChCh->Write();
-	canvX3ChChCh->SetLogy();
-	canvX3ChChCh->SaveAs(Form("%s_X3ChChCh.pdf",runName.Data()));
+    padEndX->BuildLegend();
+    padEndX->Write();
+    padEndX->SetLogy();
+    padEndX->SaveAs(Form("%s_X3ChChCh.pdf",runName.Data()));
 
-	TCanvas* canvPosEnd=new TCanvas("canvPosEnd","canvPosEnd");
-	histoXEnd->Draw();
+//	TCanvas* canvPosEnd=new TCanvas("canvPosEnd","canvPosEnd");
+    TVirtualPad* padEndPos = canvFinal->cd(2);
+    histoXEnd->Draw();
+    histoXEndChChCh->SetLineColor(kRed);
 	histoXEndChChCh->Draw("sames");
-	canvPosEnd->BuildLegend();
-	canvPosEnd->Write();
-	canvPosEnd->SetLogy();
-	canvPosEnd->SaveAs(Form("%s_PosEnd.pdf",runName.Data()));
+    padEndPos->BuildLegend();
+    padEndPos->Write();
+    padEndPos->SetLogy();
+    padEndPos->SaveAs(Form("%s_PosEnd.pdf",runName.Data()));
 
-	TCanvas* canvExpTheta=new TCanvas("canvExpTheta","canvExpTheta");
-	histoExpAnglEnd->Draw();
-	histoExpAnglEnd->Write();
-	canvExpTheta->SetLogy(1);
-	canvExpTheta->SaveAs(Form("%s_ExpTheta.pdf",runName.Data()));
-	canvExpTheta->Write();
+
 	
 }
