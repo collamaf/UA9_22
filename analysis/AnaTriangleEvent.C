@@ -224,7 +224,7 @@ void AnaTriangleEvent::Loop()
     canvAngAll->SaveAs(Form("%s_AngAll.pdf",runName.Data()));
     canvAngAll->Write();
     
-    TCanvas* canvXAll=new TCanvas("canvXAll","canvXAll");
+    TCanvas* canvX3All=new TCanvas("canvX3All","canvX3All");
 //    histoXPostX3->SetLineColor(kRed);
     histoXPostX3->Draw("PLC");
     histoXPostX3ChChCh->SetLineColor(kRed);
@@ -234,10 +234,10 @@ void AnaTriangleEvent::Loop()
     histoXPreX2->Draw("samesPLC");
 //    histoXPostX1->SetLineColor(kBlue);
     histoXPostX1->Draw("samesPLC");
-    canvXAll->SetLogy(1);
-    canvXAll->BuildLegend();
-    canvXAll->SaveAs(Form("%s_XAll.pdf",runName.Data()));
-    canvXAll->Write();
+    canvX3All->SetLogy(1);
+    canvX3All->BuildLegend();
+    canvX3All->SaveAs(Form("%s_XAll.pdf",runName.Data()));
+    canvX3All->Write();
     
     
     TCanvas* canvX3IfCh=new TCanvas("canvX3IfCh","canvX3IfCh"); //Posizione post X3 se ha fatto ch, chch o chchch
@@ -271,7 +271,7 @@ void AnaTriangleEvent::Loop()
     padAngIfCh->SetLogy(1);
     padAngIfCh->BuildLegend();
     padAngIfCh->SaveAs(Form("%s_AngX3IfCh.pdf",runName.Data()));
-    padAngIfCh->Write();
+//    padAngIfCh->Write();
     
     
 //    TCanvas* canvAngOCh=new TCanvas("canvAngOCh","canvAngOCh"); //Posizione post X3 se ha fatto SOLO ch, SOLO chch o SOLO chchch
@@ -287,7 +287,7 @@ void AnaTriangleEvent::Loop()
     padAngOCh->SetLogy(1);
     padAngOCh->BuildLegend();
     padAngOCh->SaveAs(Form("%s_AngOCh.pdf",runName.Data()));
-    padAngOCh->Write();
+    canvAngX3IfCh->Write();
     
 	
 	double myArea0=0;
@@ -556,7 +556,7 @@ void AnaTriangleEvent::Loop()
 	histoAnglePostX3->Draw();
 	histoAnglePostX3ChChCh->Draw("sames");
     padEndX->BuildLegend();
-    padEndX->Write();
+//    padEndX->Write();
     padEndX->SetLogy();
     padEndX->SaveAs(Form("%s_X3ChChCh.pdf",runName.Data()));
 
@@ -566,9 +566,9 @@ void AnaTriangleEvent::Loop()
     histoXEndChChCh->SetLineColor(kRed);
 	histoXEndChChCh->Draw("sames");
     padEndPos->BuildLegend();
-    padEndPos->Write();
     padEndPos->SetLogy();
     padEndPos->SaveAs(Form("%s_PosEnd.pdf",runName.Data()));
+    canvFinal->Write();
 
 
 	
