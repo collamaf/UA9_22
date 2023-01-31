@@ -255,7 +255,7 @@ void AnaTriangleEvent::Loop()
     canvX3IfCh->Write();
 	
     
-    TCanvas* canvAngX3IfCh=new TCanvas("canvAngX3IfCh","canvAngX3IfCh");
+    TCanvas* canvAngX3IfCh=new TCanvas("canvAngX3IfCh","canvAngX3IfCh",0,0,400,800);
     canvAngX3IfCh->Divide(1,2);
     
     TVirtualPad* padAngIfCh = canvAngX3IfCh->cd(1);
@@ -332,7 +332,7 @@ void AnaTriangleEvent::Loop()
 	cout<<"#######################\nFITTING X1\n####################"<<endl;
 	fprintf(textOut,"\n####### After X1\n");
 
-    TCanvas* canvXAllSingle=new TCanvas("canvXAllSingle","canvXAllSingle");
+    TCanvas* canvXAllSingle=new TCanvas("canvXAllSingle","canvXAllSingle",0,0,400,1200);
     canvXAllSingle->Divide(1,3);
     canvXAllSingle->cd(1);
 
@@ -509,7 +509,7 @@ void AnaTriangleEvent::Loop()
     histoAnglePostX3OCh->Write();
     
     
-	TCanvas* canvCum=new TCanvas("canvCum","canvCum",0,0,400,1200);
+	TCanvas* canvCum=new TCanvas("canvCum","canvCum",0,0,600,1200);
 	canvCum->Divide(1,3);
 	TH1F* histoAnglePostX1Cum=(TH1F*)histoAnglePostX1->GetCumulative(1);
 	histoAnglePostX1Cum->Scale(1/histoAnglePostX1Cum->GetMaximum());
@@ -548,7 +548,7 @@ void AnaTriangleEvent::Loop()
     canvExpTheta->SaveAs(Form("%s_ExpTheta.pdf",runName.Data()));
     canvExpTheta->Write();
 	
-    TCanvas* canvFinal=new TCanvas("canvFinal","canvFinal");
+    TCanvas* canvFinal=new TCanvas("canvFinal","canvFinal",0,0,600,800);
     canvFinal->Divide(1,2);
     TVirtualPad* padEndX = canvFinal->cd(1);
 
