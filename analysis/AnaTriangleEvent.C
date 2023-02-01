@@ -41,16 +41,16 @@ void AnaTriangleEvent::Loop()
     TH1F* histoAnglePostX3OChCh=new TH1F("histoAnglePostX3OChCh","Angle post X3 only ChCh; #theta [mrad]",nbin,1,-1);
     TH1F* histoAnglePostX3OChChCh=new TH1F("histoAnglePostX3OChChCh","Angle post X3 only ChChCh; #theta [mrad]",nbin,1,-1);
 
-    TH1F* histoXPostX1=new TH1F("histoXPostX1","X post X1; #x [mm]",nbin,1,-1);
-    TH1F* histoXPreX2=new TH1F("histoXPreX2","X pre X2; #x [mm]",nbin,1,-1);
-    TH1F* histoXPostX2=new TH1F("histoXPostX2","X post X2; #x [mm]",nbin,1,-1);
-    TH1F* histoXPreX3=new TH1F("histoXPreX3","X pre X3; #x [mm]",nbin,1,-1);
-    TH1F* histoXPostX3=new TH1F("histoXPostX3","X post X3; #x [mm]",nbin,1,-1);
-    TH1F* histoXPostX3Ch=new TH1F("histoXPostX3Ch","X post X3 if Ch; #x [mm]",nbin,1,-1);
-    TH1F* histoXPostX3ChCh=new TH1F("histoXPostX3ChCh","X post X3 if ChCh; #x [mm]",nbin,1,-1);
-    TH1F* histoXPostX3ChChCh=new TH1F("histoXPostX3ChChCh","X post X3 if ChChCh; #x [mm]",nbin,1,-1);
+    TH1F* histoXPostX1=new TH1F("histoXPostX1","X post X1; x [mm]",nbin,1,-1);
+    TH1F* histoXPreX2=new TH1F("histoXPreX2","X pre X2; x [mm]",nbin,1,-1);
+    TH1F* histoXPostX2=new TH1F("histoXPostX2","X post X2; x [mm]",nbin,1,-1);
+    TH1F* histoXPreX3=new TH1F("histoXPreX3","X pre X3; x [mm]",nbin,1,-1);
+    TH1F* histoXPostX3=new TH1F("histoXPostX3","X post X3; x [mm]",nbin,1,-1);
+    TH1F* histoXPostX3Ch=new TH1F("histoXPostX3Ch","X post X3 if Ch; x [mm]",nbin,1,-1);
+    TH1F* histoXPostX3ChCh=new TH1F("histoXPostX3ChCh","X post X3 if ChCh; x [mm]",nbin,1,-1);
+    TH1F* histoXPostX3ChChCh=new TH1F("histoXPostX3ChChCh","X post X3 if ChChCh; x [mm]",nbin,1,-1);
     TH1F* histoXEnd=new TH1F("histoXEnd","X pos at the end; X [mm]",nbin,1,-1);
-	TH1F* histoXEndChChCh=new TH1F("histoXEndChChCh","X pos at the end only ChChCh; X [mm]",nbin,1,-1);
+	TH1F* histoXEndChChCh=new TH1F("histoXEndChChCh","X pos at the end only ChChCh; x [mm]",nbin,1,-1);
 	histoXEndChChCh->SetLineColor(kMagenta);
 
 	TH1F* histoExpAnglEnd=new TH1F("histoExpAnglEnd","Experimental Angle at the End; #theta [mrad]",nbin,1,-1);
@@ -176,10 +176,8 @@ void AnaTriangleEvent::Loop()
 //                    histoXPostX3ChChCh->Fill(X->at(ii));
                     histoAnglePostX3OChChCh->Fill(convFactor*CosX->at(ii));
                 } else if (flagCh1&&flagCh2)  {
-//                    histoXPostX3ChCh->Fill(X->at(ii));
                     histoAnglePostX3OChCh->Fill(convFactor*CosX->at(ii));
                 } else if (flagCh1)  {
-//                    histoXPostX3Ch->Fill(X->at(ii));
                     histoAnglePostX3OCh->Fill(convFactor*CosX->at(ii));
                 }
                 histoXPostX3->Fill(X->at(ii));
@@ -203,7 +201,7 @@ void AnaTriangleEvent::Loop()
 	}
 	
 	
-	TCanvas* canvBeam=new TCanvas("canvBeam","canvBeam",0,0,400,800);
+	TCanvas* canvBeam=new TCanvas("canvBeam","canvBeam",0,0,600,800);
 	canvBeam->Divide(1,2);
 	canvBeam->cd(1);
     histoSourceX->Draw();
@@ -255,7 +253,7 @@ void AnaTriangleEvent::Loop()
     canvX3IfCh->Write();
 	
     
-    TCanvas* canvAngX3IfCh=new TCanvas("canvAngX3IfCh","canvAngX3IfCh",0,0,400,800);
+    TCanvas* canvAngX3IfCh=new TCanvas("canvAngX3IfCh","canvAngX3IfCh",0,0,600,800);
     canvAngX3IfCh->Divide(1,2);
     
     TVirtualPad* padAngIfCh = canvAngX3IfCh->cd(1);
@@ -332,7 +330,7 @@ void AnaTriangleEvent::Loop()
 	cout<<"#######################\nFITTING X1\n####################"<<endl;
 	fprintf(textOut,"\n####### After X1\n");
 
-    TCanvas* canvXAllSingle=new TCanvas("canvXAllSingle","canvXAllSingle",0,0,400,1200);
+    TCanvas* canvXAllSingle=new TCanvas("canvXAllSingle","canvXAllSingle",0,0,600,1200);
     canvXAllSingle->Divide(1,3);
     canvXAllSingle->cd(1);
 
@@ -486,46 +484,22 @@ void AnaTriangleEvent::Loop()
     canvXAllSingle->Write();
 
 #endif
-    histoSourceX->Write();
-    histoSourceCosX->Write();
-    histoSourceY->Write();
-	histoSourceCosY->Write();
-    histoXPostX1->Write();
-    histoXPostX2->Write();
-    histoXPostX3->Write();
-    histoXPreX2->Write();
-    histoXPreX3->Write();
-    histoAnglePostX1->Write();
-    histoAnglePostX2->Write();
-    histoAnglePostX3->Write();
-    histoXPostX3ChChCh->Write();
-    histoXPostX3ChCh->Write();
-    histoXPostX3Ch->Write();
-    histoAnglePostX3ChChCh->Write();
-    histoAnglePostX3ChCh->Write();
-    histoAnglePostX3Ch->Write();
-    histoAnglePostX3OChChCh->Write();
-    histoAnglePostX3OChCh->Write();
-    histoAnglePostX3OCh->Write();
+    
     
     
 	TCanvas* canvCum=new TCanvas("canvCum","canvCum",0,0,600,1200);
 	canvCum->Divide(1,3);
 	TH1F* histoAnglePostX1Cum=(TH1F*)histoAnglePostX1->GetCumulative(1);
 	histoAnglePostX1Cum->Scale(1/histoAnglePostX1Cum->GetMaximum());
-	histoAnglePostX1Cum->Write();
 	
 	TH1F* histoAnglePostX2Cum=(TH1F*)histoAnglePostX2->GetCumulative(1);
 	histoAnglePostX2Cum->Scale(1/histoAnglePostX2Cum->GetMaximum());
-	histoAnglePostX2Cum->Write();
 	
 	TH1F* histoAnglePostX3Cum=(TH1F*)histoAnglePostX3->GetCumulative(1);
 	histoAnglePostX3Cum->Scale(1/histoAnglePostX3Cum->GetMaximum());
-	histoAnglePostX3Cum->Write();
 	
 	TH1F* histoAnglePostX3ChChChCum=(TH1F*)histoAnglePostX3ChChCh->GetCumulative(1);
 	histoAnglePostX3ChChChCum->Scale(1/histoAnglePostX3ChChChCum->GetMaximum());
-	histoAnglePostX3ChChChCum->Write();
 	
 	canvCum->cd(1);
 	histoAnglePostX1Cum->SetStats(0);
@@ -570,6 +544,35 @@ void AnaTriangleEvent::Loop()
     padEndPos->SaveAs(Form("%s_PosEnd.pdf",runName.Data()));
     canvFinal->Write();
 
+    
+    histoSourceX->Write();
+    histoSourceCosX->Write();
+    histoSourceY->Write();
+    histoSourceCosY->Write();
+    
+    histoXPostX1->Write();
+    histoXPostX2->Write();
+    histoXPostX3->Write();
+    histoXPreX2->Write();
+    histoXPreX3->Write();
+    histoXPostX3ChChCh->Write();
+    histoXPostX3ChCh->Write();
+    histoXPostX3Ch->Write();
 
+    histoAnglePostX1->Write();
+    histoAnglePostX2->Write();
+    histoAnglePostX3->Write();
+
+    histoAnglePostX3ChChCh->Write();
+    histoAnglePostX3ChCh->Write();
+    histoAnglePostX3Ch->Write();
+    histoAnglePostX3OChChCh->Write();
+    histoAnglePostX3OChCh->Write();
+    histoAnglePostX3OCh->Write();
+
+    histoAnglePostX1Cum->Write();
+    histoAnglePostX2Cum->Write();
+    histoAnglePostX3Cum->Write();
+    histoAnglePostX3ChChChCum->Write();
 	
 }
