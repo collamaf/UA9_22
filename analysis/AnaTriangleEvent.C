@@ -25,7 +25,9 @@ void AnaTriangleEvent::Loop()
     double thetaBending2=3.6; //in mrad
     double thetaBending3=1.6; //in mrad
     
-    bool printFlag=false;
+    double x1SizeX=1.5; //in mm
+    
+    bool printFlag=true;
     
 	TH1F* histoSourceX=new TH1F("histoSourceX","Source X; x [mm];",nbin,1,-1);
     TH1F* histoSourceCosX=new TH1F("histoSourceCosX","Source Angle Y; #theta [mrad]",100,1,-1);
@@ -106,7 +108,8 @@ void AnaTriangleEvent::Loop()
 		nb = fChain->GetEntry(jentry);   nbytes += nb;
 		
 		double z3=0, z7=0, x3=0, x7=0, expTheta=0;
-		
+        cout<<"Entro in entry: "<<jentry<<endl;
+
 		for (int ii=0; ii<X->size();ii++) { //Loop on each info of a given entry
 			if (PlaneId->at(ii)==planeIdSource) {
                 histoSourceX->Fill(X->at(ii));
@@ -117,6 +120,10 @@ void AnaTriangleEvent::Loop()
             // CR 1
             if (PlaneId->at(ii)==planeIdPreX1) {
                 thetaX1In=convFactor*CosX->at(ii);
+                if (fabs(X->at(ii))>x1SizeX*0.5) {
+                    if (printFlag) cout<<"Traccia che NON entra in X1: "<< jentry<<endl;
+                    if (applyXCut) break;
+                }
             }
             if (PlaneId->at(ii)==planeIdPostX1) {
                 histoAnglePostX1->Fill(convFactor*CosX->at(ii));
