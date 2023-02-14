@@ -25,6 +25,8 @@ void AnaTriangleEvent::Loop()
     double thetaBending2=3.6; //in mrad
     double thetaBending3=1.6; //in mrad
     
+    bool printFlag=false;
+    
 	TH1F* histoSourceX=new TH1F("histoSourceX","Source X; x [mm];",nbin,1,-1);
     TH1F* histoSourceCosX=new TH1F("histoSourceCosX","Source Angle Y; #theta [mrad]",100,1,-1);
     TH1F* histoSourceY=new TH1F("histoSourceY","Source Y; y [mm];",nbin,1,-1);
@@ -151,9 +153,9 @@ void AnaTriangleEvent::Loop()
                 
                 }
                 if (thetaX3Out-thetaX3In!=0) {
-                    printf("X3##, AngIn:\t%.2e\tAngOut:\t%.2e\tDiff:\t%.2e\n", thetaX3In,thetaX3Out, thetaX3Out-thetaX3In);
+                    if (printFlag) printf("X3##, AngIn:\t%.2e\tAngOut:\t%.2e\tDiff:\t%.2e\n", thetaX3In,thetaX3Out, thetaX3Out-thetaX3In);
                 } else {
-                    printf("X3, AngIn:\t%.2e\tAngOut:\t%.2e\tDiff:\t%.2e\n", thetaX3In,thetaX3Out, thetaX3Out-thetaX3In);
+                    if (printFlag) printf("X3, AngIn:\t%.2e\tAngOut:\t%.2e\tDiff:\t%.2e\n", thetaX3In,thetaX3Out, thetaX3Out-thetaX3In);
                 }
 
 //                    cout<<"ThetaX3Out: "<<thetaX3Out<<" In: "<<thetaX3In<<", Diff: "<<thetaX3Out-thetaX3In<<endl;
@@ -327,8 +329,8 @@ void AnaTriangleEvent::Loop()
 	funcGaus1_20->SetParameter(2,0.005);
 	funcGaus1_20->SetParLimits(2,0,0.1);
 
-	cout<<"#######################\nFITTING X1\n####################"<<endl;
-	fprintf(textOut,"\n####### After X1\n");
+	if (printFlag) cout<<"#######################\nFITTING X1\n####################"<<endl;
+    if (printFlag) fprintf(textOut,"\n####### After X1\n");
 
     TCanvas* canvXAllSingle=new TCanvas("canvXAllSingle","canvXAllSingle",0,0,600,1200);
     canvXAllSingle->Divide(1,3);
@@ -346,12 +348,12 @@ void AnaTriangleEvent::Loop()
 	myArea20=funcGaus1_20->GetParameter(0)*sqrt(2*TMath::Pi())*funcGaus1_20->GetParameter(2)/histoAnglePostX1->GetBinWidth(1);
 	
 	
-	cout<<"\n####### After X1"<<endl;
+    if (printFlag) cout<<"\n####### After X1"<<endl;
 	
-	printf("Frac. Am1:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0/nprim*100, funcGaus1_0->GetParameter(1),funcGaus1_0->GetParameter(2));
-	printf("Frac. Ch1:\t%.1f %% (%.2f [mrad], sigma: %.1e [mrad]))\n\n", myArea20/nprim*100, funcGaus1_20->GetParameter(1),funcGaus1_20->GetParameter(2));
-	fprintf(textOut,"Frac. Am1:\t%.1f %% (%.2f [mrad], sigma: %.1e [mrad]))\n", myArea0/nprim*100, funcGaus1_0->GetParameter(1),funcGaus1_0->GetParameter(2));
-	fprintf(textOut,"Frac. Ch1:\t%.1f %% (%.2f [mrad], sigma: %.1e [mrad]))\n\n", myArea20/nprim*100, funcGaus1_20->GetParameter(1),funcGaus1_20->GetParameter(2));
+    if (printFlag) printf("Frac. Am1:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0/nprim*100, funcGaus1_0->GetParameter(1),funcGaus1_0->GetParameter(2));
+    if (printFlag) printf("Frac. Ch1:\t%.1f %% (%.2f [mrad], sigma: %.1e [mrad]))\n\n", myArea20/nprim*100, funcGaus1_20->GetParameter(1),funcGaus1_20->GetParameter(2));
+    if (printFlag) fprintf(textOut,"Frac. Am1:\t%.1f %% (%.2f [mrad], sigma: %.1e [mrad]))\n", myArea0/nprim*100, funcGaus1_0->GetParameter(1),funcGaus1_0->GetParameter(2));
+    if (printFlag) fprintf(textOut,"Frac. Ch1:\t%.1f %% (%.2f [mrad], sigma: %.1e [mrad]))\n\n", myArea20/nprim*100, funcGaus1_20->GetParameter(1),funcGaus1_20->GetParameter(2));
 //	canvX1->SaveAs(Form("%s_X1.pdf",runName.Data()));
 //	canvX1->Write();
 #if 1
@@ -378,8 +380,8 @@ void AnaTriangleEvent::Loop()
 	funcGaus2_20->SetParLimits(2,0.5*histoAnglePostX2->GetBinWidth(1),0.1);
 	funcGaus2_M20->SetParLimits(2,0.5*histoAnglePostX2->GetBinWidth(1),0.1);
 
-	cout<<"#######################\nFITTING X2\n####################"<<endl;
-	fprintf(textOut,"\n####### After X2\n");
+    if (printFlag) cout<<"#######################\nFITTING X2\n####################"<<endl;
+    if (printFlag) fprintf(textOut,"\n####### After X2\n");
 //	TCanvas* canvX2=new TCanvas("canvX2","canvX2");
     TVirtualPad* padX2 = canvXAllSingle->cd(2);
 	//	TF1* funcGaus0=new TF1("funcGaus0","gaus",-0.05,0.05);
@@ -399,16 +401,16 @@ void AnaTriangleEvent::Loop()
 	myAreaM20=funcGaus2_M20->GetParameter(0)*sqrt(2*TMath::Pi())*funcGaus2_M20->GetParameter(2)/histoAnglePostX2->GetBinWidth(1);
 	
 	//	cout<<"\n####### After X2\nAm. Frac.: "<<myArea0/nprim*100<<endl<<"Ch.1 Frac.:"<<myArea20/nprim*100<<endl<<"Ch.1 Frac.:"<<myAreaM20/nprim*100<<endl<<endl<<endl;
-	cout<<"\n####### After X2"<<endl;
+    if (printFlag) cout<<"\n####### After X2"<<endl;
 	//	cout<<"Frac. Am1:\t"<<myArea0/nprim*100<<endl;
 	//	cout<<"Frac. Ch1+Am2:\t"<<myArea20/nprim*100<<endl;
 	//	cout<<"Frac. Ch1+Ch2:\t"<<myAreaM20/nprim*100<<endl<<endl<<endl;
-	printf("Frac. Am1:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0/nprim*100, funcGaus2_0->GetParameter(1),funcGaus2_0->GetParameter(2));
-	printf("Frac. Ch1+Am2:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea20/nprim*100, funcGaus2_20->GetParameter(1),funcGaus2_20->GetParameter(2));
-	printf("Frac. Ch1+Ch2:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n\n", myAreaM20/nprim*100, funcGaus2_M20->GetParameter(1),funcGaus2_M20->GetParameter(2));
-	fprintf(textOut,"Frac. Am1:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0/nprim*100, funcGaus2_0->GetParameter(1),funcGaus2_0->GetParameter(2));
-	fprintf(textOut,"Frac. Ch1+Am2:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea20/nprim*100, funcGaus2_20->GetParameter(1),funcGaus2_20->GetParameter(2));
-	fprintf(textOut,"Frac. Ch1+Ch2:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n\n", myAreaM20/nprim*100, funcGaus2_M20->GetParameter(1),funcGaus2_M20->GetParameter(2));
+    if (printFlag) printf("Frac. Am1:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0/nprim*100, funcGaus2_0->GetParameter(1),funcGaus2_0->GetParameter(2));
+    if (printFlag) printf("Frac. Ch1+Am2:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea20/nprim*100, funcGaus2_20->GetParameter(1),funcGaus2_20->GetParameter(2));
+    if (printFlag) printf("Frac. Ch1+Ch2:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n\n", myAreaM20/nprim*100, funcGaus2_M20->GetParameter(1),funcGaus2_M20->GetParameter(2));
+    if (printFlag) fprintf(textOut,"Frac. Am1:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0/nprim*100, funcGaus2_0->GetParameter(1),funcGaus2_0->GetParameter(2));
+    if (printFlag) fprintf(textOut,"Frac. Ch1+Am2:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea20/nprim*100, funcGaus2_20->GetParameter(1),funcGaus2_20->GetParameter(2));
+    if (printFlag) fprintf(textOut,"Frac. Ch1+Ch2:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n\n", myAreaM20/nprim*100, funcGaus2_M20->GetParameter(1),funcGaus2_M20->GetParameter(2));
 //	canvX2->SaveAs(Form("%s_X2.pdf",runName.Data()));
 //	canvX2->Write();
 #endif
@@ -443,8 +445,8 @@ void AnaTriangleEvent::Loop()
 	funcGaus3_20->SetParLimits(2,0,0.1);
 	funcGaus3_M20->SetParLimits(2,0,0.1);
 	
-	cout<<"#######################\nFITTING X3\n####################"<<endl;
-	fprintf(textOut,"\n####### After X3\n");
+    if (printFlag) cout<<"#######################\nFITTING X3\n####################"<<endl;
+    if (printFlag) fprintf(textOut,"\n####### After X3\n");
 //	TCanvas* canvX3=new TCanvas("canvX3","canvX3");
     TVirtualPad* padX3 = canvXAllSingle->cd(3);
 	histoAnglePostX3->Draw();
@@ -467,18 +469,18 @@ void AnaTriangleEvent::Loop()
 	myAreaM20=funcGaus3_M20->GetParameter(0)*sqrt(2*TMath::Pi())*funcGaus3_M20->GetParameter(2)/histoAnglePostX3->GetBinWidth(1);
 	
 	//	cout<<"\n####### After X3\nAm. Frac.: "<<myArea0/nprim*100<<endl<<"Ch.1 Frac.:"<<myArea20/nprim*100<<endl<<"Ch.1 Frac.:"<<myAreaM20/nprim*100<<endl<<endl<<endl;
-	cout<<"\n####### After X3"<<endl;
+    if (printFlag) cout<<"\n####### After X3"<<endl;
 	//	cout<<"Am. Frac.: "<<myArea0/nprim*100<<endl;
 	//	cout<<"Ch.1 Frac.:"<<myArea20/nprim*100<<endl;
 	//	cout<<"Ch.1 Frac.:"<<myAreaM20/nprim*100<<endl<<endl<<endl;
-	printf("Frac. Am1+Am3|Ch1+Ch2+Ch3:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0/nprim*100, funcGaus3_0->GetParameter(1), funcGaus3_0->GetParameter(2));
-	printf("Frac. Ch1+Ch2+Ch3:\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0ChCh/nprim*100, funcGaus3_0ChCh->GetParameter(1), funcGaus3_0ChCh->GetParameter(2));
-	printf("Frac. Ch1+Am2:\t\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea20/nprim*100, funcGaus3_20->GetParameter(1),funcGaus3_20->GetParameter(2));
-	printf("Frac. Ch1+Ch2+Am3:\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n\n", myAreaM20/nprim*100, funcGaus3_M20->GetParameter(1), funcGaus3_M20->GetParameter(2));
-	fprintf(textOut,"Frac. Am1+Am3|Ch1+Ch2+Ch3:\t%.1f %% (mean: %.1f [mrad], sigma: %.1e [mrad])\n", myArea0/nprim*100, funcGaus3_0->GetParameter(1), funcGaus3_0->GetParameter(2));
-	fprintf(textOut,"Frac. Ch1+Ch2+Ch3:\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0ChCh/nprim*100, funcGaus3_0ChCh->GetParameter(1), funcGaus3_0ChCh->GetParameter(2));
-	fprintf(textOut,"Frac. Ch1+Am2:\t\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea20/nprim*100, funcGaus3_20->GetParameter(1), funcGaus3_20->GetParameter(2));
-	fprintf(textOut,"Frac. Ch1+Ch2+Am3:\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n\n", myAreaM20/nprim*100, funcGaus3_M20->GetParameter(1), funcGaus3_M20->GetParameter(2));
+    if (printFlag) printf("Frac. Am1+Am3|Ch1+Ch2+Ch3:\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0/nprim*100, funcGaus3_0->GetParameter(1), funcGaus3_0->GetParameter(2));
+    if (printFlag) printf("Frac. Ch1+Ch2+Ch3:\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0ChCh/nprim*100, funcGaus3_0ChCh->GetParameter(1), funcGaus3_0ChCh->GetParameter(2));
+    if (printFlag) printf("Frac. Ch1+Am2:\t\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea20/nprim*100, funcGaus3_20->GetParameter(1),funcGaus3_20->GetParameter(2));
+    if (printFlag) printf("Frac. Ch1+Ch2+Am3:\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n\n", myAreaM20/nprim*100, funcGaus3_M20->GetParameter(1), funcGaus3_M20->GetParameter(2));
+    if (printFlag) fprintf(textOut,"Frac. Am1+Am3|Ch1+Ch2+Ch3:\t%.1f %% (mean: %.1f [mrad], sigma: %.1e [mrad])\n", myArea0/nprim*100, funcGaus3_0->GetParameter(1), funcGaus3_0->GetParameter(2));
+    if (printFlag) fprintf(textOut,"Frac. Ch1+Ch2+Ch3:\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea0ChCh/nprim*100, funcGaus3_0ChCh->GetParameter(1), funcGaus3_0ChCh->GetParameter(2));
+    if (printFlag) fprintf(textOut,"Frac. Ch1+Am2:\t\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n", myArea20/nprim*100, funcGaus3_20->GetParameter(1), funcGaus3_20->GetParameter(2));
+    if (printFlag) fprintf(textOut,"Frac. Ch1+Ch2+Am3:\t\t%.1f %% (mean: %.2f [mrad], sigma: %.1e [mrad])\n\n", myAreaM20/nprim*100, funcGaus3_M20->GetParameter(1), funcGaus3_M20->GetParameter(2));
 //	canvX3->SaveAs(Form("%s_X3.pdf",runName.Data()));
 //	canvX3->Write();
     canvXAllSingle->Write();
