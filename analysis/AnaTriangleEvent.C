@@ -29,21 +29,28 @@ void AnaTriangleEvent::Loop()
     
     bool printFlag=true;
     
-	TH1F* histoSourceX=new TH1F("histoSourceX","Source X; x [mm];",nbin,1,-1);
-    TH1F* histoSourceCosX=new TH1F("histoSourceCosX","Source Angle Y; #theta [mrad]",100,1,-1);
-    TH1F* histoSourceY=new TH1F("histoSourceY","Source Y; y [mm];",nbin,1,-1);
-	TH1F* histoSourceCosY=new TH1F("histoSourceCosY","Source Angle Y; #theta [mrad]",100,1,-1);
+    const double xMax=6;
+    const double xMin=-6;
+    const double thetaXBeamMax=0.2;
+    const double thetaXBeamMin=-0.2;
+    const double thetaXMax=2.1;
+    const double thetaXMin=-2.1;
+    
+	TH1F* histoSourceX=new TH1F("histoSourceX","Source X; x [mm];",nbin,xMin,xMax);
+    TH1F* histoSourceCosX=new TH1F("histoSourceCosX","Source Angle Y; #theta [mrad]",100,thetaXBeamMin, thetaXBeamMax);
+    TH1F* histoSourceY=new TH1F("histoSourceY","Source Y; y [mm];",nbin,xMin,xMax);
+    TH1F* histoSourceCosY=new TH1F("histoSourceCosY","Source Angle Y; #theta [mrad]",100,thetaXBeamMin, thetaXBeamMax);
 	
-	TH1F* histoAnglePostX1=new TH1F("histoAnglePostX1","Angle post X1; #theta [mrad]",nbin,1,-1);
-	TH1F* histoAnglePostX2=new TH1F("histoAnglePostX2","Angle post X2; #theta [mrad]",nbin,1,-1);
-	TH1F* histoAnglePostX3=new TH1F("histoAnglePostX3","Angle post X3; #theta [mrad]",nbin,1,-1);
-    TH1F* histoAnglePostX3Ch=new TH1F("histoAnglePostX3Ch","Angle post X3 if Ch; #theta [mrad]",nbin,1,-1);
-    TH1F* histoAnglePostX3ChCh=new TH1F("histoAnglePostX3ChCh","Angle post X3 if ChCh; #theta [mrad]",nbin,1,-1);
-    TH1F* histoAnglePostX3ChChCh=new TH1F("histoAnglePostX3ChChCh","Angle post X3 if ChChCh; #theta [mrad]",nbin,1,-1);
+    TH1F* histoAnglePostX1=new TH1F("histoAnglePostX1","Angle post X1; #theta [mrad]",nbin,thetaXMin, thetaXMax);
+    TH1F* histoAnglePostX2=new TH1F("histoAnglePostX2","Angle post X2; #theta [mrad]",nbin,thetaXMin, thetaXMax);
+    TH1F* histoAnglePostX3=new TH1F("histoAnglePostX3","Angle post X3; #theta [mrad]",nbin,thetaXMin, thetaXMax);
+    TH1F* histoAnglePostX3Ch=new TH1F("histoAnglePostX3Ch","Angle post X3 if Ch; #theta [mrad]",nbin,thetaXMin, thetaXMax);
+    TH1F* histoAnglePostX3ChCh=new TH1F("histoAnglePostX3ChCh","Angle post X3 if ChCh; #theta [mrad]",nbin,thetaXMin, thetaXMax);
+    TH1F* histoAnglePostX3ChChCh=new TH1F("histoAnglePostX3ChChCh","Angle post X3 if ChChCh; #theta [mrad]",nbin,thetaXMin, thetaXMax);
 	histoAnglePostX3ChChCh->SetLineColor(kMagenta);
-    TH1F* histoAnglePostX3OCh=new TH1F("histoAnglePostX3OCh","Angle post X3 only Ch; #theta [mrad]",nbin,1,-1);
-    TH1F* histoAnglePostX3OChCh=new TH1F("histoAnglePostX3OChCh","Angle post X3 only ChCh; #theta [mrad]",nbin,1,-1);
-    TH1F* histoAnglePostX3OChChCh=new TH1F("histoAnglePostX3OChChCh","Angle post X3 only ChChCh; #theta [mrad]",nbin,1,-1);
+    TH1F* histoAnglePostX3OCh=new TH1F("histoAnglePostX3OCh","Angle post X3 only Ch; #theta [mrad]",nbin,thetaXMin, thetaXMax);
+    TH1F* histoAnglePostX3OChCh=new TH1F("histoAnglePostX3OChCh","Angle post X3 only ChCh; #theta [mrad]",nbin,thetaXMin, thetaXMax);
+    TH1F* histoAnglePostX3OChChCh=new TH1F("histoAnglePostX3OChChCh","Angle post X3 only ChChCh; #theta [mrad]",nbin,thetaXMin, thetaXMax);
 
     TH1F* histoXPostX1=new TH1F("histoXPostX1","X post X1; x [mm]",nbin,1,-1);
     TH1F* histoXPreX2=new TH1F("histoXPreX2","X pre X2; x [mm]",nbin,1,-1);
@@ -220,6 +227,7 @@ void AnaTriangleEvent::Loop()
 	histoSourceCosX->Draw();
     histoSourceCosY->SetLineColor(kRed);
     histoSourceCosY->Draw("sames");
+    canvBeam->SaveAs(Form("%s_Beam.pdf",runName.Data()));
 	canvBeam->Write();
 	
 	TCanvas* canvAngAll=new TCanvas("canvAngAll","canvAngAll");
