@@ -111,6 +111,13 @@ DetectorConstructionMessenger(
 																	true);
 	fSiDetSizeCmd->SetDefaultValue(G4ThreeVector(38.,38.,0.64));
 	fSiDetSizeCmd->SetDefaultUnit("mm");
+    
+    
+    fXtalCutFocalDistance = new G4UIcmdWithADoubleAndUnit("/xtal/setCutFocalDistance",this);
+    fXtalCutFocalDistance->SetGuidance("Set crystal cut focal distance.");
+    fXtalCutFocalDistance->SetParameterName("CutF",true);
+    fXtalCutFocalDistance->SetDefaultValue(5);
+    fXtalCutFocalDistance->SetDefaultUnit("m");
 	
 	fXtal2SizeCmd = new G4UIcmdWith3VectorAndUnit("/xtal2/setSize",this);
 	fXtal2SizeCmd->SetGuidance("Set crystal2 size.");
