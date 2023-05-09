@@ -515,7 +515,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
         
         G4SubtractionSolid* geoCrystalCut = new G4SubtractionSolid("crystal.solid-geoCutPlane", crystalSolid,geoCutPlane,  cutPlaneTrans3d);
         
-        crystalLogic =   new G4LogicalCrystalVolume(crystalSolid,
+        crystalLogic =   new G4LogicalCrystalVolume(geoCrystalCut,
                                                     Crystal,
                                                     "crystal.dummy");
         
@@ -526,34 +526,35 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
                                                             worldLogic,
                                                             false,
                                                             0);
+    } else {
+        
+        G4VPhysicalVolume* physCrystal;
+        if(fParameterMap["NoCryst"]){
+            physCrystal= new G4PVPlacement(rot,
+                                           posX,
+                                           dummyCrystalLogic, /***/
+                                           "crystal.physic",
+                                           worldLogic,
+                                           false,
+                                           0);
+        } if(fParameterMap["NoCh"]){
+            physCrystal= new G4PVPlacement(rot,
+                                           posX,
+                                           noChCrystalLogic, /***/
+                                           "crystal.physic",
+                                           worldLogic,
+                                           false,
+                                           0);
+        } else {
+            physCrystal= new G4PVPlacement(rot,
+                                           posX,
+                                           crystalLogic, //Posizionamento X vero e proprio
+                                           "crystal.physic",
+                                           worldLogic,
+                                           false,
+                                           0);
+        }
     }
-    
-	G4VPhysicalVolume* physCrystal;
-	if(fParameterMap["NoCryst"]){
-		physCrystal= new G4PVPlacement(rot,
-																	 posX,
-																	 dummyCrystalLogic, /***/
-																	 "crystal.physic",
-																	 worldLogic,
-																	 false,
-																	 0);
-	} if(fParameterMap["NoCh"]){
-		physCrystal= new G4PVPlacement(rot,
-																	 posX,
-																	 noChCrystalLogic, /***/
-																	 "crystal.physic",
-																	 worldLogic,
-																	 false,
-																	 0);
-	} else {
-//		physCrystal= new G4PVPlacement(rot,
-//																	 posX,
-//																	 crystalLogic, //Posizionamento X vero e proprio
-//																	 "crystal.physic",
-//																	 worldLogic,
-//																	 false,
-//																	 0);
-	}
 	
 	if(fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ){
 		
