@@ -86,7 +86,8 @@ fSizes3(G4ThreeVector(1.*CLHEP::mm,
 fBR3(G4ThreeVector(0.,0.,0.)),
 fAngles3(G4ThreeVector(0.,0.,0.)),
 fZ3(1*CLHEP::m),
-thetaBending(0){
+thetaBending(0),
+fCutFocalDistance(10* CLHEP::m){
 	fMessenger = new DetectorConstructionMessenger(this);
 }
 
@@ -220,6 +221,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 		posX=G4ThreeVector(0,0,-10*CLHEP::m);
 	} else if (fParameterMap["Setup"]==4){
         posX=G4ThreeVector(0,0,0*CLHEP::m);
+        G4cout<<"DISTANZA FOCALE: "<<fCutFocalDistance/CLHEP::m<<G4endl;
     }
 //    else if (fParameterMap["Setup"]==3.5){
 //        posX=G4ThreeVector(0,0,-8*CLHEP::m);
@@ -493,12 +495,18 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 //    G4ThreeVector zTrans(0, 0, 50);
 	
     if (fParameterMap["Setup"]==4){
-        G4RotationMatrix *rotCutPlane = new G4RotationMatrix;
-        rotCutPlane->rotateY(-0*deg);
-        G4double cutPlaneRotAngle=30;
+//        G4RotationMatrix *rotCutPlane = new G4RotationMatrix;
+//        rotCutPlane->rotateY(-0*deg);
+        G4double cutPlaneRotAngle=3.14/6;
+//G4double cutPlaneRotAngle=3.14/2.-fSizes.x()/m/fCutFocalDistance/m;
+        G4cout<<"Taglio cristallo fSizesX: "<<fSizes.x()/m<<G4endl;
+        G4cout<<"Taglio cristallo fCutFocalDistance: "<<fCutFocalDistance/m<<G4endl;
+        G4cout<<"Taglio cristallo ratio: "<<fSizes.x()/m/fCutFocalDistance/m<<G4endl;
+        G4cout<<"Taglio cristallo con angolo: "<<cutPlaneRotAngle<<G4endl;
+//        G4double cutPlaneRotAngle=30;
         //    G4ThreeVector zTrans(0, 0, cutPlaneZOffset);
         
-        G4Transform3D cutPlaneTrans3d = G4Translate3D(G4ThreeVector(-fSizes.x()*0.5,0,fSizes.z()/2.)) *G4Rotate3D(cutPlaneRotAngle*deg,G4ThreeVector(0,1,0))*G4Translate3D(G4ThreeVector(0,0,cutPlane_DZ/2.));
+        G4Transform3D cutPlaneTrans3d = G4Translate3D(G4ThreeVector(-fSizes.x()*0.5,0,fSizes.z()/2.)) *G4Rotate3D(cutPlaneRotAngle*rad,G4ThreeVector(0,1,0))*G4Translate3D(G4ThreeVector(0,0,cutPlane_DZ/2.));
         //    new G4PVPlacement(rotCutPlane,zTrans,logicCutPlane,"physCutPlane",worldLogic,false,0,0);
         //    new G4PVPlacement(G4Translate3D(G4ThreeVector(0,0,cutPlaneZOffset)),logicCutPlane,"physCutPlaneFix",worldLogic,false,0,0);
         //    new G4PVPlacement(G4Translate3D(G4ThreeVector(-fSizes.x()/2.,0,cutPlaneZOffset)),logicCutPlane,"physCutPlaneShift",worldLogic,false,0,0);
@@ -507,7 +515,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
         
         G4SubtractionSolid* geoCrystalCut = new G4SubtractionSolid("crystal.solid-geoCutPlane", crystalSolid,geoCutPlane,  cutPlaneTrans3d);
         
-        crystalLogic =   new G4LogicalCrystalVolume(geoCrystalCut,
+        crystalLogic =   new G4LogicalCrystalVolume(crystalSolid,
                                                     Crystal,
                                                     "crystal.dummy");
         

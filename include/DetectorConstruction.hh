@@ -85,7 +85,8 @@ public:
     void SetZ(G4double z1) {fZ = z1;}
     void SetThetaBending(G4double _thetaBending) {thetaBending = _thetaBending;}
 
-	
+    void SetCutFocalDistance(G4double _focalDistance) {fCutFocalDistance = _focalDistance;}
+
 	G4double GetSiDetThickness() {return fSiDetThickness;}
 	void SetSiDetThickness(G4double thick) {fSiDetThickness = thick;}
 	
@@ -128,4 +129,5 @@ private:
 	G4ThreeVector fAngles3;
 	G4double thetaBending;
     G4double  fZ3;
+    G4double fCutFocalDistance;
 };

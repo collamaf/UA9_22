@@ -250,6 +250,9 @@ void DetectorConstructionMessenger::SetNewValue(
     if(command==fSiDetThickCmd ){
 		fTarget->SetSiDetThickness(fSiDetThickCmd->GetNewDoubleValue(newValue));
 	}
+    if(command==fXtalCutFocalDistance ){
+        fTarget->SetCutFocalDistance(fXtalCutFocalDistance->GetNewDoubleValue(newValue));
+    }
 	if(command==fSiDetSizeCmd ){
 		fTarget->SetSiDetSizes(fSiDetSizeCmd->GetNew3VectorValue(newValue));
 	}
