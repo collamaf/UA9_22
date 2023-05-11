@@ -497,12 +497,22 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     if (fParameterMap["Setup"]==4){
 //        G4RotationMatrix *rotCutPlane = new G4RotationMatrix;
 //        rotCutPlane->rotateY(-0*deg);
-        G4double cutPlaneRotAngle=3.14/6;
+        G4double ratio=(fCutFocalDistance/m)/(fBR.x()/m);
+        G4double omegaAngle=atan(ratio);
+        G4double cutPlaneRotAngle=(CLHEP::pi/2.-omegaAngle);
+//        G4double cutPlaneRotAngle=CLHEP::pi/6;
+//        G4double omegaAngle=CLHEP::pi-cutPlaneRotAngle;
 //G4double cutPlaneRotAngle=3.14/2.-fSizes.x()/m/fCutFocalDistance/m;
-        G4cout<<"Taglio cristallo fSizesX: "<<fSizes.x()/m<<G4endl;
-        G4cout<<"Taglio cristallo fCutFocalDistance: "<<fCutFocalDistance/m<<G4endl;
-        G4cout<<"Taglio cristallo ratio: "<<fSizes.x()/m/fCutFocalDistance/m<<G4endl;
-        G4cout<<"Taglio cristallo con angolo: "<<cutPlaneRotAngle<<G4endl;
+        G4cout<<"##### Taglio cristallo"<<G4endl;
+        G4cout<<"Richiesta distanza focale: "<<fCutFocalDistance/m<<G4endl;
+        G4cout<<"Raggio di curvatura: "<<fBR.x()/m<<G4endl;
+        G4cout<<"Taglio cristallo ratio (tg omega): "<<ratio<<G4endl;
+        G4cout<<"Angolo Omega: "<<omegaAngle<<G4endl;
+        G4cout<<"Angolo cut: "<<cutPlaneRotAngle<<G4endl;
+
+//        G4cout<<"Taglio cristallo fSizesX: "<<fSizes.x()/m<<" "<<atan(1)<<G4endl;
+//        G4cout<<"Taglio cristallo fCutFocalDistance: "<<fCutFocalDistance/m<<G4endl;
+//        G4cout<<"Taglio cristallo con angolo: "<<cutPlaneRotAngle<<G4endl;
 //        G4double cutPlaneRotAngle=30;
         //    G4ThreeVector zTrans(0, 0, cutPlaneZOffset);
         
