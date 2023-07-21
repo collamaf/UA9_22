@@ -268,6 +268,14 @@ This is reading the "Acceptances.txt" file so you need to check what is in there
 - Add second version of kill particles option, this one at the entrance of the crystal, based on crytical angle
 - Add flag to choose if killing channeling/not channeling particles: `-CutChan`: 1/10 to kill ch. part., -1/-10 to kill not. ch. part (1 for old "after X" method, 10 for new "before X" one) 
 
+
+20-04-2023: by collamaf
+- Add "config 4", to use cut crystal: it places a dummy plane (`cutPlane`) at the end of X (placed at the origin), in such a way that the cut starts from the bottom angle of the X
+
+11-05-2023: by collamaf
+- Add possibility to pass macro argument setCutFocalDistance how to cut the X in setup 4
+
+
 ## TODOs
 - need to create a macro for digi/smearing of SiDet hits
 - need to create a macro for flexible data analysis of SiDet hits 

@@ -211,6 +211,10 @@ int main(int argc,char** argv)
             {
                 ParameterMap["X2Offset"]=strtod (argv[++i], NULL);;
             }
+            else if(option.compare("-FocalDistance")==0)
+            {
+                ParameterMap["FocalDistance"]=strtod (argv[++i], NULL);;
+            }
             else if(option.compare("-Label")==0)
 			{
 				OutputFilename.append(argv[++i]);

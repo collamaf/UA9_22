@@ -221,6 +221,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 		posX=G4ThreeVector(0,0,-10*CLHEP::m);
 	} else if (fParameterMap["Setup"]==4){
         posX=G4ThreeVector(0,0,0*CLHEP::m);
+        if (fParameterMap["FocalDistance"]){
+            fCutFocalDistance=fParameterMap["FocalDistance"]*m;
+            G4cout<<"Passata distanza focale da linea di comando: "<<fParameterMap["FocalDistance"]<<" "<<fCutFocalDistance/m<<G4endl;
+        }
         G4cout<<"DISTANZA FOCALE: "<<fCutFocalDistance/CLHEP::m<<G4endl;
     }
 //    else if (fParameterMap["Setup"]==3.5){
