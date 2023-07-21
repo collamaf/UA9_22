@@ -50,7 +50,7 @@ class AnaTriangleEvent {
 	TBranch        *b_PlaneId;   //!
 	TBranch        *b_crystAngX;   //!
 	
-	AnaTriangleEvent(TTree *tree=0, bool xCut=true);
+	AnaTriangleEvent(TTree *tree=0, bool xCut=true, bool offAxis=false);
 	virtual ~AnaTriangleEvent();
 	virtual Int_t    Cut(Long64_t entry);
 	virtual Int_t    GetEntry(Long64_t entry);
@@ -63,12 +63,13 @@ class AnaTriangleEvent {
 	FILE* textOut;
 	TString runName;
     bool applyXCut;
+    bool isOffAxisTriangle;
 };
 
 #endif
 
 #ifdef AnaTriangleEvent_cxx
-AnaTriangleEvent::AnaTriangleEvent(TTree *tree, bool xCut) : fChain(0)
+AnaTriangleEvent::AnaTriangleEvent(TTree *tree, bool xCut, bool offAxis ) : fChain(0)
 {
 	// if parameter tree is not specified (or zero), connect the file
 	// used to generate this class and read the Tree.
@@ -78,7 +79,9 @@ AnaTriangleEvent::AnaTriangleEvent(TTree *tree, bool xCut) : fChain(0)
     runName=outFileName;
     runName.Append(xCut==true?"Cut":"");
     applyXCut=xCut;
-	cout<<"AAAAAA "<<runName.Data()<<endl;
+    isOffAxisTriangle=offAxis;
+    runName.Append(offAxis==true?"OffAxis":"");
+    cout<<"AAAAAA "<<runName.Data()<<endl;
 	if (tree == 0) {
 		TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../build/mUA9Pla_Conf3_SigmaX1Y0Z0_NoDet_N10000.root");
 		if (!f || !f->IsOpen()) {

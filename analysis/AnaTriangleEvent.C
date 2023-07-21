@@ -37,7 +37,7 @@ void AnaTriangleEvent::Loop()
     double thetaXMin=-2.1;
     double XMax=71;
     double XMin=-10;
-    bool isOffAxisTriangle=true;
+//    bool isOffAxisTriangle=true;
     if (isOffAxisTriangle) {
         thetaXMax=4.1;
         thetaXMin=-4.1;
