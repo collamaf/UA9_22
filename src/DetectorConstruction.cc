@@ -348,7 +348,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	
 	G4ThreeVector temp;
     crystalChannelingData->GetBR(temp)/CLHEP::m;
-    G4double thetaBending2=0;
+//    G4double thetaBending2=0;
     G4double thetaBending3=0;
     G4double posX2_x=0;
     G4double posX3_x=0;
@@ -360,7 +360,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
         G4cout<<"DetConst ThetaBending= "<< thetaBending<<" mrad"<<G4endl;
     } else { //otherwise use it to define BR
         G4cout<<"thetaBending set via macro: "<<thetaBending<<G4endl;
-       if (fParameterMap["Setup"]==3.5) { //If setup 3.5, than compute bending angles of X2 and 3 to close the on axis triangle
+       if (fParameterMap["Setup"]==3.5) { //If setup 3.5, then compute bending angles of X2 and 3 to close the on axis triangle
             thetaBending2=-(1+fabs(fZ/fZ3))*thetaBending;
             thetaBending3=fabs(fZ/fZ3)*thetaBending;
 
@@ -376,13 +376,17 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 //           -0.00179999+(0.00159999/2)
             crystalChannelingData3->SetBR((fSizes3.z()*CLHEP::mm)/(thetaBending3/CLHEP::rad)); //in m
             fAngles3.setY(thetaBending3/2.);
-        } else if (fParameterMap["Setup"]==3.6) { //If setup 3.6, than compute all needed parameters fro thetaBending (1)
+        } else if (fParameterMap["Setup"]==3.6) { //If setup 3.6, then compute all needed parameters fro thetaBending2
+            G4cout<<"COSTRUISCO CONFIGURAZIONE 3.6"<<thetaBending<<" "<<thetaBending2<<G4endl;
 //            posX.setX(20*cm);
-            posX3_x=tan(thetaBending)*(-fZ+fZ3);
+//            posX3_x=tan(thetaBending)*(-fZ+fZ3);
+            posX3_x=tan(thetaBending2)*(fZ3);
             
-            thetaBending2=atan((-fZ+fZ3)/fZ3*tan(thetaBending));
+//            thetaBending2=atan((-fZ+fZ3)/fZ3*tan(thetaBending));
+            thetaBending=atan(fZ3/(-fZ+fZ3)*tan(thetaBending2));
             
-            thetaBending3= thetaBending- atan((-fZ/fZ3+1)*tan(thetaBending));
+//            thetaBending3= thetaBending- atan((-fZ/fZ3+1)*tan(thetaBending));
+            thetaBending3= thetaBending- thetaBending2;
 
             crystalChannelingData->SetBR((fSizes.z()*CLHEP::mm)/(thetaBending/CLHEP::rad)); //in m
             fAngles.setY(-thetaBending/2.);

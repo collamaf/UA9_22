@@ -84,6 +84,7 @@ public:
     
     void SetZ(G4double z1) {fZ = z1;}
     void SetThetaBending(G4double _thetaBending) {thetaBending = _thetaBending;}
+    void SetThetaBending2(G4double _thetaBending) {thetaBending2 = _thetaBending;}
 
     void SetCutFocalDistance(G4double _focalDistance) {fCutFocalDistance = _focalDistance;}
 
@@ -104,7 +105,8 @@ public:
 	void SetAngles3(G4ThreeVector a3vec) {fAngles3 = a3vec;}
     void SetZ3(G4double z3) {fZ3 = z3;}
 
-	G4double GetThetaBending(void) const {return thetaBending;};
+    G4double GetThetaBending(void) const {return thetaBending;};
+	G4double GetThetaBending2(void) const {return thetaBending2;};
 	
 private:
 	G4String fECfileName;
@@ -127,7 +129,8 @@ private:
 	G4ThreeVector fSizes3;
 	G4ThreeVector fBR3;
 	G4ThreeVector fAngles3;
-	G4double thetaBending;
+    G4double thetaBending;
+	G4double thetaBending2;
     G4double  fZ3;
     G4double fCutFocalDistance;
 };

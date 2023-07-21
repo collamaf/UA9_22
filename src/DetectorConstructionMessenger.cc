@@ -96,6 +96,12 @@ DetectorConstructionMessenger(
     fXtalThetaBending->SetParameterName("XThetaB",true);
     fXtalThetaBending->SetDefaultValue(2e-3);
     fXtalThetaBending->SetDefaultUnit("rad");
+    
+    fXtalThetaBending2 = new G4UIcmdWithADoubleAndUnit("/xtal2/setThetaBending",this);
+    fXtalThetaBending2->SetGuidance("Set crystal2 Theta Bending.");
+    fXtalThetaBending2->SetParameterName("XThetaB",true);
+    fXtalThetaBending2->SetDefaultValue(2e-3);
+    fXtalThetaBending2->SetDefaultUnit("rad");
 	
 	fSiDetThickCmd = new G4UIcmdWithADoubleAndUnit("/sidet/thick",this);
 	fSiDetThickCmd->SetGuidance("Set Silicon Detector thickness");
@@ -206,6 +212,7 @@ DetectorConstructionMessenger::
     delete fXtalECCmd;
     delete fXtalZ;
     delete fXtalThetaBending;
+    delete fXtalThetaBending2;
 	delete fXtalBRCmd;
 	delete fSiDetThickCmd;
 	delete fSiDetSizeCmd;
@@ -246,6 +253,9 @@ void DetectorConstructionMessenger::SetNewValue(
     }
     if(command==fXtalThetaBending ){
         fTarget->SetThetaBending(fXtalThetaBending->GetNewDoubleValue(newValue));
+    }
+    if(command==fXtalThetaBending2 ){
+        fTarget->SetThetaBending2(fXtalThetaBending2->GetNewDoubleValue(newValue));
     }
     if(command==fSiDetThickCmd ){
 		fTarget->SetSiDetThickness(fSiDetThickCmd->GetNewDoubleValue(newValue));

@@ -64,6 +64,7 @@ private:
     G4UIcmdWithAString*  fXtalECCmd;
     G4UIcmdWithADoubleAndUnit*  fXtalZ;
     G4UIcmdWithADoubleAndUnit* fXtalThetaBending;
+    G4UIcmdWithADoubleAndUnit* fXtalThetaBending2;
     G4UIcmdWithADoubleAndUnit*  fSiDetThickCmd;
 	G4UIcmdWithADoubleAndUnit*  fXtalCutFocalDistance;
 	G4UIcmdWith3VectorAndUnit* fSiDetSizeCmd;
