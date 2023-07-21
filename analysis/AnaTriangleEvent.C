@@ -20,12 +20,12 @@ void AnaTriangleEvent::Loop()
 	double widthLeft=-2;
 	double funcGausWidth=0.2;
 	
-	double chCutoffAngle=0.8; //fraction
+	double chCutoffAngle=0.8; //fraction of bending angle to identify a channeled particle
     double thetaBending1=2; //in mrad
     double thetaBending2=3.6; //in mrad
     double thetaBending3=1.6; //in mrad
     
-    double x1SizeX=1.5; //in mm
+    double x1SizeX=1.5; //in mm - to apply xcut
     
     bool printFlag=true;
     
@@ -33,8 +33,18 @@ void AnaTriangleEvent::Loop()
     const double xMin=-6;
     const double thetaXBeamMax=0.2;
     const double thetaXBeamMin=-0.2;
-    const double thetaXMax=2.1;
-    const double thetaXMin=-2.1;
+    double thetaXMax=2.1;
+    double thetaXMin=-2.1;
+    double XMax=71;
+    double XMin=-10;
+    bool isOffAxisTriangle=true;
+    if (isOffAxisTriangle) {
+        thetaXMax=4.1;
+        thetaXMin=-4.1;
+        thetaBending1=2; //potrebbero essere diversi
+        thetaBending2=3.6;
+        thetaBending3=1.6;
+    }
     
 	TH1F* histoSourceX=new TH1F("histoSourceX","Source X; x [mm];",nbin,xMin,xMax);
     TH1F* histoSourceCosX=new TH1F("histoSourceCosX","Source Angle Y; #theta [mrad]",100,thetaXBeamMin, thetaXBeamMax);
@@ -51,6 +61,8 @@ void AnaTriangleEvent::Loop()
     TH1F* histoAnglePostX3OCh=new TH1F("histoAnglePostX3OCh","Angle post X3 only Ch; #theta [mrad]",nbin,thetaXMin, thetaXMax);
     TH1F* histoAnglePostX3OChCh=new TH1F("histoAnglePostX3OChCh","Angle post X3 only ChCh; #theta [mrad]",nbin,thetaXMin, thetaXMax);
     TH1F* histoAnglePostX3OChChCh=new TH1F("histoAnglePostX3OChChCh","Angle post X3 only ChChCh; #theta [mrad]",nbin,thetaXMin, thetaXMax);
+    TH1F* histoAnglePostX3OAmChCh=new TH1F("histoAnglePostX3OAmChCh","Angle post X3 only AmChCh; #theta [mrad]",nbin,thetaXMin, thetaXMax);
+    TH1F* histoAnglePostX3OAmChAm=new TH1F("histoAnglePostX3OAmChAm","Angle post X3 only AmChAm; #theta [mrad]",nbin,thetaXMin, thetaXMax);
 
     TH1F* histoXPostX1=new TH1F("histoXPostX1","X post X1; x [mm]",nbin,1,-1);
     TH1F* histoXPreX2=new TH1F("histoXPreX2","X pre X2; x [mm]",nbin,1,-1);
@@ -60,9 +72,13 @@ void AnaTriangleEvent::Loop()
     TH1F* histoXPostX3Ch=new TH1F("histoXPostX3Ch","X post X3 if Ch; x [mm]",nbin,1,-1);
     TH1F* histoXPostX3ChCh=new TH1F("histoXPostX3ChCh","X post X3 if ChCh; x [mm]",nbin,1,-1);
     TH1F* histoXPostX3ChChCh=new TH1F("histoXPostX3ChChCh","X post X3 if ChChCh; x [mm]",nbin,1,-1);
-    TH1F* histoXEnd=new TH1F("histoXEnd","X pos at the end; X [mm]",nbin,1,-1);
-	TH1F* histoXEndChChCh=new TH1F("histoXEndChChCh","X pos at the end only ChChCh; x [mm]",nbin,1,-1);
-	histoXEndChChCh->SetLineColor(kMagenta);
+    TH1F* histoXEnd=new TH1F("histoXEnd","X pos at the end; X [mm]",nbin, XMin, XMax);
+    TH1F* histoXEndChChCh=new TH1F("histoXEndChChCh","X pos at the end only ChChCh; x [mm]",nbin,XMin, XMax);
+    TH1F* histoXEndChNoAm=new TH1F("histoXEndChNoAm","X pos at the end only ChNoAm; x [mm]",nbin,XMin, XMax);
+    TH1F* histoXEndAmAmNo=new TH1F("histoXEndAmAmNo","X pos at the end only AmAmNo; x [mm]",nbin,XMin, XMax);
+    TH1F* histoXEndAmChAm=new TH1F("histoXEndAmChAm","X pos at the end only AmChAM; x [mm]",nbin,XMin, XMax);
+//	histoXEndChChCh->SetLineColor(kMagenta);
+    TH1F* histoXEndAmChCh=new TH1F("histoXEndAmChCh","X pos at the end only AmChCh; x [mm]",nbin,XMin, XMax);
 
 	TH1F* histoExpAnglEnd=new TH1F("histoExpAnglEnd","Experimental Angle at the End; #theta [mrad]",nbin,1,-1);
 
@@ -70,8 +86,8 @@ void AnaTriangleEvent::Loop()
     bool flagCh1=false;
     bool flagCh2=false;
 	bool flagCh3=false;
-	bool flagX3hit=false;
-	bool flagX7hit=false;
+	bool flagPlane3hit=false;
+	bool flagPlane7hit=false;
 
 	if (fChain == 0) return;
 	
@@ -86,7 +102,7 @@ void AnaTriangleEvent::Loop()
 //    int planeIdPostX3=3;
 //    int planeIdLast=7;
     
-    // Codifica piani per caso 2023
+    // Codifica piani per caso 2023 - buono anche per triangolo disassato
     int planeIdSource=0;
     int planeIdPreX1=1;
     int planeIdPostX1=6;
@@ -109,13 +125,13 @@ void AnaTriangleEvent::Loop()
         flagCh1=false;
         flagCh2=false;
 		flagCh3=false;
-		flagX3hit=false;
-		flagX7hit=false;
+		flagPlane3hit=false;
+		flagPlane7hit=false;
 		if (ientry < 0) break;
 		nb = fChain->GetEntry(jentry);   nbytes += nb;
 		
 		double z3=0, z7=0, x3=0, x7=0, expTheta=0;
-        cout<<"Entro in entry: "<<jentry<<endl;
+        cout<<"\nEntro in evento: "<<jentry<<endl;
 
 		for (int ii=0; ii<X->size();ii++) { //Loop on each info of a given entry
 			if (PlaneId->at(ii)==planeIdSource) {
@@ -124,10 +140,10 @@ void AnaTriangleEvent::Loop()
                 histoSourceY->Fill(Y->at(ii));
 				histoSourceCosY->Fill(convFactor*CosY->at(ii));
 			}
-            // CR 1
+            // X 1
             if (PlaneId->at(ii)==planeIdPreX1) {
                 thetaX1In=convFactor*CosX->at(ii);
-                if (fabs(X->at(ii))>x1SizeX*0.5) {
+                if (fabs(X->at(ii))>x1SizeX*0.5) { //Check if is in X acceptance of X1
                     if (printFlag) cout<<"Traccia che NON entra in X1: "<< jentry<<endl;
                     if (applyXCut) break;
                 }
@@ -136,10 +152,14 @@ void AnaTriangleEvent::Loop()
                 histoAnglePostX1->Fill(convFactor*CosX->at(ii));
                 histoXPostX1->Fill(X->at(ii));
                 thetaX1Out=convFactor*CosX->at(ii);
-                if (thetaX1Out-thetaX1In>chCutoffAngle*thetaBending1) flagCh1=true;
+                double thetaX1Diff=thetaX1Out-thetaX1In;
+                if (fabs(thetaX1Diff)>chCutoffAngle*thetaBending1) {
+                    flagCh1=true;
+                    cout<<"Fatto CHX1! "<< jentry<<endl;
+                }
             }
 
-            // CR 2
+            // X 2
             if (PlaneId->at(ii)==planeIdPreX2) {
                 histoXPreX2->Fill(X->at(ii));
                 thetaX2In=convFactor*CosX->at(ii);
@@ -148,32 +168,39 @@ void AnaTriangleEvent::Loop()
 				histoAnglePostX2->Fill(convFactor*CosX->at(ii));
                 histoXPostX2->Fill(X->at(ii));
                 thetaX2Out=convFactor*CosX->at(ii);
-                if (thetaX2Out-thetaX2In<chCutoffAngle*thetaBending2) flagCh2=true;
+                double thetaX2Diff=thetaX2Out-thetaX2In;
+                if (fabs(thetaX2Diff)>chCutoffAngle*thetaBending2){
+                    flagCh2=true;
+                    cout<<"Fatto CHX2! "<< jentry<<endl;
+                };
+                if (printFlag) printf("PostX2##, AngIn:\t%.3e mRad\tAngOut:\t%.3e mRad\tDiff:\t%.3e mRad\tFlagCH2:%d\n", thetaX2In,thetaX2Out, thetaX2Diff,flagCh2);
 			}
             
-            // CR 3
+            // X 3
             if (PlaneId->at(ii)==planeIdPreX3) {
                 histoXPreX3->Fill(X->at(ii));
                 thetaX3In=convFactor*CosX->at(ii);
             }
 			if (PlaneId->at(ii)==planeIdPostX3) {
-				flagX3hit=true;
+				flagPlane3hit=true; //significa che ha toccato il PIANO 3
 				x3=X->at(ii);
-				z3=Z->at(ii);
+				z3=Z->at(ii); //fisso in realtà
 				histoAnglePostX3->Fill(convFactor*CosX->at(ii));
                 thetaX3Out=convFactor*CosX->at(ii);
-                if (thetaX3Out-thetaX3In>chCutoffAngle*thetaBending3) {
+                double thetaX3Diff=thetaX3Out-thetaX3In;
+                if (fabs(thetaX3Diff)>chCutoffAngle*thetaBending3) {
                     flagCh3=true;
-                
+                    cout<<"Fatto CHX3! "<< jentry<<endl;
                 }
-                if (thetaX3Out-thetaX3In!=0) {
-                    if (printFlag) printf("X3##, AngIn:\t%.2e\tAngOut:\t%.2e\tDiff:\t%.2e\n", thetaX3In,thetaX3Out, thetaX3Out-thetaX3In);
-                } else {
-                    if (printFlag) printf("X3, AngIn:\t%.2e\tAngOut:\t%.2e\tDiff:\t%.2e\n", thetaX3In,thetaX3Out, thetaX3Out-thetaX3In);
-                }
+//                if (thetaX3Out-thetaX3In!=0) {
+                    if (printFlag) printf("PostX3##, AngIn:\t%.3e mRad\tAngOut:\t%.3e mRad\tDiff:\t%.3e mRad\tFlagCH3:%d\n", thetaX3In,thetaX3Out, thetaX3Out-thetaX3In,flagCh3);
+//                } else {
+//                    if (printFlag) printf("PostX3, AngIn:\t%.3e\tAngOut:\t%.3e\tDiff:\t%.3e\n", thetaX3In,thetaX3Out, thetaX3Out-thetaX3In);
+//                }
 
 //                    cout<<"ThetaX3Out: "<<thetaX3Out<<" In: "<<thetaX3In<<", Diff: "<<thetaX3Out-thetaX3In<<endl;
                 
+                //Fill histos for different combination of Ch (NOT EXCLUSIVE)
                 if (flagCh1)  {
                     histoXPostX3Ch->Fill(X->at(ii));
                     histoAnglePostX3Ch->Fill(convFactor*CosX->at(ii));
@@ -188,29 +215,55 @@ void AnaTriangleEvent::Loop()
                 }
                 
                 
+                //Fill histos for different combination of Ch (EXCLUSIVE -> "O"="OnlyCH1" etc)
+
                 if (flagCh1&&flagCh2&&flagCh3)  {
-//                    histoXPostX3ChChCh->Fill(X->at(ii));
+                    //                    histoXPostX3ChChCh->Fill(X->at(ii));
                     histoAnglePostX3OChChCh->Fill(convFactor*CosX->at(ii));
+                } else if (!flagCh1&&flagCh2&&flagCh3)  {
+                    histoAnglePostX3OAmChCh->Fill(convFactor*CosX->at(ii));
+                } else if (!flagCh1&&flagCh2&&!flagCh3)  {
+                    histoAnglePostX3OAmChAm->Fill(convFactor*CosX->at(ii));
                 } else if (flagCh1&&flagCh2)  {
                     histoAnglePostX3OChCh->Fill(convFactor*CosX->at(ii));
                 } else if (flagCh1)  {
                     histoAnglePostX3OCh->Fill(convFactor*CosX->at(ii));
                 }
                 histoXPostX3->Fill(X->at(ii));
-			}
-			
+            }
+            
             // LAST PLANE
             if (PlaneId->at(ii)==planeIdLast) {
-				flagX7hit=true;
-				x7=X->at(ii);
-				z7=Z->at(ii);
-				histoXEnd->Fill(X->at(ii));
-				if (flagCh1) histoXEndChChCh->Fill(X->at(ii));
+                flagPlane7hit=true;
+                x7=X->at(ii);
+                z7=Z->at(ii); //fisso in realtà
+                histoXEnd->Fill(X->at(ii));
+                
+                
+//                cout<<"INSALATA FLAG: "<<flagCh1<<" "<<flagCh2<<" "<<flagCh3<<endl;
+                if (flagCh1&&flagCh2&&flagCh3)  {
+                    histoXEndChChCh->Fill(X->at(ii));
+                }
+               else  if (!flagCh1&&flagCh2&&flagCh3)  {
+                    histoXEndAmChCh->Fill(X->at(ii));
+                }
+                else if (!flagCh1&&flagCh2&&!flagCh3)  {
+                    histoXEndAmChAm->Fill(X->at(ii));
+                }
+                else if (flagCh1&&flagCh2&&!flagCh3)  {
+                    //none
+                }
+                else if (flagCh1&&!flagCh2&&!flagCh3)  {
+                    histoXEndChNoAm->Fill(X->at(ii));
+                } else
+                 if (!flagCh1&&!flagCh2&&!flagCh3) {
+                    histoXEndAmAmNo->Fill(X->at(ii));
+                }
 
 			}
 		}
 		expTheta=convFactor*TMath::ATan((x7-x3)/(z7-z3));
-		if (flagX3hit&&flagX7hit) histoExpAnglEnd->Fill(expTheta);
+		if (flagPlane3hit&&flagPlane7hit) histoExpAnglEnd->Fill(expTheta);
 //		printf("x3=%f\tz3=%f\tx7=%f\tz7=%f\texpTheta=%f\n",x3, z3, x7, z7, expTheta);
 		
 		// if (Cut(ientry) < 0) continue;
@@ -299,12 +352,16 @@ void AnaTriangleEvent::Loop()
     histoAnglePostX3OChCh->Draw("sames");
     histoAnglePostX3OCh->SetLineColor(kCyan);
     histoAnglePostX3OCh->Draw("sames");
+    histoAnglePostX3OAmChCh->SetLineColor(kMagenta);
+    histoAnglePostX3OAmChCh->Draw("sames");
+    histoAnglePostX3OAmChAm->SetLineColor(kBlue);
+    histoAnglePostX3OAmChAm->Draw("sames");
     padAngOCh->SetLogy(1);
     padAngOCh->BuildLegend();
     padAngOCh->SaveAs(Form("%s_AngOCh.pdf",runName.Data()));
     canvAngX3IfCh->Write();
     
-	
+
 	double myArea0=0;
 	double myArea0ChCh=0;
 	double myArea20=0;
@@ -539,27 +596,56 @@ void AnaTriangleEvent::Loop()
     canvExpTheta->SaveAs(Form("%s_ExpTheta.pdf",runName.Data()));
     canvExpTheta->Write();
 	
-    TCanvas* canvFinal=new TCanvas("canvFinal","canvFinal",0,0,600,800);
-    canvFinal->Divide(1,2);
+    TCanvas* canvFinal=new TCanvas("canvFinal","canvFinal",0,0,1200,600);
+  
+    //    if (!isOffAxisTriangle) {
+    canvFinal->Divide(2,1);
     TVirtualPad* padEndX = canvFinal->cd(1);
-
-//	TCanvas* canvX3ChChCh=new TCanvas("canvX3ChChCh","canvX3ChChCh");
-	histoAnglePostX3->Draw();
-	histoAnglePostX3ChChCh->Draw("sames");
+    
+    //    TCanvas* canvX3ChChCh=new TCanvas("canvX3ChChCh","canvX3ChChCh");
+    histoAnglePostX3->Draw();
+    if (!isOffAxisTriangle) {
+        histoAnglePostX3ChChCh->Draw("sames");
+    } else {
+        histoAnglePostX3OCh->Draw("sames");
+        histoAnglePostX3OAmChCh->Draw("sames");
+    }
     padEndX->BuildLegend();
-//    padEndX->Write();
+    //    padEndX->Write();
     padEndX->SetLogy();
     padEndX->SaveAs(Form("%s_X3ChChCh.pdf",runName.Data()));
-
-//	TCanvas* canvPosEnd=new TCanvas("canvPosEnd","canvPosEnd");
+    
+    //    TCanvas* canvPosEnd=new TCanvas("canvPosEnd","canvPosEnd");
     TVirtualPad* padEndPos = canvFinal->cd(2);
     histoXEnd->Draw();
     histoXEndChChCh->SetLineColor(kRed);
-	histoXEndChChCh->Draw("sames");
+    if (!isOffAxisTriangle) {
+        histoXEndChChCh->Draw("sames");
+    } else {
+        histoXEndAmChCh->Draw("samesPLC");
+        histoXEndAmChAm->Draw("samesPLC");
+        histoXEndChNoAm->Draw("samesPLC");
+        histoXEndAmAmNo->Draw("samesPLC");
+    }
+    
     padEndPos->BuildLegend();
     padEndPos->SetLogy();
     padEndPos->SaveAs(Form("%s_PosEnd.pdf",runName.Data()));
     canvFinal->Write();
+    //    } else {
+    ////        canvFinal->cd(0);
+    //        histoAnglePostX3->Draw();
+    //        histoAnglePostX3OCh->Draw("sames");
+    //        histoAnglePostX3OAmChCh->Draw("sames");
+    //        histoAnglePostX3OAmChAm->Draw("sames");
+    //        canvFinal->BuildLegend();
+    //        //    padEndX->Write();
+    //        canvFinal->SetLogy();
+    //        canvFinal->SaveAs(Form("%s_AllAnglesPostX3.pdf",runName.Data()));
+    //    }
+    
+    
+
 
     
     histoSourceX->Write();
@@ -575,6 +661,12 @@ void AnaTriangleEvent::Loop()
     histoXPostX3ChChCh->Write();
     histoXPostX3ChCh->Write();
     histoXPostX3Ch->Write();
+    
+    histoXEndChChCh->Write();
+    histoXEndAmChCh->Write();
+    histoXEndAmChAm->Write();
+    histoXEndChNoAm->Write();
+    histoXEndAmAmNo->Write();
 
     histoAnglePostX1->Write();
     histoAnglePostX2->Write();
@@ -586,6 +678,8 @@ void AnaTriangleEvent::Loop()
     histoAnglePostX3OChChCh->Write();
     histoAnglePostX3OChCh->Write();
     histoAnglePostX3OCh->Write();
+    histoAnglePostX3OAmChCh->Write();
+    histoAnglePostX3OAmChAm->Write();
 
     histoAnglePostX1Cum->Write();
     histoAnglePostX2Cum->Write();
