@@ -260,7 +260,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	G4Box* crystalSolid2;
 	G4Box* crystalSolid3;
 
-	if (fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ) {
+	if (fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 || fParameterMap["Setup"]==3.6 ) {
 		crystalSolid2 = new G4Box("crystal2.solid",
 																		fSizes2.x()/2.,
 																		fSizes2.y()/2.,
@@ -351,34 +351,58 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     G4double thetaBending2=0;
     G4double thetaBending3=0;
     G4double posX2_x=0;
+    G4double posX3_x=0;
 //	G4cout<<"DetConst BendingRadius= "<< crystalChannelingData->GetBR(temp)/CLHEP::m<<G4endl;
 
-    if (thetaBending==0) { //if thetaBending was not manually set in macro, retrieve it from size and BR
+    if (thetaBending==0) { //if thetaBending was not manually set in macro (/xtal/setThetaBending), retrieve it from size and BR
         G4cout<<"thetaBening NOT set via macro"<<G4endl;
         thetaBending=(fSizes.z()*CLHEP::mm)/(crystalChannelingData->GetBR(temp).x()/CLHEP::m); // in mrad
         G4cout<<"DetConst ThetaBending= "<< thetaBending<<" mrad"<<G4endl;
     } else { //otherwise use it to define BR
         G4cout<<"thetaBending set via macro: "<<thetaBending<<G4endl;
-        thetaBending2=-(1+fabs(fZ/fZ3))*thetaBending;
-        thetaBending3=fabs(fZ/fZ3)*thetaBending;
+       if (fParameterMap["Setup"]==3.5) { //If setup 3.5, than compute bending angles of X2 and 3 to close the on axis triangle
+            thetaBending2=-(1+fabs(fZ/fZ3))*thetaBending;
+            thetaBending3=fabs(fZ/fZ3)*thetaBending;
 
-        crystalChannelingData->SetBR((fSizes.z()*CLHEP::mm)/(thetaBending/CLHEP::rad)); //in m
-        fAngles.setY(-thetaBending/2.);
+            crystalChannelingData->SetBR((fSizes.z()*CLHEP::mm)/(thetaBending/CLHEP::rad)); //in m
+            fAngles.setY(-thetaBending/2.);
 
-        crystalChannelingData2->SetBR((fSizes2.z()*CLHEP::mm)/(thetaBending2/CLHEP::rad)); //in m
-        fAngles2.setY(-(fabs(thetaBending)-fabs(thetaBending2)/2.));
-        posX2_x=fabs(fZ)*thetaBending;
-        if (fParameterMap["X2Offset"]) posX2_x+=fParameterMap["X2Offset"];
-        posX2.setX(posX2_x+fX2Offset);
-        
-        
-        crystalChannelingData3->SetBR((fSizes3.z()*CLHEP::mm)/(thetaBending3/CLHEP::rad)); //in m
-        fAngles3.setY(thetaBending3/2.);
+            crystalChannelingData2->SetBR((fSizes2.z()*CLHEP::mm)/(thetaBending2/CLHEP::rad)); //in m
+            fAngles2.setY(-(fabs(thetaBending)-fabs(thetaBending2)/2.));
+            posX2_x=fabs(fZ)*thetaBending;
+            if (fParameterMap["X2Offset"]) posX2_x+=fParameterMap["X2Offset"];
+            posX2.setX(posX2_x+fX2Offset);
+            
+//           -0.00179999+(0.00159999/2)
+            crystalChannelingData3->SetBR((fSizes3.z()*CLHEP::mm)/(thetaBending3/CLHEP::rad)); //in m
+            fAngles3.setY(thetaBending3/2.);
+        } else if (fParameterMap["Setup"]==3.6) { //If setup 3.6, than compute all needed parameters fro thetaBending (1)
+//            posX.setX(20*cm);
+            posX3_x=tan(thetaBending)*(-fZ+fZ3);
+            
+            thetaBending2=atan((-fZ+fZ3)/fZ3*tan(thetaBending));
+            
+            thetaBending3= thetaBending- atan((-fZ/fZ3+1)*tan(thetaBending));
+
+            crystalChannelingData->SetBR((fSizes.z()*CLHEP::mm)/(thetaBending/CLHEP::rad)); //in m
+            fAngles.setY(-thetaBending/2.);
+            posX2.setX(0);
+
+            crystalChannelingData2->SetBR((fSizes2.z()*CLHEP::mm)/(thetaBending2/CLHEP::rad)); //in m
+            fAngles2.setY(-thetaBending2/2.);
+//            posX2_x=fabs(fZ)*thetaBending;
+//            if (fParameterMap["X2Offset"]) posX2_x+=fParameterMap["X2Offset"];
+            posX3.setX(posX3_x);
+            
+            crystalChannelingData3->SetBR((fSizes3.z()*CLHEP::mm)/(thetaBending3/CLHEP::rad)); //in m
+            fAngles3.setY(-thetaBending2-thetaBending3/2.);
+//            fAngles3.setY(-thetaBending3/2.);
+        }
+            
     }
     G4cout<<"DetConst BendingRadius= "<< crystalChannelingData->GetBR(temp)/CLHEP::m<<G4endl;
     
-
-    if (fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ) {
+    if (fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 || fParameterMap["Setup"]==3.6) {
         G4cout<<"DATI TRIANGOLO:"<<G4endl;
         G4cout<<"## ThetaBending1: "<<thetaBending <<" mrad"<<G4endl;
         G4cout<<"RotX1: "<<fAngles.y() <<" mrad"<<G4endl;
@@ -388,6 +412,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
         G4cout<<"ShiftX2x: "<<posX2.x()/CLHEP::mm <<" mm"<<G4endl;
         G4cout<<"DetConst BendingRadius2= "<< crystalChannelingData2->GetBR(temp)/CLHEP::m<<G4endl;
         G4cout<<"## ThetaBending3: "<<thetaBending3<<" mrad"<<G4endl;
+        G4cout<<"ShiftX3x: "<<posX3.x()/CLHEP::mm <<" mm"<<G4endl;
         G4cout<<"RotX3: "<<fAngles3.y() <<" mrad"<<G4endl;
         G4cout<<"DetConst BendingRadius3= "<< crystalChannelingData3->GetBR(temp)/CLHEP::m<<G4endl;
 	}
@@ -416,7 +441,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	G4LogicalCrystalVolume* crystalLogic2;
 	G4LogicalCrystalVolume* crystalLogic3;
 
-	if (fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ) {
+	if (fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 || fParameterMap["Setup"]==3.6) {
 		crystalLogic2 =
 		new G4LogicalCrystalVolume(crystalSolid2,
 															 Crystal2, // creiamo il cristallo con il materiale "esteso"
@@ -570,7 +595,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
         }
     }
 	
-	if(fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ){
+	if(fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 || fParameterMap["Setup"]==3.6){
 		
 		if(fParameterMap["NoCryst2"]){
 			new G4PVPlacement(rot2,
@@ -610,7 +635,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	<< " to logical volume " << crystalLogic->GetName()
 	<< G4endl;
 	
-	if(fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ){
+	if(fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 || fParameterMap["Setup"]==3.6){
 		testMany->AttachTo(crystalLogic2);
 		G4cout << " Attaching biasing operator " << testMany->GetName()
 		<< " to logical volume " << crystalLogic2->GetName()
@@ -662,7 +687,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 		dummyPlane2_Z= 0.3*CLHEP::m+fDetectorSizes.z();
 		dummyPlane3_Z= 0.5*CLHEP::m+fDetectorSizes.z();
 		dummyPlane4_Z= 5*CLHEP::m+fDetectorSizes.z();
-	}else if (fParameterMap["Setup"]==3.5){ //3X case with real distances - Jan23
+	}else if (fParameterMap["Setup"]==3.5|| fParameterMap["Setup"]==3.6){ //3X case with real distances - Jan23
         dummyPlane0_Z= -13.1*CLHEP::m+fDetectorSizes.z();
         dummyPlane1_Z= -8.1*CLHEP::m+fDetectorSizes.z();
         dummyPlane2_Z= -0.5*CLHEP::m+fDetectorSizes.z();
@@ -697,7 +722,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 	new G4PVPlacement(0,posDummyPlane1,logicDummyPlane,"physDummyPlane",worldLogic,false,1,checkOverlaps);
 	new G4PVPlacement(0,posDummyPlane2,logicDummyPlane,"physDummyPlane",worldLogic,false,2,checkOverlaps);
 	new G4PVPlacement(0,posDummyPlane3,logicDummyPlane,"physDummyPlane",worldLogic,false,3,checkOverlaps);
-	if(fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5 ){
+	if(fParameterMap["Setup"]==3 || fParameterMap["Setup"]==3.5|| fParameterMap["Setup"]==3.6 ){
 		new G4PVPlacement(0,posDummyPlane4,logicDummyPlane,"physDummyPlane",worldLogic,false,4,checkOverlaps);
 		new G4PVPlacement(0,posDummyPlane5,logicDummyPlane,"physDummyPlane",worldLogic,false,5,checkOverlaps);
 		new G4PVPlacement(0,posDummyPlane6,logicDummyPlane,"physDummyPlane",worldLogic,false,6,checkOverlaps);
@@ -738,7 +763,7 @@ void DetectorConstruction::ConstructSDandField(){
 	<< " to logical volume " << crystalLogic->GetName()
 	<< G4endl;
 	
-	if(fParameterMap["Setup"]==3|| fParameterMap["Setup"]==3.5 ){
+	if(fParameterMap["Setup"]==3|| fParameterMap["Setup"]==3.5 || fParameterMap["Setup"]==3.6){
 		G4LogicalVolume* crystalLogic2 =
 		G4LogicalVolumeStore::GetInstance()->GetVolume("crystal2.logic");
 		testMany->AttachTo(crystalLogic2);

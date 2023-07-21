@@ -1,4 +1,4 @@
-e# UA9_22
+# UA9_22
 
 Geant4 simulation for Channeling in view of UA9 mu experiments **New 2022 Version**
 Last edit: 25-02-2022
@@ -66,7 +66,7 @@ The macro `ua90_ref0.mac` is the reference macro for the UA9 setup, `10000` are 
 - Det?Z: Z position of detectors [m]
 - KeepSec: keep (and propagate) secondary particles (Default is off)
 - Vis: 1 for visualization
-- Setup: 1 is setup 1 of 2022 UA9 measurements, 3 for triangle beam recombination (adds othre 2 Xs and 4 scoring planes)
+- Setup: 1 is setup 1 of 2022 UA9 measurements, 3 for triangle beam recombination (adds other 2 Xs and 4 scoring planes)
 - Telescope: places only two Si detectors after X3 and moves Planes 3 and 7 to their end
 - NoCryst2: removes (the material of) X2, needed to study triangle configuration
 - NoCh: turns off channeling in crystals (useful to study for example MS in Si)
@@ -275,6 +275,8 @@ This is reading the "Acceptances.txt" file so you need to check what is in there
 11-05-2023: by collamaf
 - Add possibility to pass macro argument setCutFocalDistance how to cut the X in setup 4
 
+21-07-2023: by collamaf
+- Add configuration 3.6, with "dis-aligned triangle"
 
 ## TODOs
 - need to create a macro for digi/smearing of SiDet hits
