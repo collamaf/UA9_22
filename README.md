@@ -278,6 +278,9 @@ This is reading the "Acceptances.txt" file so you need to check what is in there
 21-07-2023: by collamaf
 - Add configuration 3.6, with "dis-aligned triangle"
 
+22-07-2023: by collamaf
+- Move off axis triangle to be decided by Theta2
+
 ## TODOs
 - need to create a macro for digi/smearing of SiDet hits
 - need to create a macro for flexible data analysis of SiDet hits 
