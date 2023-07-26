@@ -6,6 +6,7 @@
 #
 # Use this open statement to create an OpenGL view:
 /vis/open OGL 600x600-0+0
+#/vis/open gMocrenFile
 #
 # Use this open statement to create an OpenInventor view:
 #/vis/open OI
@@ -31,17 +32,17 @@
 /vis/drawVolume
 #
 # Specify view angle:
-/vis/viewer/set/viewpointVector -1 0 0
+#/vis/viewer/set/viewpointVector -1 0 0
 /vis/viewer/set/lightsVector -1 0 0
 #
 # Specify style (surface, wireframe, auxiliary edges,...)
-/vis/viewer/set/style wireframe
-/vis/viewer/set/auxiliaryEdge true
+# /vis/viewer/set/style wireframe
+#/vis/viewer/set/auxiliaryEdge true
 /vis/viewer/set/lineSegmentsPerCircle 100
 #
 # Draw smooth trajectories at end of event, showing trajectory points
 # as markers 2 pixels wide:
-/vis/scene/add/trajectories smooth
+/vis/scene/add/trajectories rich
 /vis/modeling/trajectories/create/drawByCharge
 /vis/modeling/trajectories/drawByCharge-0/default/setDrawStepPts true
 /vis/modeling/trajectories/drawByCharge-0/default/setStepPtsSize 2
@@ -50,6 +51,25 @@
 # Draw hits at end of event:
 #/vis/scene/add/hits
 #
+/vis/filtering/trajectories/create/encounteredVolumeFilter myFilterX1
+/vis/filtering/trajectories/myFilterX1/add crystal.physic
+/vis/filtering/trajectories/myFilterX1/verbose false
+/vis/filtering/trajectories/myFilterX1/active false
+/vis/filtering/trajectories/create/encounteredVolumeFilter myFilterX2
+/vis/filtering/trajectories/myFilterX2/add crystal2.physic
+/vis/filtering/trajectories/myFilterX2/verbose false
+/vis/filtering/trajectories/myFilterX2/active false
+/vis/filtering/trajectories/create/encounteredVolumeFilter myFilterX3
+/vis/filtering/trajectories/myFilterX3/add crystal3.physic
+/vis/filtering/trajectories/myFilterX3/verbose false
+/vis/filtering/trajectories/myFilterX3/active false
+
+# /vis/filtering/trajectories/create/encounteredVolumeFilter myFilter
+# /vis/filtering/trajectories/myFilter/add crystal.physic crystal3.physic
+
+# /vis/filtering/trajectories/myFilter/verbose false
+#/vis/filtering/trajectories/myFilter/add crystal2.physic
+# /vis/filtering/trajectories/myFilter/add crystal3.physic
 # To draw only gammas:
 #/vis/filtering/trajectories/create/particleFilter
 #/vis/filtering/trajectories/particleFilter-0/add gamma
@@ -71,28 +91,29 @@
 #
 # Decorations
 # Name
-/vis/set/textColour green
-/vis/set/textLayout right
-/vis/scene/add/text2D 0.9 -.9 24 ! ! exampleB1
+#/vis/set/textColour green
+#/vis/set/textLayout right
+#/vis/scene/add/text2D 0.9 -.9 24 ! ! exampleB1
 # or, if your system does not support right-adjustment
 #/vis/scene/add/text2D 0 -.9 24 ! ! exampleB1
-/vis/set/textLayout    # Revert to normal (left adjusted) layout
-/vis/set/textColour    # Revert to default text colour (blue)
+#/vis/set/textLayout    # Revert to normal (left adjusted) layout
+#/vis/set/textColour    # Revert to default text colour (blue)
 #
 # Axes, scale, etc.
-/vis/scene/add/scale   # Simple scale line
-/vis/scene/add/axes    # Simple axes: x=red, y=green, z=blue.
+#/vis/scene/add/scale   # Simple scale line
+# /vis/scene/add/axes    # Simple axes: x=red, y=green, z=blue.
 /vis/scene/add/eventID # Drawn at end of event
-/vis/scene/add/date    # Date stamp
-/vis/scene/add/logo2D  # Simple logo
-/vis/scene/add/logo    # 3D logo
+#/vis/scene/add/date    # Date stamp
+#/vis/scene/add/logo2D  # Simple logo
+#/vis/scene/add/logo    # 3D logo
 #
+#/vis/scene/add/psHits
 # Frame
-/vis/set/colour red
-/vis/set/lineWidth 2
-/vis/scene/add/frame   # Simple frame around the view
-/vis/set/colour        # Revert to default colour (white)
-/vis/set/lineWidth     # Revert to default line width (1.)
+#/vis/set/colour red
+#/vis/set/lineWidth 2
+#/vis/scene/add/frame   # Simple frame around the view
+#/vis/set/colour        # Revert to default colour (white)
+#/vis/set/lineWidth     # Revert to default line width (1.)
 #
 # Attach text to one edge of Shape1, with a small, fixed offset
 
@@ -100,22 +121,51 @@
 # To get nice view
 # Make the "World" box invisible
 /vis/geometry/set/visibility world.logic 0 false
-/vis/geometry/set/visibility logicDummyPlane 0 false
+/vis/geometry/set/visibility Mag 0 false
+# /vis/geometry/set/visibility logicDummyPlane 0 false
+/vis/geometry/set/colour logicDummyPlane 0 1 0 0 0.3
+/vis/geometry/set/colour logicCutPlane 0 0 0 1 1
+# /vis/geometry/set/visibility Mag 0 false
+# /vis/geometry/set/visibility ssd.logic 0 false
 # "Envelope" is transparent blue to represent water
 /vis/viewer/set/style surface
 /vis/viewer/set/hiddenMarker true
 
 # /vis/viewer/set/background 1 1 1 1
-/vis/viewer/set/viewpointThetaPhi 12.3021  161.587  deg
-
-/vis/viewer/set/targetPoint -0.17253 0.36292 1.64364 m
-/vis/viewer/zoomTo 7
+#/vis/viewer/set/viewpointThetaPhi 12.3021  161.587  deg
+/vis/viewer/set/upVector 1 0 0
+#/vis/viewer/set/viewpointVector 0 1 0
+# /vis/viewer/set/viewpointThetaPhi 180 90
+/vis/viewer/set/viewpointThetaPhi 90 90
+/vis/viewer/scaleTo 0.001 1 1
+/vis/viewer/zoomTo 600
 #
-
-
+/vis/scene/add/scale 24 m z 1 0 0 manual 0 0 0 mm
+/vis/scene/add/scale 20 m z 1 0 0 manual 0 0 0 mm
+/vis/scene/add/scale 18 m z 1 0 0 manual 0 0 0 mm
+/vis/scene/add/scale 16 m z 1 0 0 manual 0 0 0 mm
+/vis/scene/add/scale 14 m z 1 0 0 manual 0 0 0 mm
+#/vis/scene/add/scale 20 m z 0 1 0 manual 0 0 0 m
+/vis/scene/add/scale 16 m z 0 1 0 manual 0.016 0 0 m
+/vis/scene/add/scale 26.2 m z 0 1 0 manual -1 0 0 m
+/vis/scene/add/scale 40 m z 0 1 0 manual 0 0 0 m
+/vis/scene/add/scale 20 m z 1 0 0 manual 20 0 0 mm
+/vis/scene/add/scale 40 m z 1 0 0 manual 20 0 0 mm
+/vis/scene/add/scale 80 mm x 0 1 1 manual 0 0 10 m
+/vis/scene/add/scale 1.5 mm x 0 1 0 manual 16 0 50 mm #X2 default size and position
+/vis/scene/add/scale 6 mm z 0 1 1 manual 0 0 0 mm
+/vis/scene/add/scale 10 mm x 0 1 1 manual 0 0 4 mm
+/vis/scene/add/scale 6 mm z 1 0 1 manual -0.5 0 0 mm
+/vis/viewer/set/style wireframe
 # Re-establish auto refreshing and verbosity:
+#/vis/scene/add/line 0 0 -8 0.016 0 0 m
 /vis/viewer/set/autoRefresh true
 /vis/verbose warnings
+/vis/viewer/set/targetPoint 1.6 0 0 cm
+# /vis/viewer/set/targetPoint 0 0 -8 m
+#/vis/viewer/set/targetPoint 0 0 -1 m
+/vis/viewer/set/targetPoint 0 0 0 m
+/vis/viewer/set/targetPoint 0.02 0 10 m
 #
 # For file-based drivers, use this to create an empty detector view:
 #/vis/viewer/flush

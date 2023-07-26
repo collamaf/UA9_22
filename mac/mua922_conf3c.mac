@@ -1,0 +1,50 @@
+#detector geometry
+/xtal/setMaterial G4_Si
+/xtal/setSize 1.5 4 11 mm
+/xtal/setBR 5.5 0. 0. m
+/xtal/setThetaBending 2e-3 rad #ignorato
+/xtal/setEC data/Si220pl
+/xtal/setZ -8 m
+
+/xtal2/setSize 1.5 4 22 mm
+#/xtal2/setBR -5.5 0. 0. m
+/xtal2/setZ 0 m
+/xtal2/setThetaBending 1.8e-3 rad
+# /xtal2/setXOffset 2 mm
+
+#/xtal3/setAngle 0. 1e-3 0. rad #base
+# /xtal3/setAngle 0. 0.9e-3 0. rad #-100urad
+# /xtal3/setAngle 0. 1.1e-3 0. rad #+100urad
+/xtal3/setSize 1.5 4 11 mm
+#/xtal3/setBR 5.5 0. 0. m
+/xtal3/setZ 10 m
+
+# /tracking/verbose 2
+# /run/numberOfThreads 1
+#initialize run before stacking and primary generator actions
+/run/initialize
+
+#set gps properties
+/gps/ene/mono 400. GeV
+/gps/particle proton
+#
+# /gps/pos/type Point
+# /gps/pos/centre 0 0 -13.15 m
+/gps/pos/type Beam
+/gps/pos/sigma_r 2 mm
+#/gps/pos/centre 0.036 0 -13.15 m
+/gps/pos/centre 0.0 0 -13.15 m
+
+/gps/ang/type beam2d
+/gps/ang/rot1 1  0  0
+/gps/ang/rot2 0 -1  0
+/gps/ang/sigma_x 13.36E-39 rad
+/gps/ang/sigma_y 11.25E-39 rad
+# /gps/ang/sigma_x 0E-9 rad
+# # /gps/ang/sigma_y 0E-9 rad
+# /gps/ang/sigma_x 250.E-6 rad
+# /gps/ang/sigma_y 250.E-6 rad
+#beam on
+#/run/beamOn 10000
+# /control/execute NumPrim.mac
+# /control/execute vis.mac
