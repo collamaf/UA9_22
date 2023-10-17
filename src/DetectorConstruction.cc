@@ -573,6 +573,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
         
         G4VPhysicalVolume* physCrystal;
         if(fParameterMap["NoCryst"]){
+            G4cout<<"INSALATA1"<<G4endl;
             physCrystal= new G4PVPlacement(rot,
                                            posX,
                                            dummyCrystalLogic, /***/
@@ -580,7 +581,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
                                            worldLogic,
                                            false,
                                            0);
-        } if(fParameterMap["NoCh"]){
+        } else if(fParameterMap["NoCh"]){
             physCrystal= new G4PVPlacement(rot,
                                            posX,
                                            noChCrystalLogic, /***/
@@ -589,6 +590,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
                                            false,
                                            0);
         } else {
+            G4cout<<"INSALATA2"<<G4endl;
             physCrystal= new G4PVPlacement(rot,
                                            posX,
                                            crystalLogic, //Posizionamento X vero e proprio
